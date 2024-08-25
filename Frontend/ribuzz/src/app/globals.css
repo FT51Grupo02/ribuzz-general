@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+*body {
+    font-family: 'Poppins', sans-serif;
+}
+
+@font-face {
+    font-family: 'Moonhouse';
+    src: url('/fonts/moonhouse.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* -----> Estilos para la barra de desplazamiento <----- */
+
+::-webkit-scrollbar {
+    width: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    background: #353535;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(123, 123, 123); 
+    border-radius: 10px;
+}
+
+/* -----> **************************************** <----- */
+
+/* Cursor para links del footer (TEMPORAL) */
+
+.cursor-pointer-custom {
+    cursor: pointer;
+}
+
+/* -----> **************************************** <----- */
