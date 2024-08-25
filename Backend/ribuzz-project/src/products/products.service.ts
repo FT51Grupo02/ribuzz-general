@@ -1,82 +1,105 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
-import { Categories } from "../Entidades/categories.entity";
 
 @Injectable()
-export class ProductsService{
-    constructor(@InjectRepository(Products) private productRepository:Repository<Products>
-    // ,
-    // @InjectRepository(Categories) private categoryRepository:Repository<Categories>
-    ){}
+export class ProductsService {
+    constructor(
+        @InjectRepository(Products) private productRepository: Repository<Products>
+    ) {}
 
+    async getProducts(page: number, limit: number): Promise<Products[]> {
+        try {
+            const skip = (page - 1) * limit;
+            return await this.productRepository.find({
+                skip,
+                take: limit,
+                relations: ['details', 'categories'] 
+            });
+        } catch (error) {
+            throw new InternalServerErrorException('Error al obtener los productos');
+        }
+    }
 
-    async getProducts(page:number, limit:number):Promise<Products[]> {
-        let product = await this.productRepository.find({
-            // relations:{
-            //     categoria:true
-            // }
-        })
-        const start = (page - 1) * limit; 
-        const end = start + +limit;
+    async getProductById(id: string): Promise<Products> {
+        try {
+            const product = await this.productRepository.findOne({
+                where: { id },
+                relations: ['details', 'categories'] 
+            });
+            if (!product) {
+                throw new NotFoundException(`Producto con id ${id} no encontrado`);
+            }
+            return product;
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error al obtener el producto');
+        }
+    }
 
-        product = product.slice(start,end);
-        return product;
+    async createProduct(product: Products): Promise<Products> {
+        try {
+            const newProduct = this.productRepository.create(product);
+            return await this.productRepository.save(newProduct);
+        } catch (error) {
+            throw new InternalServerErrorException('Error al crear el producto');
+        }
+    }
 
+    async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
+        try {
+            // Actualiza las propiedades simples
+            const { details, categories, ...otherProperties } = product;
+            await this.productRepository.update(id, otherProperties);
+    
+            // Recupera el producto actualizado
+            const updatedProduct = await this.productRepository.findOne({
+                where: { id },
+                relations: ['details', 'categories'] 
+            });
+    
+            if (!updatedProduct) {
+                throw new NotFoundException(`Producto con id ${id} no encontrado`);
+            }
+    
+            // Actualiza la relación details si fue proporcionada
+            if (details) {
+                updatedProduct.details = details;
+            }
+    
+            // Actualiza la relación categories si fue proporcionada
+            if (categories) {
+                updatedProduct.categories = categories;
+            }
+    
+            // Guarda el producto con las relaciones actualizadas
+            await this.productRepository.save(updatedProduct);
+    
+            return updatedProduct;
+        } catch (error) {
+            console.error('Error al actualizar el producto:', error); // Imprimir el error en la consola
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error al actualizar el producto');
+        }
     }
     
-    async getProductById( id: string) {
-        const product = await this.productRepository.findOneBy({ id })
-        if(!product){
-            return "producto no encontrado";
+
+    async deleteProduct(id: string): Promise<void> {
+        try {
+            const result = await this.productRepository.delete(id);
+            if (result.affected === 0) {
+                throw new NotFoundException(`Producto con id ${id} no encontrado`);
+            }
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error al eliminar el producto');
         }
-        return product
-    }
-    async createProduct(Product: any){
-        const Products = {...Product}
-        const newProduct = await this.productRepository.save(Products)
-        return newProduct;
-    }
-
-    //seeder!!
-    // async AddProduct() {
-    //    //return this.productRepository.createProduct(product);
-    //    const categories = await this.categoryRepository.find()
-    //    data?.map(async (element) =>{
-    //        const category = categories.find((caregory) => caregory.name === element.category
-    //        )
-    //    const product = new Products()
-    //    product.name = element.name;
-    //    product.description = element.description;
-    //    product.price = element.price;
-    //    product.imgUrl = element.imgUrl;
-    //    product.stock = element.stock;
-    //    product.categories = category;
-    //    await this.productRepository
-    //    .createQueryBuilder()
-    //    .insert()
-    //    .into(Products)
-    //    .values(product)
-    //    .orUpdate(['description','price','imgUrl','stock']['name'])
-    //    .execute()
-    //    });
-    //    return "add productssss"
-    // }
-
-
-
-
-
-    async updateProduct(id: string, product: Products){
-        //return this.productRepository.UpdateProducts(id, user)
-        await this.productRepository.update(id, product);
-        
-        const upProduct = await this.productRepository.findOneBy({ id });
-        return upProduct;
-        }
-    
-    async deleteProduct(id: string){
-    return this.productRepository.delete(id)
     }
 }
