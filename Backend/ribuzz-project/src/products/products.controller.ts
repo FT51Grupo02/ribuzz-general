@@ -10,10 +10,15 @@ export class ProductsControler{
 
   @Get()
   getProduct(@Query('page') page:number, @Query('limit') limit:number){
-    if(page && limit){
-      return this.productsService.getProducts(page,limit)
+    try{
+      if(page && limit){
+        return this.productsService.getProducts(page,limit)
+      }
+      return this.productsService.getProducts(1,5)
     }
-    return this.productsService.getProducts(1,5)
+    catch(e){
+      throw new Error("Error al traer la lista"+e);
+    }
   }  
 
 //  @Get('seeder')
