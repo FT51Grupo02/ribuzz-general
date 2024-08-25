@@ -12,12 +12,8 @@ export class ProductsService{
     ){}
 
 
-    async getProducts(page:number, limit:number):Promise<Products[]> {
-        let product = await this.productRepository.find({
-            // relations:{
-            //     categoria:true
-            // }
-        })
+    async getProducts(page:number, limit:number) {
+        let product = await this.productRepository.find()
         const start = (page - 1) * limit; 
         const end = start + +limit;
 
