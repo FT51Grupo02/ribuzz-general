@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { FooterWithSitemap } from "@/components/Footer/Footer";
+import { AuthProvider } from "@/components/Context/AuthContext";
 
 // Cargar la fuente Poppins
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
@@ -25,11 +26,13 @@ export default function RootLayout({
         <title>RiBuzz</title>
       </head>
       <body className="flex flex-col min-h-screen">
-        <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <FooterWithSitemap />
+        <AuthProvider>
+          <Navbar />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <FooterWithSitemap />
+        </AuthProvider>
       </body>
     </html>
   );
