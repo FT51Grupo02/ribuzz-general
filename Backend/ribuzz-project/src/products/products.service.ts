@@ -29,7 +29,7 @@ export class ProductsService{
     async getProductById( id: string) {
         const product = await this.productRepository.findOneBy({ id })
         if(!product){
-            return "product no encontrado";
+            return "producto no encontrado";
         }
         return product
     }

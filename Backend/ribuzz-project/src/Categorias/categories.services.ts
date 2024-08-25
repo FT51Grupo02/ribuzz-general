@@ -11,17 +11,17 @@ export class CategoriesService {
 
     async categoryList(){
         const categories = await this.categoriesRepository.find();
-        return categories.map(category => category.nombre);
+        return categories.map(category => category.name);
     }
 
     //Investigar por categoria especifica
-    async findCategory(nombre: string){
-        if(!nombre){throw new BadRequestException('Por favor inserte la categoria')}
+    async findCategory(name: string){
+        if(!name){throw new BadRequestException('Por favor inserte la categoria')}
         
         const findCategory = await this.categoriesRepository.findOne({
-            where:{nombre},
+            where:{name},
             relations: {
-                productos:true
+                products:true
             }
         })
 
@@ -31,28 +31,28 @@ export class CategoriesService {
     }
 
     //Crear categoria
-    async imputCategory(nombre: string): Promise<Categories> {
+    async imputCategory(name: string): Promise<Categories> {
         // Detectar si la casilla no está vacía
-        if (!nombre) {
+        if (!name) {
             throw new BadRequestException('La casilla nombre no puede quedar vacía');
         }
 
         // Detectar si la categoría existe previamente
-        const existentCategory = await this.categoriesRepository.findOne({where:{nombre}});
+        const existentCategory = await this.categoriesRepository.findOne({where:{name}});
         if (existentCategory) {
             throw new BadRequestException('La categoría ya se encuentra registrada');
         }
 
         // Crear y guardar la nueva categoría
-        const newCategory = this.categoriesRepository.create({nombre});
+        const newCategory = this.categoriesRepository.create({name});
         return await this.categoriesRepository.save(newCategory);
     }
 
-    async deleteCategory(nombre:string):Promise<void>{
+    async deleteCategory(name:string):Promise<void>{
 
-        if(!nombre) {throw new BadRequestException("Por favor ingrese la categoria")}
+        if(!name) {throw new BadRequestException("Por favor ingrese la categoria")}
         
-        const categoryToDelete= await this.categoriesRepository.findOne({where:{nombre},})
+        const categoryToDelete= await this.categoriesRepository.findOne({where:{name},})
         
         if(!categoryToDelete){throw new BadRequestException("Categoria no encontrada")}
 

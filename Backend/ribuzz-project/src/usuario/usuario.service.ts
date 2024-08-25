@@ -1,11 +1,10 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, In } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Users } from '../Entidades/user.entity';
-import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 import { Events } from '../Entidades/events.entity';
 import { Orders } from '../Entidades/orders.entity';

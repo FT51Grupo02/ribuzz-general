@@ -4,7 +4,7 @@ import { CategoriesService } from "./categories.services";
 import { AuthGuard } from "src/Guardianes/Auth.guard";
 
 
-@Controller("categorias")
+@Controller("categories")
 export class CategoriesControl{
     constructor(private categoriesServive: CategoriesService) {}
 

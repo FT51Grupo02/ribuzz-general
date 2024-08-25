@@ -11,17 +11,17 @@ export class AuthService{
         private jwtService: JwtService,
     ){}
 
-    async signIn(correo: string, contraseña:string){
+    async signIn(email: string, password:string){
         
-        const find_user = await this.userService.findUserEmail(correo)
+        const find_user = await this.userService.findUserEmail(email)
         if(!find_user){throw new BadRequestException("Credenciales no validas")}
 
-        const isValidatePass = await bcrypt.compare((contraseña), find_user.contraseña)
+        const isValidatePass = await bcrypt.compare((password), find_user.password)
         if(!isValidatePass){throw new BadRequestException("Correo y/o contraseña invalidas")}
 
         const usePayload = {
             id:find_user.id,
-            correo:find_user.correo,
+            correo:find_user.email,
             rol:find_user.rol
         }
 

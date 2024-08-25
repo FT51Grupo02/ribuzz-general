@@ -7,7 +7,7 @@ import { Repository } from "typeorm";
 import { Users } from 'src/Entidades/user.entity';
 @Injectable()
 export class FileUploudService {
-   constructor(private readonly filesRepository:FileUploadRepository,
+    constructor(private readonly filesRepository:FileUploadRepository,
     @InjectRepository(Products)
     private readonly productRepository:Repository<Products>,
     @InjectRepository(Users)
@@ -27,8 +27,8 @@ export class FileUploudService {
         });
 
         return await this.productRepository.findOneBy({ id:productId })
-   }
-   async uploadUserImages(file:Express.Multer.File, userId:any){
+    }
+    async uploadUserImages(file:Express.Multer.File, userId:any){
 
     const user = await this.usuarioRepository.findOneBy({id:userId})
     if(!user){
