@@ -1,20 +1,16 @@
-/* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { Products } from "./products.entity";
 
-
 @Entity({
-    name: "detalle"
+    name: "details"
 })
-
-export class Details{
+export class Details {
     @PrimaryGeneratedColumn('uuid')
-    id: string
+    id: string;
 
     @Column()
-    total: number
+    total: number;
 
-    @ManyToMany(() => Products, (product)=>product.id)
-    @JoinColumn()
-    products: Products[]
+    @ManyToMany(() => Products, (product) => product.details)
+    products: Products[];
 }

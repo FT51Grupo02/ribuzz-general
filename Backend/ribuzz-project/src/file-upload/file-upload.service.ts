@@ -22,8 +22,8 @@ export class FileUploudService {
         const uploadedImage = await this.filesRepository.uploadImage(file)
         console.log(uploadedImage);
 
-        await this.productRepository.update(product.id,{
-            img: uploadedImage.secure_url,
+        await this.productRepository.update(product.id, {
+            images: [...product.images, uploadedImage.secure_url],
         });
 
         return await this.productRepository.findOneBy({ id:productId })
