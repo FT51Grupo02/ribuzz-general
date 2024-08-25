@@ -12,8 +12,8 @@ export class FileUploudController {
  // @UseGuards(AuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async UploadImages(@Param('id') productId: string,
-   @UploadedFile (
-     new ParseFilePipe({
+  @UploadedFile (
+    new ParseFilePipe({
     validators:[
       new MaxFileSizeValidator({
         maxSize: 200000,
@@ -27,28 +27,28 @@ export class FileUploudController {
   ) 
   file: Express.Multer.File
   ){
- return await this.fileUploudService.uploadImages(file,productId)
+  return await this.fileUploudService.uploadImages(file,productId)
   }
 
   @Put('uploadUserImage/:id')
   // @UseGuards(AuthGuard)
-   @UseInterceptors(FileInterceptor('file'))
-   async UploadUserImages(@Param('id') userId: string,
+  @UseInterceptors(FileInterceptor('file'))
+  async UploadUserImages(@Param('id') userId: string,
     @UploadedFile (
       new ParseFilePipe({
-     validators:[
-       new MaxFileSizeValidator({
-         maxSize: 200000,
-         message: 'file tiene que ser de 200kb max'
-       }),
-       new FileTypeValidator({
-         fileType: /(jpg|jpeg|png|webp)$/,
-       }),   
-     ],
-   }),
-   ) 
-   file: Express.Multer.File
-   ){
+    validators:[
+      new MaxFileSizeValidator({
+      maxSize: 200000,
+        message: 'file tiene que ser de 200kb max'
+      }),
+      new FileTypeValidator({
+        fileType: /(jpg|jpeg|png|webp)$/,
+      }),   
+    ],
+  }),
+  ) 
+  file: Express.Multer.File
+  ){
   return await this.fileUploudService.uploadUserImages(file,userId)
-   }
+  }
 } 

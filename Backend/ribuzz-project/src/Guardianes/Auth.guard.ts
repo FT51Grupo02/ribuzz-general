@@ -22,24 +22,20 @@ export class AuthGuard implements CanActivate{
             user.iat = new Date(user.iat*1000)
 
             //Validación de roles
-            switch(user){
-                case 1:
-                    user.usuario=user.rol=['Emprendedor']   
-                    break;
-                case 2:
-                    user.cliente=user.rol=['Cliente']
-                    break;    
-                case 3:
-                    user.admin=user.rol=['Admin']
-                    break;    
-                default:
-                    user.rol=['Usuario Anonimo']
-
-                return true
+            if (user === 1) {
+                user.role = ['Entrepreneur'];
+            } else if (user === 2) {
+                user.role = ['Client'];
+            } else if (user === 3) {
+                user.role = ['Admin'];
+            } else {
+                user.role = ['Anonymous User'];
             }
+
+            return true;
         }
         catch{
-            throw new UnauthorizedException("Token Invalido")
+            throw new UnauthorizedException("Invalid Token");
         }
 
     }
