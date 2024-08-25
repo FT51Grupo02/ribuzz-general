@@ -1,4 +1,5 @@
-import { Controller, Get ,Param, Post ,Put , Delete , Body,Query, UseGuards} from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Controller, Get ,Param, Post ,Put , Delete , Body,Query} from "@nestjs/common";
 import { Products } from "src/Entidades/products.entity";
 
 import { ProductsService } from "./products.service";
@@ -9,7 +10,7 @@ export class ProductsControler{
     constructor(private readonly productsService: ProductsService){}
 
   @Get()
-  getProduct(@Query('page') page:number, @Query('limit') limit:number){
+  async getProduct(@Query('page') page:number, @Query('limit') limit:number){
     try{
       if(page && limit){
         return this.productsService.getProducts(page,limit)
@@ -28,15 +29,19 @@ export class ProductsControler{
 
 
   @Get(':id')
-  getProductById(@Param('id') id: string ){
+  async getProductById(@Param('id') id: string ){
   return this.productsService.getProductById(id)
   }
   
   
   @Post()
-  createproduct(@Body() product: Products){
-  return this.productsService.createProduct(product);
-  
+  async createproduct(@Body() product: Products){
+    try{
+      return this.productsService.createProduct(product);
+    }
+    catch(e){
+      throw new Error("Hubo un problema al crear el producto"+e)
+    }
   }
 
   @Put(':id')

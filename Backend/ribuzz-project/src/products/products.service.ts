@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
-import { Categories } from "../Entidades/categories.entity";
+//import { Categories } from "../Entidades/categories.entity";
 
 @Injectable()
 export class ProductsService{
@@ -29,10 +30,16 @@ export class ProductsService{
         }
         return product
     }
-    async createProduct(Product: any){
-        const Products = {...Product}
-        const newProduct = await this.productRepository.save(Products)
-        return newProduct;
+    async createProduct(product: Products):Promise<Products>{
+        
+        if(!product.name){throw new BadRequestException('Por favor ingrese el nombre del producto')}
+
+        const existProduct = await this.productRepository.findOne({where:{name:product}})
+        if(existProduct){throw new BadRequestException('El producto ya se encuentra registrado')}
+
+        const newProduct = await this.productRepository.create(product)
+        return await this.productRepository.save(newProduct)
+
     }
 
     //seeder!!
