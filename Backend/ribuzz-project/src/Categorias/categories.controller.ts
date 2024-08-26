@@ -31,7 +31,7 @@ export class CategoriesControl{
     }
     
     @UseGuards(AdminGuard)
-    @Post('/agregar')
+    @Post('/add')
     async imputCategory(@Body('nombre') nombre: string){
         try{
             return this.categoriesServive.imputCategory(nombre)
@@ -40,8 +40,8 @@ export class CategoriesControl{
             throw new BadRequestException(`Hubo un error al agregar la categoria ${error}`);
         }
     }
-
-    @Delete('/eliminar')
+    @UseGuards(AdminGuard)
+    @Delete()
     async deleteCategory(@Body("nombre") nombre:string){
           try{
             await this.categoriesServive.deleteCategory(nombre)
