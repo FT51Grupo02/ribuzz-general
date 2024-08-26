@@ -1,8 +1,10 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+
+/* eslint-disable prettier/prettier */
+import { Injectable, NotFoundException, InternalServerErrorException,BadRequestException, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
+//import { Categories } from "../Entidades/categories.entity";
 
 @Injectable()
 export class ProductsService {
@@ -27,12 +29,7 @@ export class ProductsService {
         }
     }
 
-<<<<<<< HEAD
-    async getProducts(page:number, limit:number) {
-        let product = await this.productRepository.find()
-        const start = (page - 1) * limit; 
-        const end = start + +limit;
-=======
+
     async getProductById(id: string): Promise<Products> {
         try {
             const product = await this.productRepository.findOne({
@@ -50,17 +47,18 @@ export class ProductsService {
             throw new InternalServerErrorException('Error al obtener el producto');
         }
     }
->>>>>>> e933518 (Modificacion de products)
 
-    async createProduct(product: Products): Promise<Products> {
-        try {
-            const newProduct = this.productRepository.create(product);
-            return await this.productRepository.save(newProduct);
-        } catch (error) {
-            throw new InternalServerErrorException('Error al crear el producto');
-        }
+ async createProduct(product: Products):Promise<Products>{
+        
+        if(!product.name){throw new BadRequestException('Por favor ingrese el nombre del producto')}
+
+        const existProduct = await this.productRepository.findOne({where:{name:product.name}})
+        if(existProduct){throw new BadRequestException('El producto ya se encuentra registrado')}
+
+        const newProduct = await this.productRepository.create(product)
+        return await this.productRepository.save(newProduct)
+
     }
-
     async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
         try {
             // Actualiza las propiedades simples
@@ -98,7 +96,9 @@ export class ProductsService {
             }
             throw new InternalServerErrorException('Error al actualizar el producto');
         }
+        return product
     }
+   
     
 
     async deleteProduct(id: string): Promise<void> {
@@ -115,17 +115,4 @@ export class ProductsService {
         }
     }
 }
-    async deleteProduct(id: string): Promise<void> {
-        try {
-            const result = await this.productRepository.delete(id);
-            if (result.affected === 0) {
-                throw new NotFoundException(`Producto con id ${id} no encontrado`);
-            }
-        } catch (error) {
-            if (error instanceof NotFoundException) {
-                throw error;
-            }
-            throw new InternalServerErrorException('Error al eliminar el producto');
-        }
-    }
-}
+    

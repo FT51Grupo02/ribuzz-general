@@ -9,6 +9,9 @@ export class Products {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
+    @Column()
+    name:string
+
     @Column({
         type: 'varchar',
         length: 250
