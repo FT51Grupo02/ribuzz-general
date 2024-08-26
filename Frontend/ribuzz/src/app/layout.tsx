@@ -4,6 +4,8 @@ import "./globals.css";
 import Navbar from "@/components/Navbar/Navbar";
 import { FooterWithSitemap } from "@/components/Footer/Footer";
 import { AuthProvider } from "@/components/Context/AuthContext";
+import { CartProvider } from "@/components/Context/CartContext";
+
 
 // Cargar la fuente Poppins
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
@@ -27,11 +29,14 @@ export default function RootLayout({
       </head>
       <body className="flex flex-col min-h-screen">
         <AuthProvider>
+          <CartProvider>
           <Navbar />
-          <main className="flex-grow">
-            {children}
-          </main>
+            <main className="flex-grow">
+              {children}
+            </main>
+        
           <FooterWithSitemap />
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

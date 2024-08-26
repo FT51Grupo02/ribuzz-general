@@ -1,8 +1,9 @@
+import CartItem from '@/components/Cart/CartItem/CartItem'
 import React from 'react'
 
 const Cart: React.FC = () => {
   return (
-    <div>page</div>
+    <CartItem/>
   )
 }
 

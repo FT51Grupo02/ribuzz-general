@@ -1,16 +1,17 @@
 'use client';
+
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
 import Swal from 'sweetalert2'; 
 
-export  interface IProduct{
-    name: string,
-    price: number,
-    image: string,
-    description?: string,
-    stock: number,
-    categoryId: number
-    id: number
+export interface IProduct {
+  name: string;
+  price: number;
+  image: string;
+  description?: string;
+  stock: number;
+  categoryId: number;
+  id: number;
 }
 
 interface CartContextProps {
@@ -34,26 +35,26 @@ const CartContext = createContext<CartContextProps>({
 });
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+  const { user, token } = useAuth(); 
   const [cart, setCart] = useState<IProduct[]>([]);
 
   useEffect(() => {
-    if (user?.email) {
+    if (token) {
       loadGlobalCart();
     } else {
       setCart([]);
     }
-  }, [user]);
+  }, [token]);
 
   useEffect(() => {
-    if (user?.email && cart.length > 0) {
+    if (token && cart.length > 0) {
       saveCartForUser();
     }
-  }, [cart]);
+  }, [cart, token]);
 
   const loadGlobalCart = () => {
-    if (typeof window !== 'undefined' && user?.email) {
-      const storedCart = localStorage.getItem(`cart_${user.email}`);
+    if (typeof window !== 'undefined' && token) {
+      const storedCart = localStorage.getItem(`cart_${token}`);
       if (storedCart) {
         setCart(JSON.parse(storedCart));
       } else {
@@ -63,13 +64,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const saveCartForUser = () => {
-    if (typeof window !== 'undefined' && user?.email) {
-      localStorage.setItem(`cart_${user.email}`, JSON.stringify(cart));
+    if (typeof window !== 'undefined' && token) {
+      localStorage.setItem(`cart_${token}`, JSON.stringify(cart));
     }
   };
 
   const addToCart = (product: IProduct) => {
-    if (!user?.email) {
+    if (!token) {
       Swal.fire({
         title: 'Log in, Please!',
         text: 'You need to log in to make a purchase.',
@@ -112,8 +113,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const clearCart = () => {
-    if (typeof window !== 'undefined' && user?.email) {
-      localStorage.removeItem(`cart_${user.email}`);
+    if (typeof window !== 'undefined' && token) {
+      localStorage.removeItem(`cart_${token}`);
       setCart([]);
     }
   };

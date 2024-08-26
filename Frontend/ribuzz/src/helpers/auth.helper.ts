@@ -1,5 +1,6 @@
 import { ILoginProps, IUserSession } from "@/interfaces/Types";
 import { IRegisterProps } from "@/interfaces/Types";
+import { jwtDecode } from "jwt-decode";
 
 const APIURL = process.env.NEXT_PUBLIC_API_URL;
 
@@ -26,13 +27,15 @@ export async function register(registerData: IRegisterProps): Promise<IUserSessi
     }
 }
 
+
+
 export async function login(userData: ILoginProps): Promise<IUserSession> {
   try {
-    const response = await fetch(`${APIURL}/users`, {
+    const response = await fetch(`${APIURL}/auth/signIn`, {
       method: 'POST',
-      headers: {
+       headers: {
         "Content-type": "application/json",
-      },
+      }, 
       body: JSON.stringify(userData),
     });
 
@@ -46,4 +49,4 @@ export async function login(userData: ILoginProps): Promise<IUserSession> {
   } catch (error: any) {
     throw new Error(error);
   }
-}
+} 
