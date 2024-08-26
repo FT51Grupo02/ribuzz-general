@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, IsUUID, Min, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
 
