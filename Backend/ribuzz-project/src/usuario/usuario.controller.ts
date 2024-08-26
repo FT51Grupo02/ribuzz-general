@@ -4,7 +4,7 @@ import { UsuarioService } from './usuario.service';
 import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 
-@Controller('usuarios')
+@Controller('users')
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}
 

@@ -1,11 +1,12 @@
+
 /* eslint-disable prettier/prettier */
-import { Controller, Get ,Param, Post ,Put , Delete , Body,Query} from "@nestjs/common";
+import { Products } from "src/Entidades/products.entity";
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from "@nestjs/common";
+import { ProductsService } from "./products.service";
 import { Products } from "src/Entidades/products.entity";
 
-import { ProductsService } from "./products.service";
-
-
 @Controller('products')
+
 export class ProductsControler{
     constructor(private readonly productsService: ProductsService){}
 
@@ -19,9 +20,7 @@ export class ProductsControler{
     }
     catch(e){
       throw new Error("Error al traer la lista"+e);
-    }
-  }  
-
+      
 //  @Get('seeder')
 //  addProducts(){
 //   return this.productsService.AddProduct();
@@ -44,14 +43,15 @@ export class ProductsControler{
     }
   }
 
-  @Put(':id')
-  putProduct(@Query('id') id: string, @Body() product:any){
-    return this.productsService.updateProduct(id,product)
-  }
 
 
-  @Delete(':id')
-  deleteProduct(@Param('id') id: string){
-    return this.productsService.deleteProduct( id )
-  }
+    @Put(':id')
+    async updateProduct(@Param('id') id: string, @Body() product: Products) {
+        return this.productsService.updateProduct(id, product);
+    }
+
+    @Delete(':id')
+    async deleteProduct(@Param('id') id: string) {
+        return this.productsService.deleteProduct(id);
+    }
 }
