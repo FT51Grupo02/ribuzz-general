@@ -3,13 +3,21 @@
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useAuth } from '@/components/Context/AuthContext';
+import Swal from 'sweetalert2';
+import { FaUser, FaTimes } from 'react-icons/fa';
+import { FiLogOut } from 'react-icons/fi';
+import CartIcon from '../Cart/CartIcon/CartIcon';
 
 const Navbar = () => {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const startY = useRef<number | null>(null);
   const menuRef = useRef(null);
+
+  const router = useRouter();
+  const { user, token, setUser, setToken, logout  } = useAuth(); 
 
   const isActive = (href: string) => pathname === href;
 
@@ -39,6 +47,19 @@ const Navbar = () => {
 
   const handleTouchEnd = () => {
     startY.current = null;
+  };
+
+  const handleLogout = () => {
+    Swal.fire({
+      //title: `Hasta luego, ${user?.name || 'Hasta Luego'}!`,
+      title: `Hasta luego!`,
+      text: 'Gracias por visitarnos. Te esperamos pronto!',
+      icon: 'info',
+      confirmButtonText: 'OK'
+    }).then(() => {
+      logout();
+      router.push('/');
+    });
   };
 
   return (
@@ -104,31 +125,58 @@ const Navbar = () => {
 
         {/* Iconos de perfil, carrito y menú */}
         <div className="flex-shrink-0 flex items-center space-x-2 ml-auto">
-          <Link 
-            href="/profile" 
-            className={`relative hover:bg-white rounded-full p-1 ${isActive('/profile') ? 'bg-white' : ''}`}
-          >
-            <Image 
-              src="/profile.png" 
-              alt="Profile" 
-              width={30} 
-              height={40} 
-              className={`transition duration-300 ${isActive('/profile') ? 'filter invert' : 'hover:filter hover:invert'}`}
-            />
-          </Link>
-          <Link 
-            href="/cart" 
-            className={`relative hover:bg-white rounded-full p-1 ${isActive('/cart') ? 'bg-white' : ''}`}
-          >
-            <Image 
-              src="/cart.png" 
-              alt="Cart" 
-              width={30} 
-              height={40} 
-              className={`transition duration-300 ${isActive('/cart') ? 'filter invert' : 'hover:filter hover:invert'}`}
-            />
-          </Link>
-          
+          {token ? (
+            <>
+              <Link 
+                href="/user" 
+                className={`relative hover:bg-white rounded-full p-1 ${isActive('/profile') ? 'bg-white' : ''}`}
+              >
+                <Image 
+                  src="/profile.png" 
+                  alt="Profile" 
+                  width={30} 
+                  height={40} 
+                  className={`transition duration-300 ${isActive('/profile') ? 'filter invert' : 'hover:filter hover:invert'}`}
+                />
+              </Link>
+              {/* <Link 
+                href="/cart" 
+                className={`relative hover:bg-white rounded-full p-1 ${isActive('/cart') ? 'bg-white' : ''}`}
+              >
+                <Image 
+                  src="/cart.png" 
+                  alt="Cart" 
+                  width={30} 
+                  height={40} 
+                  className={`transition duration-300 ${isActive('/cart') ? 'filter invert' : 'hover:filter hover:invert'}`}
+                />
+              </Link> */}
+                <Link href="/cart">
+                  <CartIcon isActive={isActive('/cart')} />
+                </Link>
+              <button 
+                onClick={handleLogout} 
+                className="relative text-white focus:outline-none"
+              >
+                <FiLogOut size={20} />
+              </button>
+            </>
+          ) : (
+            <>
+              <Link href="/login" className="text-gray-600 hover:text-black">
+                <button className="flex items-center text-white">
+                  <FaUser size={20} />
+                  <span className="ml-2">Log In</span>
+                </button>
+              </Link>
+              <Link href="/register" className="text-gray-600 hover:text-black">
+                <button className="flex items-center text-white">
+                  <span className="ml-2">Register</span>
+                </button>
+              </Link>
+            </>
+          )}
+
           {/* Menu Desplegable */}
           <button 
             onClick={toggleMenu} 
@@ -190,8 +238,13 @@ const Navbar = () => {
             About
           </Link>
 
-          {/* Barrita del Desplegable */}
-          <div className="w-16 h-1 bg-pink-500 opacity-80 rounded-full my-4 cursor-pointer" />
+          {/* Close Button */}
+          <button 
+            onClick={toggleMenu} 
+            className="absolute top-2 right-2 text-white"
+          >
+            <FaTimes size={24} />
+          </button>
         </div>
       </div>
     </>
@@ -199,3 +252,163 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+
+  /* return (
+    <>
+      <nav className="bg-black text-white flex items-center justify-between p-5 w-full sticky top-0 z-50 overflow-x-hidden">
+     
+        <div className="flex-shrink-0">
+          <Link href="/" passHref>
+            <div>
+            
+              <Image 
+                src="/4.png" 
+                alt="Logo" 
+                width={200} 
+                height={60} 
+                className="hidden md:block" // Mostrar en pantallas mayores a 425px
+              />
+             
+              <Image 
+                src="/5.png" 
+                alt="Logo" 
+                width={50} 
+                height={30} 
+                className="md:hidden" // Mostrar en pantallas menores a 425px
+              />
+            </div>
+          </Link>
+        </div>
+
+     
+        <div className="flex-grow justify-center space-x-2 hidden lg:flex">
+          <Link 
+            href="/" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+          >
+            Inicio
+          </Link>
+          <Link 
+            href="/marketplace" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/marketplace') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+          >
+            Marketplace
+          </Link>
+          <Link 
+            href="/products" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/products') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+          >
+            Productos
+          </Link>
+          <Link 
+            href="/events" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/events') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+          >
+            Eventos
+          </Link>
+          <Link 
+            href="/about" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/about') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+          >
+            Nosotros
+          </Link>
+        </div>
+
+        
+        <div className="flex-shrink-0 flex items-center space-x-2 ml-auto">
+          <Link 
+            href="/profile" 
+            className={`relative hover:bg-white rounded-full p-1 ${isActive('/profile') ? 'bg-white' : ''}`}
+          >
+            <Image 
+              src="/profile.png" 
+              alt="Profile" 
+              width={30} 
+              height={40} 
+              className={`transition duration-300 ${isActive('/profile') ? 'filter invert' : 'hover:filter hover:invert'}`}
+            />
+          </Link>
+          <Link 
+            href="/cart" 
+            className={`relative hover:bg-white rounded-full p-1 ${isActive('/cart') ? 'bg-white' : ''}`}
+          >
+            <Image 
+              src="/cart.png" 
+              alt="Cart" 
+              width={30} 
+              height={40} 
+              className={`transition duration-300 ${isActive('/cart') ? 'filter invert' : 'hover:filter hover:invert'}`}
+            />
+          </Link>
+          
+     
+          <button 
+            onClick={toggleMenu} 
+            className="block lg:hidden relative text-white focus:outline-none translate-y-0.5"
+          >
+            <Image 
+              src="/menu.png" 
+              alt="Menu" 
+              width={30} 
+              height={30} 
+              className="w-8 h-8"
+            />
+          </button>
+        </div>
+      </nav>
+
+     
+      <div 
+        className={`fixed top-[68px] opacity-90 right-0 w-full bg-black lg:hidden transition-transform duration-300 ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'} p-4 overflow-x-hidden z-40`}
+        ref={menuRef}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="flex flex-col items-center relative">
+          <Link 
+            href="/" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            onClick={toggleMenu}
+          >
+            Home
+          </Link>
+          <Link 
+            href="/marketplace" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/marketplace') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            onClick={toggleMenu}
+          >
+            Marketplace
+          </Link>
+          <Link 
+            href="/products" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/products') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            onClick={toggleMenu}
+          >
+            Products
+          </Link>
+          <Link 
+            href="/events" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/events') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            onClick={toggleMenu}
+          >
+            Events
+          </Link>
+          <Link 
+            href="/about" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/about') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            onClick={toggleMenu}
+          >
+            About
+          </Link>
+
+        
+          <div className="w-16 h-1 bg-pink-500 opacity-80 rounded-full my-4 cursor-pointer" />
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Navbar; */

@@ -24,7 +24,33 @@ export type IRegisterError = Partial<IRegisterProps>
 
 
 
-export interface IUserSession {
+
+/* export interface IUserSession {
+    token: string;
+    user: {
+        id: string;
+        correo: string;
+        rol: string;
+    };
+} */
+
+/* export interface IUserSession {
+    id: string;
+    correo: string;
+    rol: string;
+    iat: number;
+    exp: number;
+  } */
+
+/* export interface IUser {
+    id: string;
+    name: string;
+    email: string;
+    date: string; // Cambiar a string si no usas `Date` en el frontend
+    photo: string | null;
+} */
+
+ export interface IUserSession {
     token: string;
     user: {
         address: string;
@@ -35,7 +61,7 @@ export interface IUserSession {
         role: string;
         orders: []
     }
-}
+} 
 
 
 
