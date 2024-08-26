@@ -34,7 +34,7 @@ export class ProductsService{
         
         if(!product.name){throw new BadRequestException('Por favor ingrese el nombre del producto')}
 
-        const existProduct = await this.productRepository.findOne({where:{name:product}})
+        const existProduct = await this.productRepository.findOne({where:{name:product.name}})
         if(existProduct){throw new BadRequestException('El producto ya se encuentra registrado')}
 
         const newProduct = await this.productRepository.create(product)
