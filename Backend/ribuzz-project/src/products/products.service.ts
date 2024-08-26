@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -18,7 +19,7 @@ export class ProductsService {
                 relations: ['details', 'categories'] 
             });
         } catch (error) {
-            throw new InternalServerErrorException('Error al obtener los productos');
+            throw new InternalServerErrorException('Error al obtener los productos'+error);
         }
     }
 
@@ -45,7 +46,7 @@ export class ProductsService {
             const newProduct = this.productRepository.create(product);
             return await this.productRepository.save(newProduct);
         } catch (error) {
-            throw new InternalServerErrorException('Error al crear el producto');
+            throw new InternalServerErrorException('Error al crear el producto'+error);
         }
     }
 
