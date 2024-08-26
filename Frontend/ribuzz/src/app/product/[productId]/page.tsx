@@ -1,12 +1,30 @@
-import ProductDetail from '@/components/ProductDetail/ProductDetail'
-import { getProductsById } from '@/helpers/products.helper'
-import React from 'react'
+import { FC } from 'react';
+import { notFound } from 'next/navigation';
+import Product from '@/components/ProductDetail/Products';
+import { products } from '@/components/ProductDetail/productData';
 
-const Detail = async ({params} : {params: {productId: string}}) => {
-  const product = await getProductsById(params.productId)
-  return (
-    <ProductDetail {...product}/>
-  )
+interface Props {
+  params: {
+    productId: string;
+  };
 }
 
-export default Detail
+const ProductPage: FC<Props> = ({ params }) => {
+  const { productId } = params;
+
+
+  const product = products.find(p => p.id === productId);
+
+
+  return (
+    <div>
+      {product ? (
+        <Product {...product} />
+      ) : (
+        notFound() 
+      )}
+    </div>
+  );
+};
+
+export default ProductPage;
