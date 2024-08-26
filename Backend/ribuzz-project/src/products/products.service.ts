@@ -1,9 +1,14 @@
 import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
 
 @Injectable()
+export class ProductsService {
+    constructor(
+        @InjectRepository(Products) private productRepository: Repository<Products>
+    ) {}
 export class ProductsService {
     constructor(
         @InjectRepository(Products) private productRepository: Repository<Products>
@@ -96,6 +101,20 @@ export class ProductsService {
     }
     
 
+    async deleteProduct(id: string): Promise<void> {
+        try {
+            const result = await this.productRepository.delete(id);
+            if (result.affected === 0) {
+                throw new NotFoundException(`Producto con id ${id} no encontrado`);
+            }
+        } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error al eliminar el producto');
+        }
+    }
+}
     async deleteProduct(id: string): Promise<void> {
         try {
             const result = await this.productRepository.delete(id);
