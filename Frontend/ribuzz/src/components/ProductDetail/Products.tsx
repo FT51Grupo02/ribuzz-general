@@ -1,5 +1,9 @@
+'use client'
 import Image from 'next/image';
 import { FC } from 'react';
+import { useCart } from '../Context/CartContext';
+import { useRouter } from 'next/navigation';
+
 
 export interface Review {
   username: string;
@@ -37,6 +41,25 @@ const Product: FC<ProductProps> = ({
   price,
   stock
 }) => {
+  const { addToCart } = useCart(); // Obteniendo la función addToCart del contexto de carrito
+  const router = useRouter(); // Inicializando useRouter para redirigir
+
+  const handleAddToCart = () => {
+      const productToAdd = {
+          name,
+          price,
+          image: images[0], 
+          description,
+          stock,
+          categoryId: 0, 
+          id: Date.now(), // Reemplazar esto con el ID real del servicio si está disponible
+      };
+
+      addToCart(productToAdd);
+      router.push('/cart'); // Redirigiendo a la página del carrito
+  };
+
+
   return (
     <div className="relative w-full h-full min-h-screen bg-black text-white">
       <div className="absolute inset-0">
@@ -119,12 +142,13 @@ const Product: FC<ProductProps> = ({
                     Precio: ${price}
                   </p>
                   <button
-                    type="button"
-                    className="w-full max-sm:w-3/4 max-lg:w-1/4 p-2 lg:p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-pink-500 to-pink-700 shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
-                  >
-                    <span className="inline-block transition duration-300 hover:scale-110">
-                      Agregar al carrito
-                    </span>
+                       type="button"
+                          onClick={handleAddToCart} // Asigna la función al botón
+                          className="w-full sm:w-2/3 lg:w-1/2 p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-[#cc1184] to-[#a80054] shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
+                          >
+                          <span className="inline-block transition duration-300 hover:scale-110">
+                            Agregar al carrito
+                          </span>
                   </button>
                 </div>
               </div>

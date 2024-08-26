@@ -64,6 +64,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null);
         setToken(null);
         localStorage.removeItem('authToken');
+        // Eliminar el carrito asociado al token del local storage (revisarlo bien)
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            localStorage.removeItem(`cart_${token}`);
+        }
     };
 
     const register = async (registerData: IRegisterProps) => {

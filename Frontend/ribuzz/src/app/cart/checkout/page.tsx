@@ -1,9 +1,10 @@
+import Checkout from '@/components/Checkout/Checkout'
 import React from 'react'
 
-const Checkout: React.FC = () => {
+const CheckoutP: React.FC = () => {
   return (
-    <div>page</div>
+    <Checkout/>
   )
 }
 
-export default Checkout
+export default CheckoutP

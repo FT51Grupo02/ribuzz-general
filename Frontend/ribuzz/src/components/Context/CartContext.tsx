@@ -72,10 +72,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const addToCart = (product: IProduct) => {
     if (!token) {
       Swal.fire({
-        title: 'Log in, Please!',
-        text: 'You need to log in to make a purchase.',
+        title: 'Por favor, inicia sesion!',
+        text: 'Debes iniciar sesion para realizar una compra.',
         icon: 'error',
-        confirmButtonText: 'Login'
+        confirmButtonText: 'Inicia Sesion'
       }).then(() => {
         window.location.href = '/login';
       });
@@ -85,8 +85,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const isProductInCart = cart.some(cartItem => cartItem.id === product.id);
     if (isProductInCart) {
       Swal.fire({
-        title: 'Warning!',
-        text: 'This product is already in the cart.',
+        title: 'Ojo!',
+        text: 'Este producto ya se encuentra en el carrito.',
         icon: 'warning',
         confirmButtonText: 'OK'
       });
@@ -98,8 +98,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       return updatedCart;
     });
     Swal.fire({
-      title: 'Success!',
-      text: 'Product added to the cart.',
+      title: 'Exito!',
+      text: 'Producto añadido al carrito.',
       icon: 'success',
       confirmButtonText: 'OK'
     });

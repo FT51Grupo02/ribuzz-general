@@ -3,7 +3,9 @@ import React from 'react'
 
 const Cart: React.FC = () => {
   return (
-    <CartItem/>
+    <div className="min-h-screen bg-black text-white">
+      <CartItem />
+    </div>
   )
 }
 
