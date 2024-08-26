@@ -1,46 +1,61 @@
-/* eslint-disable prettier/prettier */
-import { Entity, Column,PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
 import { Details } from "./details.entity";
-import {Categories} from "./categories.entity"
+import { Categories } from "./categories.entity";
 
 @Entity({
-    name: "productos"
+    name: "products"
 })
-
-export class Products{
+export class Products {
     @PrimaryGeneratedColumn('uuid')
-    id:string
+    id: string;
 
     @Column({
-        type:'varchar',
-        length:250
+        type: 'varchar',
+        length: 250
     })
-    description:string
+    description: string;
 
-    @Column()
-    img:string
-    
+    @Column("simple-array", { nullable: true })
+    images: string[];
+
+    @Column("simple-array", { nullable: true })
+    videos: string[];
+
+    @Column("simple-json", { nullable: true })
+    sellerInfo?: {
+        name: string;
+        contact: string;
+    };
+
+    @Column("simple-array", { nullable: true })
+    customizationOptions?: string[];
+
+    @Column("simple-json", { nullable: true })
+    reviews?: {
+        user: string;
+        rating: number;
+        comment: string;
+    }[];
+
     @Column({
-        type:'decimal',
-        scale:2,
-        precision:10,
+        type: 'decimal',
+        scale: 2,
+        precision: 10,
         nullable: false
     })
-    price: number
+    price: number;
 
     @Column({
-        type:'int',
-        nullable:false
+        type: 'int',
+        nullable: false
     })
-    stock: number
+    stock: number;
 
-
-    @ManyToMany(()=> Details, (detail)=>detail.id)
+    @ManyToMany(() => Details, (detail) => detail.products)
     @JoinTable()
-    detail:Details[]
+    details: Details[];
 
-    @ManyToMany(()=> Categories, (category)=>category.products)
+    @ManyToMany(() => Categories, (category) => category.products)
     @JoinTable()
-    category: Categories[]
-
+    categories: Categories[];
 }
