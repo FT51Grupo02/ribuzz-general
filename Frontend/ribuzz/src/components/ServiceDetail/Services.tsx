@@ -22,7 +22,7 @@ export interface ServiceProps {
     images: string[];
     videos?: string[];
     providerInfo?: SellerInfo;
-    customizationOptions?: string[];
+    details?: string[];
     reviews?: Review[];
     ribuzzRating: number;
     price: number;
@@ -35,14 +35,14 @@ const Service: FC<ServiceProps> = ({
     images = [],
     videos = [],
     providerInfo = { name: '', contact: '' },
-    customizationOptions = [],
+    details = [],
     reviews = [],
     ribuzzRating,
     price,
     stock,
 }) => {
-    const { addToCart } = useCart(); // Obteniendo la función addToCart del contexto de carrito
-    const router = useRouter(); // Inicializando useRouter para redirigir
+    const { addToCart } = useCart();
+    const router = useRouter();
 
     const handleAddToCart = () => {
         const serviceToAdd = {
@@ -52,11 +52,11 @@ const Service: FC<ServiceProps> = ({
             description,
             stock,
             categoryId: 0, 
-            id: Date.now(), // Reemplazar esto con el ID real del servicio si está disponible
+            id: Date.now(), 
         };
 
         addToCart(serviceToAdd);
-        router.push('/cart'); // Redirigiendo a la página del carrito
+        router.push('/cart');
     };
 
     return (
@@ -106,11 +106,11 @@ const Service: FC<ServiceProps> = ({
                         <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Proveedor:</h2>
                         <p className="mb-4 text-lg"><strong>Nombre:</strong> {providerInfo.name || 'No disponible'}</p>
                         <p className="mb-8 text-lg"><strong>Contacto:</strong> {providerInfo.contact || 'No disponible'}</p>
-                        {customizationOptions.length > 0 && (
+                        {details.length > 0 && (
                             <div className="mb-8">
                                 <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Detalles:</h2>
                                 <ul className="list-disc list-inside pl-6 text-lg space-y-2">
-                                    {customizationOptions.map((option, idx) => (
+                                    {details.map((option, idx) => (
                                         <li key={idx}>{option}</li>
                                     ))}
                                 </ul>
@@ -139,7 +139,7 @@ const Service: FC<ServiceProps> = ({
                                     </p>
                                     <button
                                         type="button"
-                                        onClick={handleAddToCart} // Asigna la función al botón
+                                        onClick={handleAddToCart} 
                                         className="w-full sm:w-2/3 lg:w-1/2 p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-700 shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
                                     >
                                         <span className="inline-block transition duration-300 hover:scale-110">

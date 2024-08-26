@@ -1,9 +1,13 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Card from './card';
-import { products } from '../ProductDetail/productData';
+import { Product } from '@/components/Cards/types'; 
 
-const CardProducts: React.FC = () => {
+interface CardProductsProps {
+  products: Product[];
+}
+
+const CardProducts: React.FC<CardProductsProps> = ({ products }) => {
   const router = useRouter();
 
   const handleCardClick = (productId: string) => {
@@ -13,7 +17,7 @@ const CardProducts: React.FC = () => {
   return (
     <div className="max-w-screen-lg mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {products && products.length > 0 ? (
+        {products.length > 0 ? (
           products.map((product) => (
             <div 
               key={product.id} 

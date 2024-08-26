@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import { notFound } from 'next/navigation';
 import Product from '@/components/ProductDetail/Products';
-import { products } from '@/components/ProductDetail/productData';
+import { Product as ProductType } from '@/components/Cards/types';
 
 interface Props {
   params: {
@@ -9,20 +8,38 @@ interface Props {
   };
 }
 
-const ProductPage: FC<Props> = ({ params }) => {
+const fetchProduct = async (productId: string): Promise<ProductType | null> => {
+  try {
+    const response = await fetch(`http://localhost:3000/product/${productId}`, {
+      cache: 'no-store',
+      method: 'GET',
+    });
+
+    if (!response.ok) {
+      console.error('Error fetching product:', response.statusText);
+      return null;
+    }
+
+    const product: ProductType = await response.json();
+    return product;
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    return null;
+  }
+};
+
+const ProductPage = async ({ params }: Props) => {
   const { productId } = params;
+  const product = await fetchProduct(productId);
 
-
-  const product = products.find(p => p.id === productId);
-
+  if (!product) {
+    notFound();
+    return null;
+  }
 
   return (
     <div>
-      {product ? (
-        <Product {...product} />
-      ) : (
-        notFound() 
-      )}
+      <Product {...product} />
     </div>
   );
 };
