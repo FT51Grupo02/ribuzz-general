@@ -1,16 +1,9 @@
-
-/* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException, InternalServerErrorException,BadRequestException, Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
-//import { Categories } from "../Entidades/categories.entity";
 
 @Injectable()
-export class ProductsService {
-    constructor(
-        @InjectRepository(Products) private productRepository: Repository<Products>
-    ) {}
 export class ProductsService {
     constructor(
         @InjectRepository(Products) private productRepository: Repository<Products>
@@ -28,7 +21,6 @@ export class ProductsService {
             throw new InternalServerErrorException('Error al obtener los productos');
         }
     }
-
 
     async getProductById(id: string): Promise<Products> {
         try {
@@ -48,17 +40,15 @@ export class ProductsService {
         }
     }
 
- async createProduct(product: Products):Promise<Products>{
-        
-        if(!product.name){throw new BadRequestException('Por favor ingrese el nombre del producto')}
-
-        const existProduct = await this.productRepository.findOne({where:{name:product.name}})
-        if(existProduct){throw new BadRequestException('El producto ya se encuentra registrado')}
-
-        const newProduct = await this.productRepository.create(product)
-        return await this.productRepository.save(newProduct)
-
+    async createProduct(product: Products): Promise<Products> {
+        try {
+            const newProduct = this.productRepository.create(product);
+            return await this.productRepository.save(newProduct);
+        } catch (error) {
+            throw new InternalServerErrorException('Error al crear el producto');
+        }
     }
+
     async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
         try {
             // Actualiza las propiedades simples
@@ -96,9 +86,7 @@ export class ProductsService {
             }
             throw new InternalServerErrorException('Error al actualizar el producto');
         }
-        return product
     }
-   
     
 
     async deleteProduct(id: string): Promise<void> {
@@ -115,4 +103,3 @@ export class ProductsService {
         }
     }
 }
-    
