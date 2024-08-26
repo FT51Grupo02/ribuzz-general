@@ -18,7 +18,7 @@ export const services = [
     name: "Ana Martínez",
     contact: "ana.martinez@example.com"
     },
-    customizationOptions: [
+    details: [
     "Horario: Flexible",
     "Ubicación: En oficina o remoto"
     ],

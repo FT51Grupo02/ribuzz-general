@@ -4,7 +4,6 @@ import { FC } from 'react';
 import { useCart } from '../Context/CartContext';
 import { useRouter } from 'next/navigation';
 
-
 export interface Review {
   username: string;
   comment: string;
@@ -22,7 +21,7 @@ export interface ProductProps {
   images: string[];
   videos?: string[];
   sellerInfo?: SellerInfo;
-  customizationOptions?: string[];
+  details?: string[];
   reviews?: Review[];
   ribuzzRating: number;
   price: number;
@@ -35,14 +34,14 @@ const Product: FC<ProductProps> = ({
   images = [],
   videos = [],
   sellerInfo = { name: 'Desconocido', contact: 'No disponible' },
-  customizationOptions = [],
+  details = [],
   reviews = [],
   ribuzzRating,
   price,
   stock
 }) => {
-  const { addToCart } = useCart(); // Obteniendo la función addToCart del contexto de carrito
-  const router = useRouter(); // Inicializando useRouter para redirigir
+  const { addToCart } = useCart();
+  const router = useRouter(); 
 
   const handleAddToCart = () => {
       const productToAdd = {
@@ -52,11 +51,11 @@ const Product: FC<ProductProps> = ({
           description,
           stock,
           categoryId: 0, 
-          id: Date.now(), // Reemplazar esto con el ID real del servicio si está disponible
+          id: Date.now(),
       };
 
       addToCart(productToAdd);
-      router.push('/cart'); // Redirigiendo a la página del carrito
+      router.push('/cart');
   };
 
 
@@ -107,11 +106,11 @@ const Product: FC<ProductProps> = ({
             <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Vendedor:</h2>
             <p className="mb-4 text-base lg:text-lg"><strong>Nombre:</strong> {sellerInfo.name}</p>
             <p className="mb-6 text-base lg:text-lg"><strong>Contacto:</strong> {sellerInfo.contact}</p>
-            {customizationOptions.length > 0 && (
+            {details.length > 0 && (
               <div className="mb-6 lg:mb-8">
                 <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Detalles:</h2>
                 <ul className="list-disc list-inside pl-4 lg:pl-6 text-base lg:text-lg space-y-2">
-                  {customizationOptions.map((option, idx) => (
+                  {details.map((option, idx) => (
                     <li key={idx}>{option}</li>
                   ))}
                 </ul>
@@ -143,7 +142,7 @@ const Product: FC<ProductProps> = ({
                   </p>
                   <button
                        type="button"
-                          onClick={handleAddToCart} // Asigna la función al botón
+                          onClick={handleAddToCart}
                           className="w-full sm:w-2/3 lg:w-1/2 p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-[#cc1184] to-[#a80054] shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
                           >
                           <span className="inline-block transition duration-300 hover:scale-110">

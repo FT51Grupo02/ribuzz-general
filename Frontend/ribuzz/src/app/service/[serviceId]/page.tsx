@@ -1,7 +1,6 @@
-import { FC } from 'react';
 import { notFound } from 'next/navigation';
 import Service from '@/components/ServiceDetail/Services';
-import { services } from '@/components/ServiceDetail/serviceData';
+import { Service as ServiceType } from '@/components/Cards/types';
 
 interface Props {
   params: {
@@ -9,18 +8,38 @@ interface Props {
   };
 }
 
-const ServicePage: FC<Props> = ({ params }) => {
-  const { serviceId } = params;
+const fetchService = async (serviceId: string): Promise<ServiceType | null> => {
+  try {
+    const response = await fetch(`http://localhost:3000/service/${serviceId}`, {
+      cache: 'no-store',
+      method: 'GET',
+    });
 
-  const service = services.find(s => s.id === serviceId);
+    if (!response.ok) {
+      console.error('Error fetching service:', response.statusText);
+      return null;
+    }
+
+    const service: ServiceType = await response.json();
+    return service;
+  } catch (error) {
+    console.error('Error fetching service:', error);
+    return null;
+  }
+};
+
+const ServicePage = async ({ params }: Props) => {
+  const { serviceId } = params;
+  const service = await fetchService(serviceId);
+
+  if (!service) {
+    notFound();
+    return null;
+  }
 
   return (
     <div>
-      {service ? (
-        <Service {...service} />
-      ) : (
-        notFound() 
-      )}
+      <Service {...service} />
     </div>
   );
 };
