@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
 import { Details } from "./details.entity";
 import { Categories } from "./categories.entity";
@@ -8,6 +9,13 @@ import { Categories } from "./categories.entity";
 export class Products {
     @PrimaryGeneratedColumn('uuid')
     id: string;
+
+    @Column({
+        type:'varchar',
+        length:30,
+        nullable: true
+    })
+    name:string
 
     @Column({
         type: 'varchar',
