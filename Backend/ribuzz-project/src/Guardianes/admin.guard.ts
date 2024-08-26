@@ -11,7 +11,7 @@ export class AdminGuard implements CanActivate{
         const request = context.switchToHttp().getRequest();
         const authorizate = request.headers.authorization;
 
-        if(!authorizate){throw new UnauthorizedException("Autorización no valida");}
+        if(!authorizate){throw new UnauthorizedException("No tiene permisos para esta transacción");}
 
         const token = request.headers.authorization.split(' ')[1];
         if(!token){throw new UnauthorizedException("Token no autorizado")}
