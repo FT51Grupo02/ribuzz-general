@@ -4,7 +4,7 @@ import {Users} from "./user.entity"
 import { Details } from "./details.entity";
 
 @Entity({
-    name:"ordenes"
+    name:"orders"
 })
 
 export class Orders{

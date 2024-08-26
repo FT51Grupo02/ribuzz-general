@@ -4,7 +4,7 @@ import { Events } from "./events.entity";
 import {Orders} from "./orders.entity"
 
 @Entity({
-    name:"usuario"
+    name:"users"
 })
 
 export class Users{

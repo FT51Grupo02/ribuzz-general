@@ -3,7 +3,7 @@ import { Entity,Column,PrimaryGeneratedColumn, ManyToMany, JoinColumn } from "ty
 import {Users} from "./user.entity"
 
 @Entity({
-    name:"eventos"
+    name:"events"
 })
 
 export class Events{

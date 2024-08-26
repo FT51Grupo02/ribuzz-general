@@ -31,4 +31,3 @@ export default registerAs('typeorm', () => config);
 /*export DATABASE_URL = process.env.DATABASE_EXTERNAL_EXT
 export const connectionSource = new DataSource(config as DataSourceOptions);*/
 
-  
