@@ -7,7 +7,7 @@ interface PaginatorProps {
   onPageChange: (page: number) => void;
 }
 
-const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPages, onPageChange }) => {
+const PaginatorPink: React.FC<PaginatorProps> = ({ currentPage, totalPages, onPageChange }) => {
   const handlePrevious = () => {
     if (currentPage > 1) {
       onPageChange(currentPage - 1);
@@ -32,7 +32,7 @@ const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPages, onPageCh
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
-        className="rounded-lg bg-gradient-to-r from-cyan-400 to-cyan-600 text-gray-50 hover:filter hover:bg-white transition duration-300 p-2 disabled:opacity-50 hover:scale-110"
+        className="rounded-lg bg-gradient-to-r from-pink-400 to-pink-600 text-gray-50 hover:filter hover:bg-white transition duration-300 p-2 disabled:opacity-50 hover:scale-110"
       >
         <FaChevronLeft className='hover:scale-110 transition duration-300' />
       </button>
@@ -44,8 +44,8 @@ const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPages, onPageCh
           onClick={() => handlePageClick(page)}
           className={`px-3 py-1 rounded-lg text-white transition duration-300 hover:scale-110 ${
             page === currentPage
-              ? 'bg-cyan-400'
-              : 'bg-cyan-600 hover:bg-cyan-500'
+              ? 'bg-pink-400'
+              : 'bg-pink-600 hover:bg-pink-500'
           }`}
         >
           {page}
@@ -55,7 +55,7 @@ const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPages, onPageCh
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
-        className="rounded-lg bg-gradient-to-r from-cyan-400 to-cyan-600 text-gray-50 hover:filter hover:bg-white transition duration-300 p-2 disabled:opacity-50 hover:scale-110"
+        className="rounded-lg bg-gradient-to-r from-pink-400 to-pink-600 text-gray-50 hover:filter hover:bg-white transition duration-300 p-2 disabled:opacity-50 hover:scale-110"
       >
         <FaChevronRight className='hover:scale-110 transition duration-300' />
       </button>
@@ -63,4 +63,4 @@ const Paginator: React.FC<PaginatorProps> = ({ currentPage, totalPages, onPageCh
   );
 };
 
-export default Paginator;
+export default PaginatorPink;

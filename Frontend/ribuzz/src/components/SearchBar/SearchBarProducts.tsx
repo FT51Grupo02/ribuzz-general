@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchBar: React.FC = () => {
+const SearchBarProducts: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [rating, setRating] = useState<string>("all");
   const [publicationDate, setPublicationDate] = useState<string>("all");
@@ -38,19 +38,19 @@ const SearchBar: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center p-4">
-      {/* Contenedor general */}
+
       <div className="flex flex-col gap-4 max-w-5xl w-full">
-        {/* En pantallas mayores a 768px, el input de búsqueda y el botón de buscar estarán en una fila */}
+
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:justify-center">
-          {/* Input de búsqueda y botón de búsqueda en una fila */}
+
           <div className="flex gap-4 w-full max-w-5xl">
             <div className="relative flex-1">
               <input
                 type="text"
-                placeholder="Buscar servicios..."
+                placeholder="Buscar productos..."
                 value={search}
                 onChange={handleSearchChange}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-pink-500"
               />
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             </div>
@@ -58,7 +58,7 @@ const SearchBar: React.FC = () => {
             <div className="flex items-center">
               <button
                 onClick={handleSearch}
-                className="px-4 py-2 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-cyan-400 to-cyan-600 text-gray-50 hover:filter hover:bg-white transition duration-300"
+                className="px-4 py-1.5 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-pink-400 to-pink-600 text-gray-50 hover:filter hover:bg-white transition duration-300"
               >
                 <span className="transition duration-300 hover:scale-110 inline-block text-lg">
                   Buscar
@@ -74,7 +74,7 @@ const SearchBar: React.FC = () => {
             <select
               value={rating}
               onChange={handleRatingChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Rating</option>
               <option value="5">5 estrellas</option>
@@ -87,7 +87,7 @@ const SearchBar: React.FC = () => {
             <select
               value={publicationDate}
               onChange={handlePublicationDateChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Fecha de publicación</option>
               <option value="last24h">Últimas 24 horas</option>
@@ -99,7 +99,7 @@ const SearchBar: React.FC = () => {
             <select
               value={popularity}
               onChange={handlePopularityChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Popularidad</option>
               <option value="mostPopular">Más popular</option>
@@ -109,7 +109,7 @@ const SearchBar: React.FC = () => {
             <select
               value={location}
               onChange={handleLocationChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Ubicación</option>
               <option value="nearby">Cerca de mí</option>
@@ -123,4 +123,4 @@ const SearchBar: React.FC = () => {
   );
 };
 
-export default SearchBar;
+export default SearchBarProducts;
