@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Get,Body, Post, Controller, Delete, BadRequestException, UseGuards } from "@nestjs/common";
 import { CategoriesService } from "./categories.services";
-import { AuthGuard } from "src/Guardianes/Auth.guard";
+import { AdminGuard } from "src/Guardianes/admin.guard";
 
 
 @Controller("categories")
@@ -20,7 +20,7 @@ export class CategoriesControl{
         }
     }
 
-    @Post('/')
+    @Get('/:id')
     async findCategory(@Body('nombre') nombre:string){
         try{
             return this.categoriesServive.findCategory(nombre)
@@ -30,7 +30,7 @@ export class CategoriesControl{
         }
     }
     
-    @UseGuards(AuthGuard)
+    @UseGuards(AdminGuard)
     @Post('/agregar')
     async imputCategory(@Body('nombre') nombre: string){
         try{
