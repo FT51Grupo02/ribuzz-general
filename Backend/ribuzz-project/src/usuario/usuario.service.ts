@@ -19,17 +19,18 @@ export class UsuarioService {
         private readonly ordersRepository: Repository<Orders>,
         */) {}
 
-    async create(user: Partial<Users>) {
-        try {
-            const encript = await bcrypt.hash(user.password, 10);
-            user.password = encript;
-            const newUser = await this.usuarioRepository.save(user);
-            const { password, rol, ...userPassword } = newUser;
-            return userPassword;
-        } catch (error) {
-            throw new InternalServerErrorException('Error al crear el usuario');
+        async create(user: Partial<Users>) {
+            try {
+                const encript = await bcrypt.hash(user.password, 10);
+                user.password = encript;
+                const newUser = await this.usuarioRepository.save(user);
+                const { password, rol, ...userPassword } = newUser;
+                return userPassword;
+            } catch (error) {
+                throw new InternalServerErrorException(`Error al crear el usuario: ${(error as Error).message}`);
+            }
         }
-    }
+        
 
     async findAll(page: number, limit: number) {
         try {
