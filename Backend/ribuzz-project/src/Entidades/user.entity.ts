@@ -9,7 +9,7 @@ import {Orders} from "./orders.entity"
 
 export class Users{
     @PrimaryGeneratedColumn('uuid')
-    id: number;
+    id: string;
 
     @Column()
     name: string;
@@ -32,11 +32,9 @@ export class Users{
     photo:string
 
     @ManyToMany(()=>Events)
-    @JoinColumn()
     events: Events[]
 
     @OneToMany(()=>Orders, (order)=>order.id)
-    @JoinColumn()
     order: Orders[]
 
 }
