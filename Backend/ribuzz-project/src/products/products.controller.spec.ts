@@ -1,18 +1,18 @@
 /* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
 import { Products } from 'src/Entidades/products.entity';
-import { ProductsControler } from './products.controller';
+import { ProductsController } from './products.controller';
 
 
 describe('UserService', () => {
-  let controller: ProductsControler;
+  let controller: ProductsController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      controllers: [ProductsControler]
+      controllers: [ProductsController]
     }).compile();
 
-    controller = module.get<ProductsControler>(ProductsControler);
+    controller = module.get<ProductsController>(ProductsController);
   });
 
   it('should be defined', () => {
