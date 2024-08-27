@@ -14,7 +14,7 @@ export class Orders{
     @Column()
     date:Date
 
-    @Column()
+    @Column({nullable:true})
     pay:string;
 
     @ManyToOne(()=>Users, (user)=>user.id)
