@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from "typeorm";
 import { Products } from "./products.entity";
+import { Services } from "./services.entity";
 
 @Entity({
     name: "details"
@@ -13,4 +14,7 @@ export class Details {
 
     @ManyToMany(() => Products, (product) => product.details)
     products: Products[];
+
+    @ManyToMany(() => Services, (services) => services.details)
+    services: Services[];
 }

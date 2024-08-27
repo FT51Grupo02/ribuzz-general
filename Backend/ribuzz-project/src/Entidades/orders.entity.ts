@@ -14,13 +14,12 @@ export class Orders{
     @Column()
     date:Date
 
-    @Column(
-        { nullable: true,}
-    )
-    pay:string;
+    @Column({
+        nullable: true,
+    })
+    pay: string;
 
     @ManyToOne(()=>Users, (user)=>user.id)
-    @JoinColumn()
     user:Users
 
     @OneToOne(() => Details)

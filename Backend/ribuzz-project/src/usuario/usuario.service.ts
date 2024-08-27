@@ -45,7 +45,7 @@ export class UsuarioService {
         }
     }
 
-    async findOne(id: number) {
+    async findOne(id: string) {
         try {
             const usuario = await this.usuarioRepository.findOne({
                 where: { id }
@@ -60,7 +60,7 @@ export class UsuarioService {
         }
     }
 
-    async update(id: number, updateUsuarioDto: UpdateUserDto) {
+    async update(id: string, updateUsuarioDto: UpdateUserDto) {
         try {
             const existingUser = await this.usuarioRepository.findOneBy({ id });
             if (!existingUser) {
@@ -77,7 +77,7 @@ export class UsuarioService {
         }
     }
 
-    async deleteUser(id: number) {
+    async deleteUser(id: string) {
         try {
             const result = await this.usuarioRepository.delete(id);
             if (result.affected === 0) {
