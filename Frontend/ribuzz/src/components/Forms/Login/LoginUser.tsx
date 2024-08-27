@@ -21,11 +21,15 @@ const validationSchema = Yup.object({
 const LoginUser = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setUser, setToken, loginUser } = useAuth(); // Obtener la función de login del contexto
+  const { setUser, setToken, loginUserC } = useAuth(); // Obtener la función de login del contexto
+
+  const rol = 'client'; 
 
   const handleSubmit = async (values: ILoginPropsUSer) => {
     try {
-      const isSuccess = await loginUser(values); // Llamar a la función de login con los valores del formulario
+      console.log("Valores enviados al backendCliente:", values);
+      values.rol = rol; 
+      const isSuccess = await loginUserC(values); // Llamar a la función de login con los valores del formulario
       if (isSuccess) {
         router.push('/'); // Redirigir al usuario después de un login exitoso
       } else {

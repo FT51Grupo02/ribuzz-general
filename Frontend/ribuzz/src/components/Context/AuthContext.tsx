@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from "react";
 import { IUser, /* ILoginProps, */ IRegisterProps, IRegisterResponse, ILoginPropsUSer, ILoginPropsEntrep } from "@/interfaces/Types";
-import { loginEntrepreneur as authLoginE, loginUser as authLoginU, register as authRegister } from "@/helpers/auth.helper";
+import { loginEntrepreneurH as authLoginE, loginUserH as authLoginU, register as authRegister } from "@/helpers/auth.helper";
 import { getAuthenticatedUser } from "@/helpers/user.helper";
 
 export interface AuthContextProps {
@@ -10,8 +10,8 @@ export interface AuthContextProps {
     setToken: (token: string | null) => void;
     setUser: (user: IUser | null) => void;
     /* login: (loginData: ILoginProps) => Promise<boolean>; */
-    loginEntrepeneur: (loginData: ILoginPropsEntrep) => Promise<boolean>;
-    loginUser: (loginData: ILoginPropsUSer) => Promise<boolean>;
+    loginEntrepeneurE: (loginData: ILoginPropsEntrep) => Promise<boolean>;
+    loginUserC: (loginData: ILoginPropsUSer) => Promise<boolean>;
     logout: () => void;
     register: (registerData: IRegisterProps) => Promise<IRegisterResponse | null>; // Devuelve solo el token en caso de éxito
 }
@@ -22,8 +22,8 @@ export const AuthContext = createContext<AuthContextProps>({
     setToken: () => { throw new Error("setToken no inicializado"); },
     setUser: () => { throw new Error("setUser no inicializado"); },
     /* login: async () => { throw new Error("login no inicializado"); }, */
-    loginEntrepeneur: async () => { throw new Error("login no inicializado"); },
-    loginUser: async () => { throw new Error("login no inicializado"); },
+    loginEntrepeneurE: async () => { throw new Error("login no inicializado"); },
+    loginUserC: async () => { throw new Error("login no inicializado"); },
     logout: () => { throw new Error("logout no inicializado"); },
     register: async () => { throw new Error("register no inicializado"); },
 });
@@ -65,9 +65,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         fetchUserData();
     }, [token]);
 
-    const loginEntrepeneur = async (loginData: ILoginPropsEntrep): Promise<boolean> => {
+    const loginEntrepeneurE = async (userData: ILoginPropsEntrep): Promise<boolean> => {
         try {
-            const sessionData = await authLoginE(loginData);
+            const sessionData = await authLoginE(userData);
             console.log('Datos de sesión del login:', sessionData);
             setToken(sessionData.token);
             setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
@@ -78,9 +78,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
-    const loginUser = async (loginData: ILoginPropsUSer): Promise<boolean> => {
+    const loginUserC = async (userData: ILoginPropsUSer): Promise<boolean> => {
         try {
-            const sessionData = await authLoginU(loginData);
+            const sessionData = await authLoginU(userData);
             console.log('Datos de sesión del login:', sessionData);
             setToken(sessionData.token);
             setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
@@ -113,7 +113,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, setToken, setUser, loginEntrepeneur, loginUser, logout, register }}>
+        <AuthContext.Provider value={{ token, user, setToken, setUser, loginEntrepeneurE, loginUserC, logout, register }}>
             {children}
         </AuthContext.Provider>
     );
