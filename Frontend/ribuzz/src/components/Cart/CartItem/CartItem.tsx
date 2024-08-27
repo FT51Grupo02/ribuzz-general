@@ -23,7 +23,7 @@ const CartItem: React.FC = () => {
     <div className="container mx-auto p-4 bg-black text-white">
       {isCartEmpty ? (
         <div className="text-center">
-          <p className="text-xl font-bold mb-4">The cart is empty.</p>
+          <p className="text-xl font-bold mb-4">El carrito esta vacio.</p>
           <Link href="/">
             <button className="bg-gradient-to-r from-[#C87DAB] to-[#C12886] hover:shadow-lg text-white font-bold py-2 px-4 rounded-full">
               Explore products
@@ -32,7 +32,7 @@ const CartItem: React.FC = () => {
         </div>
       ) : (
         <div>
-          <h1 className="text-2xl font-bold mb-4">Your Cart</h1>
+          <h1 className="text-2xl font-bold mb-4">Tu carrito</h1>
           <div className="space-y-4">
             {cart.map((product: IProduct) => (
               <div key={product.id} className="flex justify-between items-center border-b border-gray-600 py-2">

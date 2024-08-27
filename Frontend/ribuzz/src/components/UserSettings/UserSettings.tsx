@@ -199,11 +199,11 @@ const UserSettings: React.FC = () => {
   return (
     <div className="bg-black text-gray-300 min-h-screen py-6 px-4 sm:px-6 lg:px-8">
       <h2 className="text-2xl font-bold mb-4">Dashboard</h2>
-      <p className="mb-6">Bienvenido a la página Settings</p>
+      <p className="mb-6">Bienvenido a la Configuracion</p>
 
       <div className="flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8">
         <div className="flex-1 bg-opacity-50 p-4 border border-gray-600 rounded-md">
-          <h3 className="text-xl font-semibold mb-4">UserProfile</h3>
+          <h3 className="text-xl font-semibold mb-4">Perfil </h3>
           <UserProfileForm initialValues={initialValues} onSubmit={handleSubmit} />
         </div>
         
