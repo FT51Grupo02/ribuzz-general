@@ -28,7 +28,7 @@ export async function register(registerData: IRegisterProps): Promise<IRegisterR
 }
 
 
-export async function loginUser(userData: ILoginPropsUSer): Promise<IUserSession> {
+export async function loginUserH(userData: ILoginPropsUSer): Promise<IUserSession> {
   try {
     const response = await fetch(`${APIURL}/auth/signIn`, {
       method: 'POST',
@@ -50,7 +50,7 @@ export async function loginUser(userData: ILoginPropsUSer): Promise<IUserSession
   }
 } 
 
-export async function loginEntrepreneur(userData: ILoginPropsEntrep): Promise<IUserSession> {
+export async function loginEntrepreneurH(userData: ILoginPropsEntrep): Promise<IUserSession> {
   try {
     const response = await fetch(`${APIURL}/auth/signIn`, {
       method: 'POST',
