@@ -30,7 +30,7 @@ export class CategoriesControl{
         }
     }
     
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Post('/add')
     async imputCategory(@Body('nombre') nombre: string){
         try{
@@ -40,7 +40,7 @@ export class CategoriesControl{
             throw new BadRequestException(`Hubo un error al agregar la categoria ${error}`);
         }
     }
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Delete()
     async deleteCategory(@Body("nombre") nombre:string){
           try{

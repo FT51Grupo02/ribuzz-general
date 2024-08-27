@@ -22,19 +22,19 @@ export class ProductsController {
         return this.productsService.getProductById(id);
     }
 
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Post()
     async createProduct(@Body() product: Products) {
         return this.productsService.createProduct(product);
     }
 
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Put(':id')
     async updateProduct(@Param('id') id: string, @Body() product: Products) {
         return this.productsService.updateProduct(id, product);
     }
 
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Delete(':id')
     async deleteProduct(@Param('id') id: string) {
         return this.productsService.deleteProduct(id);
