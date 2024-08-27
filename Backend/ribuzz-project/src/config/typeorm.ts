@@ -20,8 +20,8 @@ const config = {
     migrations: [__dirname + 'dist/../Migraciones/*.{ts,.js}'],
     autoLoadEntities:true,
     synchronize: true,
-    logging: true,
-    dropSchema: false,
+    logging: false,
+    dropSchema: false, // para formatear la base de datos
     ssl: {
         rejectUnauthorized: false, 
     },
