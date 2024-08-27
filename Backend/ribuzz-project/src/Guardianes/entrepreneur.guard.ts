@@ -26,7 +26,7 @@ export class EntrepreneurGuard implements CanActivate{
 
             //Validación de roles
 
-            if(user.rol!=="entrepreneur"){throw new BadRequestException("El emprendimiento no esta autorizado para esta orden")}
+            if(user.rol!=="emprendedor"){throw new BadRequestException("El emprendimiento no esta autorizado para esta orden")}
             return true;
         }
         catch{

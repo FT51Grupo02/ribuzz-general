@@ -12,9 +12,9 @@ export class Products {
     id: string;
 
     @Column({
-        type: 'varchar',
-        length: 50,
-        nullable: false
+        type:'varchar',
+        length:100,
+        nullable: true
     })
     name: string;
 

@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from '../Entidades/user.entity';
@@ -12,7 +12,7 @@ import * as bcrypt from "bcrypt";
 export class UsuarioService {
     constructor(
         @InjectRepository(Users)
-        private readonly usuarioRepository: Repository<Users>,
+        private readonly userRepository: Repository<Users>,
         /*@InjectRepository(Events)
         private readonly eventsRepository: Repository<Events>,
         @InjectRepository(Orders)
@@ -21,20 +21,32 @@ export class UsuarioService {
 
         async create(user: Partial<Users>) {
             try {
+                const repeatUser = await this.userRepository.find({
+                      where:[{name:user.name},{email:user.email},{password:user.password}]
+                })
+
+                if(repeatUser.length>0) {throw new BadRequestException("usuraio ya se encuentra registrado")}
+
                 const encript = await bcrypt.hash(user.password, 10);
                 user.password = encript;
-                const newUser = await this.usuarioRepository.save(user);
+
+                if(user.rol !== "cliente" && user.rol !== "admin" && user.rol !== "emprendedor"){
+                    throw new BadRequestException("Rol no valido para registro de usuario")
+                }
+                const newUser = await this.userRepository.save(user);
                 const { password, rol, ...userPassword } = newUser;
                 return userPassword;
+
             } catch (error) {
-                throw new InternalServerErrorException(`Error al crear el usuario: ${(error as Error).message}`);
+                if( error instanceof BadRequestException){throw error}
+                else{throw new InternalServerErrorException(`Error al crear el usuario: ${(error as Error).message}`)}
             }
         }
-        
+    
 
     async findAll(page: number, limit: number) {
         try {
-            let users = await this.usuarioRepository.find();
+            let users = await this.userRepository.find();
             const start = (page - 1) * limit;
             const end = start + +limit;
             users = users.slice(start, end);
@@ -47,7 +59,7 @@ export class UsuarioService {
 
     async findOne(id: string) {
         try {
-            const usuario = await this.usuarioRepository.findOne({
+            const usuario = await this.userRepository.findOne({
                 where: { id }
             });
             if (!usuario) {
@@ -62,13 +74,13 @@ export class UsuarioService {
 
     async update(id: string, updateUsuarioDto: UpdateUserDto) {
         try {
-            const existingUser = await this.usuarioRepository.findOneBy({ id });
+            const existingUser = await this.userRepository.findOneBy({ id });
             if (!existingUser) {
                 throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);
             }
         
             const updatedUser = { ...existingUser, ...updateUsuarioDto };
-            await this.usuarioRepository.save(updatedUser);
+            await this.userRepository.save(updatedUser);
         
             const { password, ...userWithoutPassword } = updatedUser;
             return userWithoutPassword;
@@ -79,7 +91,7 @@ export class UsuarioService {
 
     async deleteUser(id: string) {
         try {
-            const result = await this.usuarioRepository.delete(id);
+            const result = await this.userRepository.delete(id);
             if (result.affected === 0) {
                 throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);
             }
@@ -91,7 +103,7 @@ export class UsuarioService {
 
     async findUserEmail(email: string): Promise<Users> {
         try {
-            const findEmail = await this.usuarioRepository.findOne({ where: { email } });
+            const findEmail = await this.userRepository.findOne({ where: { email } });
             if (!findEmail) {
                 throw new NotFoundException(`Usuario con email ${email} no encontrado.`);
             }

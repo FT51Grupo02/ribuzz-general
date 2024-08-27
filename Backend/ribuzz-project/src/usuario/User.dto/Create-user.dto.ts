@@ -1,12 +1,27 @@
 /* eslint-disable prettier/prettier */
 import { PickType } from "@nestjs/mapped-types/dist";
+import { IsNotEmpty, IsString } from "class-validator";
 
-/* eslint-disable prettier/prettier */
+
 export class CreateUserDto {
+
+    @IsNotEmpty()
+    @IsString()
     name: string;
+
+    @IsNotEmpty()
+    @IsString()
     email: string;
+
+    @IsNotEmpty()
+    @IsString()
     password: string;
+    
+    @IsNotEmpty()
     date: Date;
+    
+    @IsNotEmpty()
+    @IsString()
     rol?: string;
 }
 
