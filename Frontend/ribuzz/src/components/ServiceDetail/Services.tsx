@@ -106,7 +106,7 @@ const Service: FC<ServiceProps> = ({
                         <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Proveedor:</h2>
                         <p className="mb-4 text-lg"><strong>Nombre:</strong> {providerInfo.name || 'No disponible'}</p>
                         <p className="mb-8 text-lg"><strong>Contacto:</strong> {providerInfo.contact || 'No disponible'}</p>
-                        {details.length > 0 && (
+                        {details?.length > 0 && (
                             <div className="mb-8">
                                 <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Detalles:</h2>
                                 <ul className="list-disc list-inside pl-6 text-lg space-y-2">

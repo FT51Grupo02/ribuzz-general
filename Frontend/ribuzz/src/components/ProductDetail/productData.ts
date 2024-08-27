@@ -18,7 +18,7 @@ export const products = [
       name: "Juan Pérez",
       contact: "juan.perez@example.com"
     },
-    details: [
+    customizationOptions: [
       "Color: Rojo, Azul, Verde",
       "Tamaño: S, M, L, XL"
     ],
@@ -168,6 +168,7 @@ export const products = [
     ],
   },
   {
+    id: '7',
     name: "Celular UltraMax Pro",
     price: 130,
     images: [
@@ -195,6 +196,7 @@ export const products = [
     ],
   },
   {
+    id: '8',
     name: "Cámara UltraZoom 4K",
     price: 140,
     images: [

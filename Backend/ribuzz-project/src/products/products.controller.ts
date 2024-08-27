@@ -12,7 +12,7 @@ export class ProductsController {
     @Get()
     async getProducts(
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 5
+        @Query('limit') limit: number = 8
     ) {
         return this.productsService.getProducts(page, limit);
     }

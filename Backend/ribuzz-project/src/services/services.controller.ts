@@ -11,7 +11,7 @@ export class ServicesController {
     @Get()
     async getServices(
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 5
+        @Query('limit') limit: number = 8
     ) {
         return this.servicesService.getServices(page, limit);
     }
