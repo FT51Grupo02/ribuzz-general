@@ -10,7 +10,7 @@ interface Props {
 
 const fetchProduct = async (productId: string): Promise<ProductType | null> => {
   try {
-    const response = await fetch(`http://localhost:3000/product/${productId}`, {
+    const response = await fetch(`http://localhost:3000/products/${productId}`, {
       cache: 'no-store',
       method: 'GET',
     });

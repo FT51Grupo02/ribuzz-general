@@ -30,20 +30,20 @@ const Checkout: React.FC = () => {
                         {user ? (
                             <div className="space-y-4">
                                 <div className="py-2">
-                                    <p className="text-sm font-medium">Name:</p>
+                                    <p className="text-sm font-medium">Nombre:</p>
                                     <p className="text-lg font-semibold">{user.name}</p>
                                 </div>
                                 <div className="py-2">
                                     <p className="text-sm font-medium">Email:</p>
                                     <p className="text-lg font-semibold">{user.email}</p>
                                 </div>
-                                <div className="py-2">
+                               {/*  <div className="py-2">
                                     <p className="text-sm font-medium">Shipping Address:</p>
                                     <p className="text-lg font-semibold">{user.address}</p>
-                                </div>
+                                </div> */}
                             </div>
                         ) : (
-                            <p className="text-gray-400">User information not found.</p>
+                            <p className="text-gray-400">Informacion de usuario no encontrada.</p>
                         )}
                         <div className="mt-6 pt-4 border-t border-gray-600">
                             <p className="text-sm font-medium">Dia y hora de la orden:</p>

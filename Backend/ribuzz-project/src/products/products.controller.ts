@@ -13,7 +13,7 @@ export class ProductsController {
     @Get()
     async getProducts(
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 5
+        @Query('limit') limit: number = 8
     ) {
         return this.productsService.getProducts(page, limit);
     }
@@ -23,19 +23,20 @@ export class ProductsController {
         return this.productsService.getProductById(id);
     }
 
+
     @UseGuards(AdminGuard, EntrepreneurGuard)
     @Post()
     async createProduct(@Body() product: Products) {
         return this.productsService.createProduct(product);
     }
 
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Put(':id')
     async updateProduct(@Param('id') id: string, @Body() product: Products) {
         return this.productsService.updateProduct(id, product);
     }
 
-    @UseGuards(AdminGuard)
+    // @UseGuards(AdminGuard)
     @Delete(':id')
     async deleteProduct(@Param('id') id: string) {
         return this.productsService.deleteProduct(id);

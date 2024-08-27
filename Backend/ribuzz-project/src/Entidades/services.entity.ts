@@ -2,6 +2,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm";
 import { Users } from "./user.entity";
 import { Categories } from "./categories.entity";
+import { Details } from "./details.entity";
 
 @Entity({
     name: "services"
@@ -44,12 +45,6 @@ export class Services {
     rating: number;
 
     @Column({
-        type: 'float',
-        nullable: true
-    })
-    ribuzzRating: number;
-
-    @Column({
         type: 'varchar',
         length: 50,
         nullable: true
@@ -62,19 +57,20 @@ export class Services {
         contact: string;
     };
 
-    @ManyToOne(() => Users, user => user.id)
-    @JoinTable()
-    provider: Users;
-
-    @Column("simple-array", { nullable: true })
-    details?: string[];
-
     @Column("simple-json", { nullable: true })
     reviews?: {
         username: string;
         comment: string;
         rating: number;
     }[];
+
+    @ManyToOne(() => Users, user => user.id)
+    @JoinTable()
+    provider: Users;
+    
+    @ManyToMany(() => Details, (detail) => detail.products)
+    @JoinTable()
+    details: Details[];
 
     @ManyToMany(() => Categories, (category) => category.products)
     @JoinTable()

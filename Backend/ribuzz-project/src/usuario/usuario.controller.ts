@@ -25,19 +25,19 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(id);
   }
 
   @UseGuards(EntrepreneurGuard)
   @Put(':id')
-  update(@Param('id') id: number, @Body() updateUsuarioDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUserDto) {
     return this.usuarioService.update(id, updateUsuarioDto);
   }
   
   @UseGuards(AdminGuard)
   @Delete(':id')
-  deleteUser(@Param(`id`) id:number){
+  deleteUser(@Param(`id`) id:string){
     return this.usuarioService.deleteUser(id);
   }
 

@@ -5,12 +5,12 @@ import Image from 'next/image';
 import CardProducts from '@/components/Cards/cardsproducts';
 import PaginatorPink from '@/components/Paginator/PaginatorPink';
 import SearchBarProducts from '@/components/SearchBar/SearchBarProducts';
-import { Product } from '@/types'; // Asegúrate de tener una interfaz Product definida en tu proyecto
+import { Product } from '@/components/Cards/types';
 
 const Products: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [products, setProducts] = useState<Product[]>([]);
-  const totalPages = 3; // Ajustar este valor según la cantidad total de páginas
+  const totalPages = 3;
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,7 +31,7 @@ const Products: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Aquí podrías hacer una llamada a la API para cargar los datos de la página específica si es necesario
+    // Acá se podrías hacer una llamada a la API para cargar los datos de la página específica si es necesario
   };
 
   return (

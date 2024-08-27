@@ -106,7 +106,7 @@ const Product: FC<ProductProps> = ({
             <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Vendedor:</h2>
             <p className="mb-4 text-base lg:text-lg"><strong>Nombre:</strong> {sellerInfo.name}</p>
             <p className="mb-6 text-base lg:text-lg"><strong>Contacto:</strong> {sellerInfo.contact}</p>
-            {details.length > 0 && (
+            {details?.length > 0 && (
               <div className="mb-6 lg:mb-8">
                 <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Detalles:</h2>
                 <ul className="list-disc list-inside pl-4 lg:pl-6 text-base lg:text-lg space-y-2">

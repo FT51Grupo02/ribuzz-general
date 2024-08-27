@@ -1,7 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from "typeorm";
 import { Details } from "./details.entity";
 import { Categories } from "./categories.entity";
+import { Users } from "./user.entity";
 
 @Entity({
     name: "products"
@@ -15,7 +16,7 @@ export class Products {
         length:100,
         nullable: true
     })
-    name:string
+    name: string;
 
     @Column({
         type: 'varchar',
@@ -28,22 +29,6 @@ export class Products {
 
     @Column("simple-array", { nullable: true })
     videos: string[];
-
-    @Column("simple-json", { nullable: true })
-    sellerInfo?: {
-        name: string;
-        contact: string;
-    };
-
-    @Column("simple-array", { nullable: true })
-    customizationOptions?: string[];
-
-    @Column("simple-json", { nullable: true })
-    reviews?: {
-        user: string;
-        rating: number;
-        comment: string;
-    }[];
 
     @Column({
         type: 'decimal',
@@ -58,6 +43,32 @@ export class Products {
         nullable: false
     })
     stock: number;
+
+    @Column({
+        type: 'float',
+        nullable: true
+    })
+    rating: number;
+
+    @Column("simple-json", { nullable: true })
+    providerInfo?: {
+        name: string;
+        contact: string;
+    };
+
+    @Column("simple-array", { nullable: true })
+    customizationOptions?: string[];
+
+    @Column("simple-json", { nullable: true })
+    reviews?: {
+        username: string;
+        comment: string;
+        rating: number;
+    }[];
+
+    @ManyToOne(() => Users, user => user.id)
+    @JoinTable()
+    provider: Users;
 
     @ManyToMany(() => Details, (detail) => detail.products)
     @JoinTable()
