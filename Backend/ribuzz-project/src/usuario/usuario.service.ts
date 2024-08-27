@@ -24,12 +24,19 @@ export class UsuarioService {
                 const repeatUser = await this.userRepository.find({
                       where:[{name:user.name},{email:user.email},{password:user.password}]
                 })
+
                 if(repeatUser.length>0) {throw new BadRequestException("usuraio ya se encuentra registrado")}
+
                 const encript = await bcrypt.hash(user.password, 10);
                 user.password = encript;
+
+                if(user.rol !== "cliente" && user.rol !== "admin" && user.rol !== "emprendedor"){
+                    throw new BadRequestException("Rol no valido para registro de usuario")
+                }
                 const newUser = await this.userRepository.save(user);
                 const { password, rol, ...userPassword } = newUser;
                 return userPassword;
+
             } catch (error) {
                 if( error instanceof BadRequestException){throw error}
                 else{throw new InternalServerErrorException(`Error al crear el usuario: ${(error as Error).message}`)}

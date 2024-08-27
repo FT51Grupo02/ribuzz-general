@@ -15,6 +15,7 @@ export class UsuarioController {
     return this.usuarioService.create(user);
   }
 
+  
   @Get()
   findAll(@Query(`page`) page:number, @Query(`limit`) limit:number) {
     if (page && limit){
