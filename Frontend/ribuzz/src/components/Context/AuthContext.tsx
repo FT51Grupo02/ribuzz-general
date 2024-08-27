@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from "react";
-import { IUser, ILoginProps, IRegisterProps } from "@/interfaces/Types";
-import { login as authLogin, register as authRegister } from "@/helpers/auth.helper";
+import { IUser, /* ILoginProps, */ IRegisterProps, IRegisterResponse, ILoginPropsUSer, ILoginPropsEntrep } from "@/interfaces/Types";
+import { loginEntrepreneur as authLoginE, loginUser as authLoginU, register as authRegister } from "@/helpers/auth.helper";
 import { getAuthenticatedUser } from "@/helpers/user.helper";
 
 export interface AuthContextProps {
@@ -9,9 +9,11 @@ export interface AuthContextProps {
     user: IUser | null;
     setToken: (token: string | null) => void;
     setUser: (user: IUser | null) => void;
-    login: (loginData: ILoginProps) => Promise<boolean>;
+    /* login: (loginData: ILoginProps) => Promise<boolean>; */
+    loginEntrepeneur: (loginData: ILoginPropsEntrep) => Promise<boolean>;
+    loginUser: (loginData: ILoginPropsUSer) => Promise<boolean>;
     logout: () => void;
-    register: (registerData: IRegisterProps) => Promise<string | null>;  // Devuelve solo el token en caso de éxito
+    register: (registerData: IRegisterProps) => Promise<IRegisterResponse | null>; // Devuelve solo el token en caso de éxito
 }
 
 export const AuthContext = createContext<AuthContextProps>({
@@ -19,7 +21,9 @@ export const AuthContext = createContext<AuthContextProps>({
     user: null,
     setToken: () => { throw new Error("setToken no inicializado"); },
     setUser: () => { throw new Error("setUser no inicializado"); },
-    login: async () => { throw new Error("login no inicializado"); },
+    /* login: async () => { throw new Error("login no inicializado"); }, */
+    loginEntrepeneur: async () => { throw new Error("login no inicializado"); },
+    loginUser: async () => { throw new Error("login no inicializado"); },
     logout: () => { throw new Error("logout no inicializado"); },
     register: async () => { throw new Error("register no inicializado"); },
 });
@@ -61,9 +65,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         fetchUserData();
     }, [token]);
 
-    const login = async (loginData: ILoginProps): Promise<boolean> => {
+    const loginEntrepeneur = async (loginData: ILoginPropsEntrep): Promise<boolean> => {
         try {
-            const sessionData = await authLogin(loginData);
+            const sessionData = await authLoginE(loginData);
+            console.log('Datos de sesión del login:', sessionData);
+            setToken(sessionData.token);
+            setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
+            return true;
+        } catch (error) {
+            console.error("Error en el login", error);
+            return false;
+        }
+    };
+
+    const loginUser = async (loginData: ILoginPropsUSer): Promise<boolean> => {
+        try {
+            const sessionData = await authLoginU(loginData);
             console.log('Datos de sesión del login:', sessionData);
             setToken(sessionData.token);
             setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
@@ -84,13 +101,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
     };
 
-    const register = async (registerData: IRegisterProps): Promise<string | null> => {
+    const register = async (registerData: IRegisterProps): Promise<IRegisterResponse | null> => {
         try {
-            const sessionData = await authRegister(registerData);
-            console.log('Datos de sesión del registro:', sessionData);
-            setToken(sessionData.token);
-            setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
-            return sessionData.token;  // Devuelve solo el token
+            const userData = await authRegister(registerData);
+            console.log('Datos del usuario registrado:', userData);
+            return userData;
         } catch (error) {
             console.error("Error en el registro", error);
             return null;  // Devuelve null en caso de error
@@ -98,7 +113,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ token, user, setToken, setUser, login, logout, register }}>
+        <AuthContext.Provider value={{ token, user, setToken, setUser, loginEntrepeneur, loginUser, logout, register }}>
             {children}
         </AuthContext.Provider>
     );
@@ -107,99 +122,3 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 export const useAuth = () => useContext(AuthContext);
 
 
-/* 'use client';
-import { createContext, useContext, useEffect, useState } from "react";
-import { IUserSession, ILoginProps, IRegisterProps } from "@/interfaces/Types";
-import { login as authLogin, register as authRegister } from "@/helpers/auth.helper";
-
-export interface AuthContextProps {
-    user: IUserSession['user'] | null;
-    token: string | null;
-    setUser: (user: IUserSession['user'] | null) => void;
-    setToken: (token: string | null) => void;
-    login: (loginData: ILoginProps) => Promise<boolean>;
-    logout: () => void;
-    register: (registerData: IRegisterProps) => Promise<IUserSession | null>;
-}
-
-export const AuthContext = createContext<AuthContextProps>({
-    user: null,
-    token: null,
-    setUser: () => { throw new Error("setUser no inicializado"); },
-    setToken: () => { throw new Error("setToken no inicializado"); },
-    login: async () => { throw new Error("login no inicializado"); },
-    logout: () => { throw new Error("logout no inicializado"); },
-    register: async () => { throw new Error("register no inicializado"); },
-});
-
-export interface AuthProviderProps {
-    children: React.ReactNode;
-}
-
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-    const [user, setUser] = useState<IUserSession['user'] | null>(null);
-    const [token, setToken] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (token) {
-            console.log('Guardando token en localStorage:', token);
-            localStorage.setItem('authToken', token);
-        }
-    }, [token]);
-
-    useEffect(() => {
-        console.log('Montando AuthProvider');
-        const storedToken = localStorage.getItem('authToken');
-        if (storedToken) {
-            console.log('Recuperado del localStorage:', storedToken);
-            setToken(storedToken);
-        }
-    }, []);
-
-    const login = async (loginData: ILoginProps): Promise<boolean> => {
-        try {
-            const sessionData = await authLogin(loginData);
-            console.log('Datos de sesión del login:', sessionData);
-            setUser(sessionData.user);
-            setToken(sessionData.token);
-            return true;
-        } catch (error) {
-            console.error("Error en el login", error);
-            return false;
-        }
-    };
-
-    const logout = () => {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem('authToken');
-        // Eliminar el carrito asociado al token del local storage (revisarlo bien)
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            localStorage.removeItem(`cart_${token}`);
-        }
-    };
-
-    const register = async (registerData: IRegisterProps): Promise<IUserSession | null> => {
-        try {
-            const sessionData = await authRegister(registerData);
-            console.log('Datos de sesión del registro:', sessionData);
-            setUser(sessionData.user);
-            setToken(sessionData.token);
-            return sessionData;  // Devuelve los datos de la sesión si todo salió bien
-        } catch (error) {
-            console.error("Error en el registro", error);
-            return null;  // Devuelve null en caso de error
-        }
-    };
-
-    return (
-        <AuthContext.Provider value={{ user, token, setUser, setToken, login, logout, register }}>
-            {children}
-        </AuthContext.Provider>
-    );
-}
-
-export const useAuth = () => useContext(AuthContext);
-
- */

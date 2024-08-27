@@ -6,7 +6,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { useState } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/components/Context/AuthContext'; // Importar el contexto de autenticación
-import { ILoginProps } from '@/interfaces/Types';
+import {  ILoginPropsUSer } from '@/interfaces/Types';
 
 // Definir el esquema de validación usando Yup
 const validationSchema = Yup.object({
@@ -21,11 +21,11 @@ const validationSchema = Yup.object({
 const LoginUser = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setUser, setToken, login } = useAuth(); // Obtener la función de login del contexto
+  const { setUser, setToken, loginUser } = useAuth(); // Obtener la función de login del contexto
 
-  const handleSubmit = async (values: ILoginProps) => {
+  const handleSubmit = async (values: ILoginPropsUSer) => {
     try {
-      const isSuccess = await login(values); // Llamar a la función de login con los valores del formulario
+      const isSuccess = await loginUser(values); // Llamar a la función de login con los valores del formulario
       if (isSuccess) {
         router.push('/'); // Redirigir al usuario después de un login exitoso
       } else {
@@ -66,7 +66,7 @@ const LoginUser = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 font-poppins">INICIAR SESIÓN</h1>
           <h3 className="text-sm md:text-md font-medium mb-4 md:mb-6 font-poppins">Ingresa con tu cuenta de email</h3>
           <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ email: '', password: '', rol:'client' }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
@@ -122,3 +122,4 @@ const LoginUser = () => {
 export default LoginUser;
 
  
+
