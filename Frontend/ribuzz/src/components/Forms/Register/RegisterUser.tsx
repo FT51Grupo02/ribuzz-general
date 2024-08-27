@@ -5,15 +5,14 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/components/Context/AuthContext';
+import { UserRole } from '@/interfaces/Types';
 
-const validationSchema = Yup.object({
-  name: Yup.string().required('Requerido'),
-  email: Yup.string().email('Email inválido').required('Requerido'),
-  password: Yup.string()
-    .min(8, 'La contraseña debe tener al menos 8 caracteres')
-    .required('Requerido'),
-  date: Yup.date().required('Requerido'),
-  role: Yup.string().oneOf(['1', '2', '3'], 'Rol inválido').required('Requerido'), // Rol es un string pero será convertido a número
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+  date: Yup.date().required('Date is required'),
+  rol: Yup.string().oneOf(['entrepreneur', 'client', 'admin'], 'Invalid role').optional(), // Ajustar según el caso
 });
 
 const RegisterUser = () => {
@@ -22,18 +21,22 @@ const RegisterUser = () => {
 
   const handleSubmit = async (values: any) => {
     try {
-        const result = await register({
-            ...values,
-            role: parseInt(values.role),
-        });
-
-        if (result) {
-            router.push('/login');
-        }
+      const registerData = {
+        name: values.name,
+        email: values.email,
+        password: values.password,
+        date: new Date(values.date), // Convertir a string ISO
+        rol: values.rol // Cambiar a 'rol' en lugar de 'role'
+      };
+      const result = await register(registerData);
+  
+      if (result) {
+          router.push('/login');  // Redirigir al login después del registro exitoso
+      }
     } catch (error) {
-        console.error("Error en el registro:", error);
+      console.error("Error en el registro:", error);
     }
-};
+  };
 
   return (
     <div className="flex flex-col md:flex-row h-screen">
@@ -50,7 +53,7 @@ const RegisterUser = () => {
         <div className="w-full max-w-sm md:max-w-md p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg border-b border-[#C877A9]">
           <h1 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 font-poppins">REGISTRARSE</h1>
           <Formik
-            initialValues={{ name: '', email: '', password: '', date: '', role: '1' }}
+            initialValues={{ name: '', email: '', password: '', date: '', rol: 'entrepreneur' }} // Cambiar 'role' a 'rol'
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
@@ -105,30 +108,30 @@ const RegisterUser = () => {
                     <label className="mr-4">
                       <Field
                         type="radio"
-                        name="role"
-                        value="1" // Entrepreneur
+                        name="rol" // Cambiado de "role" a "rol"
+                        value="entrepreneur"
                       />
                       <span className="ml-2">Entrepreneur</span>
                     </label>
                     <label className="mr-4">
                       <Field
                         type="radio"
-                        name="role"
-                        value="2" // Client
+                        name="rol" // Cambiado de "role" a "rol"
+                        value="client"
                       />
                       <span className="ml-2">Client</span>
                     </label>
                     <label>
                       <Field
                         type="radio"
-                        name="role"
-                        value="3" // Admin
+                        name="rol" // Cambiado de "role" a "rol"
+                        value="admin"
                       />
                       <span className="ml-2">Admin</span>
                     </label>
                   </div>
-                  {errors.role && touched.role && (
-                    <div className="text-red-500 text-xs md:text-sm">{errors.role}</div>
+                  {errors.rol && touched.rol && (
+                    <div className="text-red-500 text-xs md:text-sm">{errors.rol}</div>
                   )}
                 </div>
                 <button
