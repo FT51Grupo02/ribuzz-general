@@ -38,9 +38,9 @@ const CartIcon: React.FC<CartIconProps> = ({ className, isActive }) => {
           className="transition duration-300"
         />
         {cart.length > 0 && (
-          <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center -translate-x-1/2 translate-y-1/2">
-            {cart.length}
-          </span>
+          <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center -translate-x-1/6 translate-y-1/5">
+          {cart.length}
+        </span>
         )}
       </button>
 
