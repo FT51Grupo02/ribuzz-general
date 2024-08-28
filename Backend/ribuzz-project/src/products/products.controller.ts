@@ -24,7 +24,7 @@ export class ProductsController {
     }
 
 
-    @UseGuards(AdminGuard, EntrepreneurGuard)
+    //@UseGuards(AdminGuard, EntrepreneurGuard)
     @Post()
     async createProduct(@Body() product: Products) {
         return this.productsService.createProduct(product);
