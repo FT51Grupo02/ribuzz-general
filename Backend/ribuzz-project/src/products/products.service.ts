@@ -53,7 +53,7 @@ export class ProductsService {
     async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
         try {
             
-            const { details, categories, ...otherProperties } = product;
+            const { orderdetails, categories, ...otherProperties } = product;
             await this.productRepository.update(id, otherProperties);
 
             if (product.stock !== undefined && product.stock < 0) {
@@ -69,8 +69,8 @@ export class ProductsService {
                 throw new NotFoundException(`Producto con id ${id} no encontrado`);
             }
     
-            if (details) {
-                updatedProduct.details = details;
+            if (orderdetails) {
+                updatedProduct.orderdetails = orderdetails;
             }
     
             if (categories) {
