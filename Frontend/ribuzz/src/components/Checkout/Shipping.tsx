@@ -3,6 +3,7 @@
 import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import Image from 'react'
 
 const Shipping: React.FC = () => {
   const formik = useFormik({
