@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
@@ -52,11 +52,14 @@ export class ProductsService {
 
     async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
         try {
-            // Actualiza las propiedades simples
+            
             const { details, categories, ...otherProperties } = product;
             await this.productRepository.update(id, otherProperties);
+
+            if (product.stock !== undefined && product.stock < 0) {
+                throw new BadRequestException('El stock no puede ser negativo');
+            }
     
-            // Recupera el producto actualizado
             const updatedProduct = await this.productRepository.findOne({
                 where: { id },
                 relations: ['details', 'categories'] 
@@ -66,17 +69,14 @@ export class ProductsService {
                 throw new NotFoundException(`Producto con id ${id} no encontrado`);
             }
     
-            // Actualiza la relación details si fue proporcionada
             if (details) {
                 updatedProduct.details = details;
             }
     
-            // Actualiza la relación categories si fue proporcionada
             if (categories) {
                 updatedProduct.categories = categories;
             }
     
-            // Guarda el producto con las relaciones actualizadas
             await this.productRepository.save(updatedProduct);
     
             return updatedProduct;
@@ -101,6 +101,23 @@ export class ProductsService {
                 throw error;
             }
             throw new InternalServerErrorException('Error al eliminar el producto');
+        }
+    }
+
+    async purchaseProduct(id: string, quantity: number): Promise<Products> {
+        try {
+            const product = await this.getProductById(id);
+
+            if (product.stock < quantity) {
+                throw new BadRequestException(`No hay suficiente stock para el producto con id ${id}`);
+            }
+
+            product.stock -= quantity;
+
+            return await this.productRepository.save(product);
+        } catch (error) {
+            console.error('Error al realizar la compra:');
+            throw error;
         }
     }
 }

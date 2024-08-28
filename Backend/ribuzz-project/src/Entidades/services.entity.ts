@@ -12,23 +12,10 @@ export class Services {
     id: string;
 
     @Column({
-        type: 'varchar',
-        length: 50,
-        nullable: false
-    })
-    name: string;
-
-    @Column({
         type: 'text',
         nullable: true
     })
-    description: string;
-
-    @Column("simple-array", { nullable: true })
-    images: string[];
-
-    @Column("simple-array", { nullable: true })
-    videos: string[];
+    name: string;
 
     @Column({
         type: 'decimal',
@@ -38,11 +25,23 @@ export class Services {
     })
     price: number;
 
+    @Column("simple-array", { nullable: true })
+    images: string[];
+
+    @Column("simple-array", { nullable: true })
+    videos: string[];
+
     @Column({
         type: 'float',
         nullable: true
     })
     rating: number;
+    
+    @Column({
+        type: 'text',
+        nullable: true
+    })
+    description: string;
 
     @Column({
         type: 'varchar',

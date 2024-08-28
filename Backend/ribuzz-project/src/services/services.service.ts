@@ -16,7 +16,7 @@ export class ServicesService {
             return await this.servicesRepository.find({
                 skip,
                 take: limit,
-                relations: ['provider', 'categories'] 
+                relations: ['provider', 'categories' , 'details'] 
             });
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los servicios: ' + error);
@@ -102,4 +102,5 @@ export class ServicesService {
             throw new InternalServerErrorException('Error al eliminar el servicio');
         }
     }
+
 }

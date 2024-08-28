@@ -19,42 +19,28 @@ export class Details {
         length: 100,
         nullable: true
     })
-    horario?: string;
+    Horario?: string;
 
     @Column({
         type: 'varchar',
         length: 250,
         nullable: true
     })
-    ubicacion?: string;
+    Ubicación?: string;
 
     @Column({
         type: 'varchar',
         length: 50,
         nullable: true
     })
-    tamaño?: string;
+    Tamaño?: string;
 
     @Column({
         type: 'varchar',
         length: 50,
         nullable: true
     })
-    color?: string;
-
-    @Column({
-        type: 'varchar',
-        length: 100,
-        nullable: true
-    })
-    formato?: string;
-
-    @Column({
-        type: 'varchar',
-        length: 100,
-        nullable: true
-    })
-    certificado?: string;
+    Color?: string;
 
 
     @ManyToMany(() => Products, (product) => product.details)
