@@ -133,19 +133,19 @@ const HomeContainer: React.FC = () => {
         </div>
       </section>
       {/* Tercera Sección */}
-      <section className="flex flex-col items-center justify-center bg-transparent py-6">
-        <div className="flex space-x-6 mb-4">
-          <BsBuildings className="text-8xl text-white" />
-          <GiSandsOfTime className="text-8xl text-white" />
-          <GiReceiveMoney className="text-8xl text-white" />
+      <section className="flex flex-col items-center justify-center bg-transparent py-2 px-4 md:px-10 lg:px-16">
+        <div className="flex flex-row items-center justify-center space-x-4 mb-4">
+        <BsBuildings className="text-4xl md:text-6xl lg:text-8xl text-white" />
+        <GiSandsOfTime className="text-4xl md:text-6xl lg:text-8xl text-white" />
+        <GiReceiveMoney className="text-4xl md:text-6xl lg:text-8xl text-white" />
         </div>
-        <p className="text-center text-[#DADDE8] text-lg font-light" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
-          Empresa - <span style={{ color: '#00e1d4' }}>Ahorrar</span> tiempo y costes
+        <p className="text-center text-sm md:text-base lg:text-lg font-light text-[#DADDE8]" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
+        Empresa - <span style={{ color: '#00e1d4' }}>Ahorrar</span> tiempo y costes
         </p>
-        <p className="text-center text-[#DADDE8] text-lg font-light" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
-          Soluciones - <span style={{ color: '#C87DAB' }}>Confiables y de calidad</span>
+        <p className="text-center text-sm md:text-base lg:text-lg font-light text-[#DADDE8]" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
+        Soluciones - <span style={{ color: '#C87DAB' }}>Confiables y de calidad</span>
         </p>
-      </section>
+  </section>
 
       <section className="text-center bg-transparent py-12 mb-6">
         {/* Título */}
