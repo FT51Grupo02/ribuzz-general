@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '@/components/Context/AuthContext';
-import { updateUserProfile, /* updateUserProfilePhoto */ } from '@/helpers/user.helper';
+import { updateUserProfile } from '@/helpers/user.helper';
 import Image from 'next/image';
 
 const UpdateProfileSchema = Yup.object().shape({
@@ -21,9 +21,9 @@ const UpdateProfile: React.FC = () => {
     const { token } = useAuth();
     const [imagePreview, setImagePreview] = useState<string>('/0.png');
 
-    const handleSubmit = async (values: { email: string; password: string; name: string; date: string; rol?: string; profilePhoto: File | null }) => {
-        const userId = localStorage.getItem('userId');
-        if (!token || !userId) {
+    const handleSubmit = async (values: { email: string; password: string; name: string; date?: string; rol?: string;}) => {
+        const id = localStorage.getItem('userId');
+        if (!token || !id) {
             console.error('No se ha encontrado el token o ID de usuario.');
             return;
         }
@@ -32,15 +32,15 @@ const UpdateProfile: React.FC = () => {
             name: values.name,
             email: values.email,
             password: values.password,
-            date: values.date,
-            rol: values.rol
+            date: values.date || '', // Usa una cadena vacía si no se proporciona una fecha
+            rol: values.rol || ''  // Usa una cadena vacía si no se proporciona un rol
         };
 
         try {
-            await updateUserProfile(userId, profileData, token);
+            await updateUserProfile(id, profileData, token);
             console.log('Perfil actualizado');
             
-           /*  if (values.profilePhoto) {
+            /* if (values.profilePhoto) {
                 await updateUserProfilePhoto(userId, values.profilePhoto, token);
                 console.log('Foto de perfil actualizada');
             } */

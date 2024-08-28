@@ -12,7 +12,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
   date: Yup.date().required('Fecha requerida').typeError('Fecha inválida'),
-  rol: Yup.string().oneOf(['emprendedor', 'cliente', 'admin'], 'Invalid role').optional(), // Ajustar según el caso
+  rol: Yup.string().oneOf(['emprendedor', 'cliente', 'admin'], 'Invalid role').optional(), 
 });
 
 const RegisterUser = () => {
@@ -26,7 +26,7 @@ const RegisterUser = () => {
         name: values.name,
         email: values.email,
         password: values.password,
-        date: new Date(values.date), // Convertir a string ISO
+        date: new Date(values.date), 
         rol: values.rol 
       };
 
@@ -114,7 +114,7 @@ const RegisterUser = () => {
                         name="rol" // Cambiado de "role" a "rol"
                         value="emprendedor"
                       />
-                      <span className="ml-2">Entrepreneur</span>
+                      <span className="ml-2">Emprendedor</span>
                     </label>
                     <label className="mr-4">
                       <Field
@@ -122,7 +122,7 @@ const RegisterUser = () => {
                         name="rol" // Cambiado de "role" a "rol"
                         value="cliente"
                       />
-                      <span className="ml-2">Client</span>
+                      <span className="ml-2">Cliente</span>
                     </label>
                    {/*  <label>
                       <Field

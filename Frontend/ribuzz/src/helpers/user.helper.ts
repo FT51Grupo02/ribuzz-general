@@ -60,9 +60,9 @@ export const getAuthenticatedUser = async (token: string): Promise<IUser | null>
 
 //Helper para actualizar informacion
 
-// user.helper.ts
-export const updateUserProfile = async (id: string, data: { name: string; email: string; password: string; date: string; rol?: string; }, token: string) => {
-    const response = await fetch(`http://localhost:3000/users/${id}`, {
+export const updateUserProfile = async (id: string, data: { name: string; email: string; password: string; date?: string; rol?: string; }, token: string) => {
+    console.log('Token:', token);
+    const response = await fetch(`${APIURL}/users/${id}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -78,21 +78,3 @@ export const updateUserProfile = async (id: string, data: { name: string; email:
     return response.json();
 };
 
-/* export const updateUserProfilePhoto = async (id: string, photo: File, token: string) => {
-    const formData = new FormData();
-    formData.append('photo', photo);
-
-    const response = await fetch(`http://localhost:3000/users/${id}/photo`, {
-        method: 'PUT',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        },
-        body: formData
-    });
-
-    if (!response.ok) {
-        throw new Error('Error al actualizar foto de perfil');
-    }
-
-    return response.json();
-}; */

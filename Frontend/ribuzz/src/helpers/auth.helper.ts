@@ -32,7 +32,7 @@ export async function loginUserH(userData: ILoginPropsUSer): Promise<IUserSessio
   try {
     console.log('Datos de usuario a enviar:', userData); // Verificar datos de usuario
 
-    const response = await fetch(`${APIURL}/auth/signIn`, {
+    const response = await fetch(`${APIURL}/auth/signIn/clients`, {
       method: 'POST',
       headers: {
         "Content-type": "application/json",
@@ -58,7 +58,7 @@ export async function loginEntrepreneurH(userData: ILoginPropsEntrep): Promise<I
   try {
     console.log('Datos de emprendedor a enviar:', userData); // Verificar datos de emprendedor
 
-    const response = await fetch(`${APIURL}/auth/signIn`, {
+    const response = await fetch(`${APIURL}/auth/signIn/entrepreneur`, {
       method: 'POST',
       headers: {
         "Content-type": "application/json",
