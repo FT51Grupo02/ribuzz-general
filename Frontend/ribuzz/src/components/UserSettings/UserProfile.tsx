@@ -8,44 +8,23 @@ interface UserProfileFormProps {
 }
 
 const UserProfileForm: React.FC<UserProfileFormProps> = ({ onSubmit }) => {
-  const [userData, setUserData] = useState<{ fullName: string; image: string | null }>({
-    fullName: '',
-    image: null,
-  });
-  const [imagePreview, setImagePreview] = useState<string>('/0.png');
-  const { token } = useAuth();
+  const { user, token } = useAuth();
+  const [imagePreview, setImagePreview] = useState<string>(user?.photo || '/0.png');
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    const fullName = localStorage.getItem('fullName') || 'Nombre de Usuario';
-    const image = localStorage.getItem('image') || '/0.png';
-
-    setUserData({ fullName, image });
-    setImagePreview(image);
-  }, []);
+    if (user) {
+      setImagePreview(user.photo || '/0.png');
+    }
+  }, [user]);
 
   const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files ? event.currentTarget.files[0] : null;
-    if (!file || !token) return;
-
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-      console.error('No se ha encontrado el ID de usuario.');
-      return;
-    }
+    if (!file || !token || !user) return;
 
     const formData = new FormData();
     formData.append('image', file);
 
-    try {
-      const updatedUser = await updateUserProfile(userId, formData, token);
-      console.log('Imagen actualizada:', updatedUser);
-      setImagePreview(URL.createObjectURL(file));
-      onSubmit(updatedUser);
-    } catch (error) {
-      console.error('Error al actualizar la imagen:', error);
-    }
-  };
+  }
 
   return (
     <div className="space-y-4">
@@ -67,7 +46,12 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ onSubmit }) => {
             <label className="block text-sm font-medium text-gray-300">
               Nombre de Usuario
             </label>
-            <p className="mt-1 text-gray-300">{userData.fullName}</p>
+            <p className="mt-1 text-gray-300">{user?.name || 'Nombre de Usuario'}</p>
+            <label className="block text-sm font-medium text-gray-300 mt-4">
+              Email
+            </label>
+            <p className="mt-1 text-gray-300">{user?.email || 'Nombre de Usuario'}</p>
+            
           </div>
         </div>
       </div>
@@ -76,4 +60,3 @@ const UserProfileForm: React.FC<UserProfileFormProps> = ({ onSubmit }) => {
 };
 
 export default UserProfileForm;
-  

@@ -3,7 +3,7 @@
 import React from 'react';
 import UserProfileForm from './UserProfile'
 import UpdateProfileForm from './UpdateProfile';
-import PersonalInfoForm from './PersonalInfo';
+
 
 const UserSettings: React.FC = () => {
   const handleUserProfileSubmit = (values: { fullName: string; image: File | null }) => {
@@ -26,11 +26,7 @@ const UserSettings: React.FC = () => {
           <UpdateProfileForm />
         </div>
       </div>
-      
-      <div className="mt-8 p-4 bg-opacity-50 border border-gray-600 rounded-md">
-        <h3 className="text-xl font-semibold mb-4">Información Personal</h3>
-        <PersonalInfoForm />
-      </div>
+    
     </div>
   );
 };

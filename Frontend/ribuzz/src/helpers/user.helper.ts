@@ -19,6 +19,7 @@ const parseJwt = (token: string) => {
 
         // Decode the payload (part 1 of the JWT)
         const payload = decodeBase64Url(parts[1]);
+        console.log('Payload decodificado:', payload); 
         return JSON.parse(payload);
     } catch (error) {
         console.error('Error al decodificar el token JWT:', error);
@@ -27,7 +28,7 @@ const parseJwt = (token: string) => {
 };
 
 // Función para obtener todos los usuarios
-const fetchUsers = async (page: number = 1, limit: number = 10): Promise<IUser[]> => {  
+const fetchUsers = async (page: number = 1, limit: number = 100): Promise<IUser[]> => {  
     try {
         const response = await fetch(`${APIURL}/users?page=${page}&limit=${limit}`);
         if (!response.ok) {
@@ -44,8 +45,9 @@ const fetchUsers = async (page: number = 1, limit: number = 10): Promise<IUser[]
 export const getAuthenticatedUser = async (token: string): Promise<IUser | null> => {
     try {
         const decodedToken: { id: string } = parseJwt(token);
+        console.log('ID decodificado:', decodedToken.id); 
         const users = await fetchUsers();
-
+        console.log('Usuarios obtenidos:', users);
         // Encuentra el usuario que coincide con el ID del token
         const user = users.find(user => user.id === decodedToken.id); 
         return user || null;
@@ -58,23 +60,39 @@ export const getAuthenticatedUser = async (token: string): Promise<IUser | null>
 
 //Helper para actualizar informacion
 
-export const updateUserProfile = async (id: string, data: FormData, token: string) => {
-    try {
-      const response = await fetch(`${APIURL}/users/${id}`, {
+// user.helper.ts
+export const updateUserProfile = async (id: string, data: { name: string; email: string; password: string; date: string; rol?: string; }, token: string) => {
+    const response = await fetch(`http://localhost:3000/users/${id}`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
         },
-        body: data,
-      });
-  
-      if (!response.ok) {
-        throw new Error('Error en la actualización del perfil');
-      }
-  
-      return await response.json();
-    } catch (error) {
-      console.error('Error:', error);
-      throw error;
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        throw new Error('Error al actualizar perfil');
     }
-  };
+
+    return response.json();
+};
+
+/* export const updateUserProfilePhoto = async (id: string, photo: File, token: string) => {
+    const formData = new FormData();
+    formData.append('photo', photo);
+
+    const response = await fetch(`http://localhost:3000/users/${id}/photo`, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formData
+    });
+
+    if (!response.ok) {
+        throw new Error('Error al actualizar foto de perfil');
+    }
+
+    return response.json();
+}; */
