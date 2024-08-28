@@ -9,23 +9,23 @@ import Image from "next/image";
 const Events: React.FC = () => {
     const [events, setEvents] = useState<any[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 3; // Ajusta esto según los datos obtenidos
+    const totalPages = 3; 
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const response = await fetch("http://localhost:3000/events");
                 const data = await response.json();
-                console.log("Fetched events:", data); // Inspecciona los datos aquí
+                console.log("Fetched events:", data); 
                 if (Array.isArray(data)) {
                     setEvents(data);
                 } else {
                     console.error("Data is not an array:", data);
-                    setEvents([]); // Establece un array vacío si los datos no son válidos
+                    setEvents([]);
                 }
             } catch (error) {
                 console.error("Error fetching events:", error);
-                setEvents([]); // Establece un array vacío en caso de error
+                setEvents([]);
             }
         };
 
