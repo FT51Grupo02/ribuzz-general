@@ -13,6 +13,7 @@ import { FileUploudModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ServicesModule } from './services/services.module';
 import { OrderModule } from './orders/orders.module';
+import { EventModule } from './Eventos/events.module';
 
 @Module({
   imports: [
@@ -37,7 +38,8 @@ import { OrderModule } from './orders/orders.module';
     FileUploudModule,
     AuthModule,
     ServicesModule,
-    OrderModule
+    OrderModule,
+    EventModule
   ],
   controllers: [AppController],
   providers: [AppService],

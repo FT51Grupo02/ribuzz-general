@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
-//import { Events } from "./events.entity";
+import { Events } from "./events.entity";
 import {Orders} from "./orders.entity"
 
 @Entity({
@@ -31,8 +31,8 @@ export class Users{
     })
     photo:string
 
-    // @ManyToMany(()=>Events)
-    // events: Events[]
+    @ManyToMany(()=>Events)
+    events: Events[]
 
     @OneToMany(()=>Orders, (order)=>order.id)
     order: Orders[]
