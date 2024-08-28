@@ -23,12 +23,12 @@ const LoginEntrepeneur = () => {
   const router = useRouter();
   const { setUser, setToken, loginEntrepeneurE } = useAuth(); // Obtener la función de login del contexto
 
-  const rol = 'emprendedor'; 
+
 
   const handleSubmit = async (values: ILoginPropsEntrep) => {
     try {
       console.log("Valores enviados al backendEntrepreneur:", values);
-      values.rol = rol; 
+      
       const isSuccess = await loginEntrepeneurE(values); // Llamar a la función de login con los valores del formulario
       if (isSuccess) {
         router.push('/'); // Redirigir al usuario después de un login exitoso

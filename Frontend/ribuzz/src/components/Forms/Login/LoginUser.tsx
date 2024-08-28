@@ -23,12 +23,9 @@ const LoginUser = () => {
   const router = useRouter();
   const { setUser, setToken, loginUserC } = useAuth(); // Obtener la función de login del contexto
 
-  const rol = 'cliente'; 
-
-  const handleSubmit = async (values: ILoginPropsUSer) => {
+   const handleSubmit = async (values: ILoginPropsUSer) => {
     try {
       console.log("Valores enviados al backendCliente:", values);
-      values.rol = rol; 
       const isSuccess = await loginUserC(values); // Llamar a la función de login con los valores del formulario
       if (isSuccess) {
         router.push('/'); // Redirigir al usuario después de un login exitoso
