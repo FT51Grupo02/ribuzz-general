@@ -23,7 +23,6 @@ export interface ProductProps {
   sellerInfo?: SellerInfo;
   details?: string[];
   reviews?: Review[];
-  ribuzzRating: number;
   price: number;
   stock: number;
 }
@@ -36,7 +35,6 @@ const Product: FC<ProductProps> = ({
   sellerInfo = { name: 'Desconocido', contact: 'No disponible' },
   details = [],
   reviews = [],
-  ribuzzRating,
   price,
   stock
 }) => {
@@ -118,9 +116,6 @@ const Product: FC<ProductProps> = ({
             )}
             <div className="mb-6 lg:mb-8">
               <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Reseñas:</h2>
-              <div className="mb-4 text-base lg:text-lg">
-                <strong>Valoración de RiBuzz:</strong> {ribuzzRating} / 5
-              </div>
               <div className="flex flex-col">
                 {/* Contenedor para alinear comentarios con la sección de imágenes */}
                 <div className="flex-grow">

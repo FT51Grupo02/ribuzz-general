@@ -4,13 +4,13 @@ import IProduct from "./IProduct";
 export interface ILoginPropsUSer {
     email: string;
     password: string;
-    rol: 'client',
+    rol: 'cliente',
 }
 
 export interface ILoginPropsEntrep {
     email: string;
     password: string;
-    rol: 'entrepreneur',
+    rol: 'emprendedor',
 }
 
 export interface ILoginError {
@@ -24,7 +24,7 @@ export interface IRegisterProps {
     email: string;
     password: string;
     date: Date;
-    rol?: UserRole; // Hacerlo opcional si el rol no siempre es requerido
+    rol: UserRole; // Hacerlo opcional si el rol no siempre es requerido
 }
 
 export type UserRole = 'entrepreneur' | 'client' | 'admin';

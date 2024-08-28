@@ -47,7 +47,7 @@ const Marketplace: React.FC = () => {
       </div>
       <div className="relative z-10 pb-10 shadow-2xl">
         <h2 className="max-sm:px-1 pt-3 text-center text-2xl md:text-3xl lg:text-4xl font-extralight text-black" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8', textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(0, 0, 0, 0.3)' }}>
-          El mejor <span style={{ color: '#00e1d4' }}>Marketplace</span> para Emprendedores
+          El mejor <span style={{ color: '#1EC9E5' }}>Marketplace</span> para Emprendedores
         </h2>
         <SearchBarServices />
         <CardServices services={services} />

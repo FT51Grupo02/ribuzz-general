@@ -5,29 +5,32 @@ import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/components/Context/AuthContext';
-import { UserRole } from '@/interfaces/Types';
+import { IRegisterProps, UserRole } from '@/interfaces/Types';
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required('Name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
-  date: Yup.date().required('Date is required'),
-  rol: Yup.string().oneOf(['entrepreneur', 'client', 'admin'], 'Invalid role').optional(), // Ajustar según el caso
+  date: Yup.date().required('Fecha requerida').typeError('Fecha inválida'),
+  rol: Yup.string().oneOf(['emprendedor', 'cliente', 'admin'], 'Invalid role').optional(), 
 });
 
 const RegisterUser = () => {
   const router = useRouter();
   const { register } = useAuth();
 
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: IRegisterProps) => {
     try {
+      console.log("Valores enviados al backend:", values);
       const registerData = {
         name: values.name,
         email: values.email,
         password: values.password,
-        date: new Date(values.date), // Convertir a string ISO
-        rol: values.rol // Cambiar a 'rol' en lugar de 'role'
+        date: new Date(values.date), 
+        rol: values.rol 
       };
+
+      console.log("Datos que se envían al backend:", registerData);
       const result = await register(registerData);
   
       if (result) {
@@ -53,7 +56,7 @@ const RegisterUser = () => {
         <div className="w-full max-w-sm md:max-w-md p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg border-b border-[#C877A9]">
           <h1 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 font-poppins">REGISTRARSE</h1>
           <Formik
-            initialValues={{ name: '', email: '', password: '', date: '', rol: 'entrepreneur' }} // Cambiar 'role' a 'rol'
+            initialValues={{ name: '', email: '', password: '', date: new Date(), rol: 'client' }} 
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
@@ -99,7 +102,7 @@ const RegisterUser = () => {
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030]"
                   />
                   {errors.date && touched.date && (
-                    <div className="text-red-500 text-xs md:text-sm">{errors.date}</div>
+                    <div className="text-red-500 text-xs md:text-sm">{errors.date as string}</div>
                   )}
                 </div>
                 <div className="mb-3 md:mb-4">
@@ -109,26 +112,26 @@ const RegisterUser = () => {
                       <Field
                         type="radio"
                         name="rol" // Cambiado de "role" a "rol"
-                        value="entrepreneur"
+                        value="emprendedor"
                       />
-                      <span className="ml-2">Entrepreneur</span>
+                      <span className="ml-2">Emprendedor</span>
                     </label>
                     <label className="mr-4">
                       <Field
                         type="radio"
                         name="rol" // Cambiado de "role" a "rol"
-                        value="client"
+                        value="cliente"
                       />
-                      <span className="ml-2">Client</span>
+                      <span className="ml-2">Cliente</span>
                     </label>
-                    <label>
+                   {/*  <label>
                       <Field
                         type="radio"
                         name="rol" // Cambiado de "role" a "rol"
                         value="admin"
                       />
                       <span className="ml-2">Admin</span>
-                    </label>
+                    </label> */}
                   </div>
                   {errors.rol && touched.rol && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.rol}</div>

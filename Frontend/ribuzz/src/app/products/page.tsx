@@ -47,7 +47,7 @@ const Products: React.FC = () => {
       </div>
       <div className="relative z-10 pb-10 shadow-2xl">
         <h2 className="max-sm:px-1 pt-3 text-center text-2xl md:text-3xl lg:text-4xl font-extralight text-black" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8', textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(0, 0, 0, 0.3)' }}>
-          Los mejores <span style={{ color: '#cc1184' }}>Productos</span> de Emprendedores
+          Los mejores <span style={{ color: '#DF3381' }}>Productos</span> de Emprendedores
         </h2>
         <SearchBarProducts />
         <CardProducts products={products} />

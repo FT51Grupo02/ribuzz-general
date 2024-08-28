@@ -36,6 +36,7 @@ class CategoryDto {
 }
 
 export class CreateProductDto {
+  [x: string]: any;
   @IsString()
   description: string;
 

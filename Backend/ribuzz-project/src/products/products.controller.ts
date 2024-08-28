@@ -22,6 +22,7 @@ export class ProductsController {
         return this.productsService.getProductById(id);
     }
 
+  
     @Post()
     async createProduct(@Body() product: Products) {
         return this.productsService.createProduct(product);
