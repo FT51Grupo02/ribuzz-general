@@ -8,10 +8,16 @@ import { AuthDto } from "./Dto/auth.dto";
 export class AuthController{
     constructor(private readonly authService: AuthService) {}
 
-    
-    @Post('/signIn')
-    async signIn(@Body() credentials:AuthDto){
+    @Post('/signIn/clients')
+    async signInClient(@Body() credentials:AuthDto){
         const{email,password}=credentials
-        return this.authService.signIn(email,password)
+        return this.authService.signInClient(email,password)
     }
+
+    @Post('/signIn/entrepreneur')
+    async signInEntrepreneur(@Body() credentials:AuthDto){
+        const{email,password}=credentials
+        return this.authService.signInEntrepreneur(email,password)
+    }
+
 }

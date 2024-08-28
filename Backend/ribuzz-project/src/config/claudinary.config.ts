@@ -1,4 +1,4 @@
-
+/* eslint-disable prettier/prettier */
 import {config as dotenvconfig} from 'dotenv'
 import { v2  } from 'cloudinary';
 dotenvconfig({ path: '.env'});

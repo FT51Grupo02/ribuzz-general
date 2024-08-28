@@ -10,7 +10,9 @@ export class Events{
     @PrimaryGeneratedColumn('uuid')
     id:string
 
-    @Column()
+    @Column({
+        nullable:true
+    })
     name:string;
 
     @ManyToMany(() => Users, (user)=>user.id)
