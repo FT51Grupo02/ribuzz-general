@@ -11,14 +11,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.5,
     description: "Este es un producto innovador que combina tecnología y diseño para ofrecer la mejor experiencia. Ideal para uso diario y profesional.",
     stock: 10,
     sellerInfo: {
       name: "Juan Pérez",
       contact: "juan.perez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Rojo, Azul, Verde",
       "Tamaño: S, M, L, XL"
     ],
@@ -39,14 +38,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 5,
-    ribuzzRating: 4.8,
     description: "Un producto de alta gama con características avanzadas y un diseño elegante.",
     stock: 5,
     sellerInfo: {
       name: "María López",
       contact: "maria.lopez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Negro, Gris",
       "Tamaño: M, L"
     ],
@@ -67,14 +65,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 3,
-    ribuzzRating: 3.5,
     description: "Un producto básico que cumple con las necesidades esenciales.",
     stock: 20,
     sellerInfo: {
       name: "Pedro Gómez",
       contact: "pedro.gomez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Blanco, Negro",
       "Tamaño: S, M"
     ],
@@ -95,14 +92,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.2,
     description: "Un producto premium con características exclusivas.",
     stock: 8,
     sellerInfo: {
       name: "Ana Martínez",
       contact: "ana.martinez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Dorado, Plata",
       "Tamaño: L, XL"
     ],
@@ -123,14 +119,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.0,
     description: "Producto de calidad media con buena relación costo-beneficio.",
     stock: 12,
     sellerInfo: {
       name: "Luis Fernández",
       contact: "luis.fernandez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Verde, Naranja",
       "Tamaño: M, L"
     ],
@@ -151,14 +146,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 5,
-    ribuzzRating: 4.9,
     description: "Producto de alta calidad con características innovadoras.",
     stock: 6,
     sellerInfo: {
       name: "José Pérez",
       contact: "jose.perez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Azul, Verde",
       "Tamaño: S, M, L"
     ],
@@ -179,14 +173,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 3,
-    ribuzzRating: 3.8,
     description: "Un producto sólido con un buen equilibrio entre calidad y precio.",
     stock: 15,
     sellerInfo: {
       name: "Marta Sánchez",
       contact: "marta.sanchez@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Amarillo, Naranja",
       "Tamaño: M, L"
     ],
@@ -207,14 +200,13 @@ export const products = [
     ],
     videos: ["/videos/product-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.3,
     description: "Un producto de alta gama con excelentes características.",
     stock: 7,
     sellerInfo: {
       name: "Fernando Díaz",
       contact: "fernando.diaz@example.com"
     },
-    customizationOptions: [
+    details: [
       "Color: Negro, Blanco",
       "Tamaño: S, M, L, XL"
     ],

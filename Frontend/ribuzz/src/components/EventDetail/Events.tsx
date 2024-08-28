@@ -5,29 +5,32 @@ import { useCart } from '../Context/CartContext';
 import { useRouter } from 'next/navigation';
 
 export interface Review {
-  username: string;
-  comment: string;
-  rating: number;
+    username: string;
+    comment: string;
+    rating: number;
 }
 
 export interface SellerInfo {
-  name: string;
-  contact: string;
+    name: string;
+    contact: string;
 }
 
-export interface ProductProps {
-  name: string;
-  description: string;
-  images: string[];
-  videos?: string[];
-  sellerInfo?: SellerInfo;
-  details?: string[];
-  reviews?: Review[];
-  price: number;
-  stock: number;
+export interface EventProps {
+    id: string;
+    name: string;
+    date: string;
+    location: string;
+    description: string;
+    images: string[];
+    videos?: string[];
+    reviews?: Review[];
+    time: string[];
+    stock: number;
+    sellerInfo?: SellerInfo;
 }
 
-const Product: FC<ProductProps> = ({
+
+const Event: FC<EventProps> = ({
   name,
   description,
   images = [],
@@ -42,7 +45,7 @@ const Product: FC<ProductProps> = ({
   const router = useRouter(); 
 
   const handleAddToCart = () => {
-      const productToAdd = {
+      const EventToAdd = {
           name,
           price,
           image: images[0], 
@@ -52,7 +55,7 @@ const Product: FC<ProductProps> = ({
           id: Date.now(),
       };
 
-      addToCart(productToAdd);
+      addToCart(EventToAdd);
       router.push('/cart');
   };
 
@@ -89,7 +92,7 @@ const Product: FC<ProductProps> = ({
                     <div key={idx} className="relative w-full h-full mt-2 hover:scale-105 transition duration-300">
                       <Image
                         src={img}
-                        alt={`Product Image ${idx + 1}`}
+                        alt={`Event Image ${idx + 1}`}
                         layout="fill"
                         objectFit="cover"
                         className="rounded-lg"
@@ -154,4 +157,4 @@ const Product: FC<ProductProps> = ({
   );
 };
 
-export default Product;
+export default Event;

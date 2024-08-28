@@ -24,7 +24,6 @@ export interface ServiceProps {
     providerInfo?: SellerInfo;
     details?: string[];
     reviews?: Review[];
-    ribuzzRating: number;
     price: number;
     stock: number;
 }
@@ -37,7 +36,6 @@ const Service: FC<ServiceProps> = ({
     providerInfo = { name: '', contact: '' },
     details = [],
     reviews = [],
-    ribuzzRating,
     price,
     stock,
 }) => {
@@ -118,9 +116,6 @@ const Service: FC<ServiceProps> = ({
                         )}
                         <div className="mb-8">
                             <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Reseñas:</h2>
-                            <div className="mb-6 text-lg">
-                                <strong>Valoración de RiBuzz:</strong> {ribuzzRating} / 5
-                            </div>
                             <div className="flex flex-col">
 
                                 <div className="flex-grow">
