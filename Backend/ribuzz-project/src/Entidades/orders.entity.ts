@@ -22,8 +22,7 @@ export class Orders{
     @ManyToOne(()=>Users, (user)=>user.id)
     user:Users
 
-    @OneToOne(() => Details)
-    @JoinColumn()
-    detail:Details
-
+    @OneToOne(() => Details,(orderDetails) => orderDetails.order )
+    orderDetails: Details[];
+   
 }

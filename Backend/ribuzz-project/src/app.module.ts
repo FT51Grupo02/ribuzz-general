@@ -12,6 +12,7 @@ import { AuthModule } from './Auth/auth.module';
 import { FileUploudModule } from './file-upload/file-upload.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ServicesModule } from './services/services.module';
+import { OrderModule } from './orders/orders.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { ServicesModule } from './services/services.module';
     FileUploudModule,
     AuthModule,
     ServicesModule,
+    OrderModule
   ],
   controllers: [AppController],
   providers: [AppService],
