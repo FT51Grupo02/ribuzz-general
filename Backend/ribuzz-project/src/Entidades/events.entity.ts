@@ -42,13 +42,13 @@ export class Events {
     time: string[];
 
 
-    // @Column({
-    //     type: 'decimal',
-    //     scale: 2,
-    //     precision: 10,
-    //     nullable: false
-    // })
-    // price: number;
+    @Column({
+        type: 'decimal',
+        scale: 2,
+        precision: 10,
+        nullable: false
+    })
+    price: number;
 
     @Column({
         type: 'int',
