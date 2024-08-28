@@ -77,14 +77,17 @@ export class UsuarioService {
             const existingUser = await this.userRepository.findOneBy({ id });
             
             if (!existingUser) {throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);}
+
+            if ('rol' in updateUsuarioDto || 'date' in updateUsuarioDto) {
+                throw new BadRequestException("Los campos 'rol' y 'date' no son modificables.");
+            }
             
             const upDateUser : Partial<UpdateUserDto> = {}
 
             if(updateUsuarioDto.name){upDateUser.name = updateUsuarioDto.name}
             if(updateUsuarioDto.email){upDateUser.email = updateUsuarioDto.email}    
             if(updateUsuarioDto.password) {upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10)}
-            else{throw new BadRequestException("Datos no modificables")}
-
+           
 
             const updatedUser = { ...existingUser, ...updateUsuarioDto };
             await this.userRepository.save(updatedUser);
