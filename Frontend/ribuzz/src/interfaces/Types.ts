@@ -24,7 +24,7 @@ export interface IRegisterProps {
     email: string;
     password: string;
     date: Date;
-    rol?: UserRole; // Hacerlo opcional si el rol no siempre es requerido
+    rol: UserRole; // Hacerlo opcional si el rol no siempre es requerido
 }
 
 export type UserRole = 'entrepreneur' | 'client' | 'admin';
