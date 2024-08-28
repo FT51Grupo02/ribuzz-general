@@ -4,13 +4,13 @@ import IProduct from "./IProduct";
 export interface ILoginPropsUSer {
     email: string;
     password: string;
-    rol: 'client',
+    rol: 'cliente',
 }
 
 export interface ILoginPropsEntrep {
     email: string;
     password: string;
-    rol: 'entrepreneur',
+    rol: 'emprendedor',
 }
 
 export interface ILoginError {

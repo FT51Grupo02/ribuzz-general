@@ -12,7 +12,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string().required('Password is required'),
   date: Yup.date().required('Fecha requerida').typeError('Fecha inválida'),
-  rol: Yup.string().oneOf(['entrepreneur', 'client', 'admin'], 'Invalid role').optional(), // Ajustar según el caso
+  rol: Yup.string().oneOf(['emprendedor', 'cliente', 'admin'], 'Invalid role').optional(), // Ajustar según el caso
 });
 
 const RegisterUser = () => {
@@ -21,6 +21,7 @@ const RegisterUser = () => {
 
   const handleSubmit = async (values: IRegisterProps) => {
     try {
+      console.log("Valores enviados al backend:", values);
       const registerData = {
         name: values.name,
         email: values.email,
@@ -28,6 +29,8 @@ const RegisterUser = () => {
         date: new Date(values.date), // Convertir a string ISO
         rol: values.rol 
       };
+
+      console.log("Datos que se envían al backend:", registerData);
       const result = await register(registerData);
   
       if (result) {
@@ -109,7 +112,7 @@ const RegisterUser = () => {
                       <Field
                         type="radio"
                         name="rol" // Cambiado de "role" a "rol"
-                        value="entrepreneur"
+                        value="emprendedor"
                       />
                       <span className="ml-2">Entrepreneur</span>
                     </label>
@@ -117,7 +120,7 @@ const RegisterUser = () => {
                       <Field
                         type="radio"
                         name="rol" // Cambiado de "role" a "rol"
-                        value="client"
+                        value="cliente"
                       />
                       <span className="ml-2">Client</span>
                     </label>

@@ -23,7 +23,7 @@ const LoginEntrepeneur = () => {
   const router = useRouter();
   const { setUser, setToken, loginEntrepeneurE } = useAuth(); // Obtener la función de login del contexto
 
-  const rol = 'entrepreneur'; 
+  const rol = 'emprendedor'; 
 
   const handleSubmit = async (values: ILoginPropsEntrep) => {
     try {
@@ -70,7 +70,7 @@ const LoginEntrepeneur = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 font-poppins">INICIAR SESIÓN</h1>
           <h3 className="text-sm md:text-md font-medium mb-4 md:mb-6 font-poppins">Ingresa con tu cuenta de email</h3>
           <Formik
-            initialValues={{ email: '', password: '', rol:'entrepreneur' }}
+            initialValues={{ email: '', password: '', rol:'emprendedor' }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
