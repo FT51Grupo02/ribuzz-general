@@ -28,32 +28,36 @@ const CardProducts: React.FC<CardProductsProps> = ({ products }) => {
     );
   }
 
+  if (products.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-screen px-4">
+        <h2 className="text-white text-3xl md:text-5xl font-semibold drop-shadow-xl text-center">No hay productos disponibles</h2>
+      </div>
+    );
+  }
+
   return (
     <div className="max-w-screen-lg mx-auto p-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {products.length > 0 ? (
-          products.map((product) => (
-            <div 
-              key={product.id} 
-              className="flex justify-center transition duration-300 transform hover:scale-105 shadow-lg rounded-lg overflow-hidden"
-            >
-              {product ? (
-                <Card
-                  name={product.name}
-                  price={product.price.toString()}
-                  image={product.images[0]} 
-                  rating={product.rating}
-                  description={product.description}
-                  onClick={() => handleCardClick(product.id)}
-                />
-              ) : (
-                <div className="bg-white p-4 rounded-lg shadow-lg">Error: Producto no encontrado</div>
-              )}
-            </div>
-          ))
-        ) : (
-          <div className="bg-white p-4 rounded-lg shadow-lg">No hay productos disponibles</div>
-        )}
+        {products.map((product) => (
+          <div 
+            key={product.id} 
+            className="flex justify-center transition duration-300 transform hover:scale-105 shadow-lg rounded-lg overflow-hidden"
+          >
+            {product ? (
+              <Card
+                name={product.name}
+                price={product.price.toString()}
+                image={product.images[0]} 
+                rating={product.rating}
+                description={product.description}
+                onClick={() => handleCardClick(product.id)}
+              />
+            ) : (
+              <div className="bg-white p-4 rounded-lg shadow-lg">Error: Producto no encontrado</div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
