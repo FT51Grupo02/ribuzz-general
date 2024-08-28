@@ -2,7 +2,11 @@ import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } fro
 import { EventService } from "./events.service";
 import { Products } from "src/Entidades/products.entity";
 import { AdminGuard } from "src/Guardianes/admin.guard";
+
+//import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+
 // import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+
 import { Events } from "src/Entidades/events.entity";
 
 @Controller('events')
