@@ -17,8 +17,18 @@ export interface IProduct {
 }
 
 const CartItem: React.FC = () => {
-  const {  cart, removeFromCart, increaseQuantity, decreaseQuantity } = useCart();
+  const { cart, removeFromCart, increaseQuantity, decreaseQuantity } = useCart();
   const isCartEmpty = cart.length === 0;
+
+  // Sanitizar cart
+  const sanitizedCart = cart.map(product => ({
+    ...product,
+    price: Number(product.price) || 0,
+    quantity: Number(product.quantity) || 1,
+  }));
+
+  // Calcular el total
+  const total = sanitizedCart.reduce((total, product) => total + product.price * product.quantity, 0);
 
   return (
     <div className="container mx-auto p-4 bg-black text-white">
@@ -35,7 +45,7 @@ const CartItem: React.FC = () => {
         <div>
           <h1 className="text-2xl font-bold mb-4">Tu carrito</h1>
           <div className="space-y-4">
-            {cart.map((product) => (
+            {sanitizedCart.map((product) => (
               <div key={product.id} className="flex justify-between items-center border-b border-gray-600 py-2">
                 <div className="flex items-center">
                   <Image 
@@ -77,7 +87,7 @@ const CartItem: React.FC = () => {
           </div>
           <div className="mt-4 flex justify-between items-center">
             <span className="text-xl font-bold">
-              Total: ${cart.reduce((total, product) => total + product.price * product.quantity, 0).toFixed(2)}
+              Total: ${total.toFixed(2)}
             </span>
             <Link href="/cart/checkout">
               <button className="bg-gradient-to-r from-[#C87DAB] to-[#C12886] hover:shadow-lg text-white font-bold py-1 px-3 rounded-full">
