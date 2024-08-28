@@ -245,10 +245,10 @@ const Navbar = () => {
               </div>
             </button>
           )}
-          <div className="w-16 h-1 bg-pink-500 opacity-80 rounded-full my-6 cursor-pointer" />
+          <div className="w-16 h-1 bg-pink-500 opacity-80 rounded-full mb-6 mt-4 cursor-pointer" />
           <button 
             onClick={toggleMenu} 
-            className="absolute inset-0 m-auto bg-black text-white rounded-full w-12 h-12 flex items-center justify-center opacity-90 -bottom-72 overflow-visible"
+            className={`absolute inset-0 m-auto bg-black text-white rounded-full w-12 h-12 flex items-center justify-center top-full opacity-90 ${isMenuOpen ? 'overflow-visible' : 'hidden'}`}
           >
             <FaTimes size={24} />
           </button>
