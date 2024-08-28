@@ -21,7 +21,7 @@ export class OrderService{
        @InjectRepository(Products) 
        private productsRepository:Repository<Products>){}
 
-       async AddOrder(userId: string, product: any){
+       async AddOrder(userId: string, product:any){
         let total = 0;
         const user = await this.userRepository.findOneBy({ id:userId });
         if(!user){

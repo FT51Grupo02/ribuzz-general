@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, IsUUID, Min, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
 
@@ -22,20 +21,9 @@ class ReviewDto {
   comment: string;
 }
 
-class DetailDto {
-  @IsString()
-  key: string;
 
-  @IsString()
-  value: string;
-}
 
-class CategoryDto {
-  @IsString()
-  name: string;
-}
-
-export class CreateProductDto {
+export class CreateEventDto {
   [x: string]: any;
   @IsString()
   description: string;
@@ -53,10 +41,11 @@ export class CreateProductDto {
   @IsUrl({}, { each: true })
   images?: string[];
 
-  @IsOptional()
-  @IsArray()
-  @IsUrl({}, { each: true })
-  videos?: string[];
+  @IsString()
+  date:string
+
+  @IsString()
+  location:string
 
   @IsOptional()
   @ValidateNested()
@@ -65,28 +54,14 @@ export class CreateProductDto {
 
   @IsOptional()
   @IsArray()
-  @IsString({ each: true })
-  customizationOptions?: string[];
-
-  @IsOptional()
-  @IsArray()
   @ValidateNested({ each: true })
   @Type(() => ReviewDto)
   reviews?: ReviewDto[];
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => DetailDto)
-  details: DetailDto[];
 
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CategoryDto)
-  categories: CategoryDto[];
+
+//   @IsArray()
+//   @ValidateNested({ each: true })
+//   @Type(() => CategoryDto)
+//   categories: CategoryDto[];
 }
-
-export class UpdateProductDto extends CreateProductDto {
-    @IsOptional()
-    @IsUUID()
-    id?: string;
-  }
