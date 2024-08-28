@@ -53,10 +53,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             if (token) {
+                console.log('Token recibido:', token);
                 try {
                     const authenticatedUser = await getAuthenticatedUser(token);
-                    console.log('Información del usuario autenticado:', authenticatedUser); 
-                    setUser(authenticatedUser);
+                    if (authenticatedUser) { // Verifica si authenticatedUser no es null
+                        console.log('Información del usuario autenticado:', authenticatedUser);
+    
+                        // Guarda la información del usuario en el estado y en el localStorage
+                        setUser(authenticatedUser);
+    
+                        // Guardar el ID y otros datos relevantes en el localStorage
+                        localStorage.setItem('userId', authenticatedUser.id);
+                        localStorage.setItem('userFullName', authenticatedUser.name); // Guarda otros datos si es necesario
+                    } else {
+                        console.error('El usuario autenticado es null');
+                    }
                 } catch (error) {
                     console.error('Error al obtener el usuario autenticado:', error);
                 }
