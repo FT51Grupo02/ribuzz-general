@@ -46,8 +46,8 @@ export class Details {
     @ManyToMany(() => Products, (product) => product.details)
     products: Products[];
 
-    @ManyToMany(() => Services, (services) => services.details)
-    services: Services[];
+    // @ManyToMany(() => Services, (services) => services.details)
+    // services: Services[];
 
     @OneToOne(() => Orders,(order) => order.orderDetails )
     @JoinColumn({name: 'order_id'})

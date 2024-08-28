@@ -63,15 +63,19 @@ export class Services {
         rating: number;
     }[];
 
+    @Column("simple-array", { nullable: true })
+    details: string[];
+
+
     @ManyToOne(() => Users, user => user.id)
     @JoinTable()
     provider: Users;
     
-    @ManyToMany(() => Details, (detail) => detail.products)
-    @JoinTable()
-    details: Details[];
+    // @ManyToMany(() => Details, (detail) => detail.products)
+    // @JoinTable()
+    // details: Details[];
 
     @ManyToMany(() => Categories, (category) => category.products)
     @JoinTable()
     categories: Categories[];
-}
+ }
