@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Users } from '../Entidades/user.entity';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 import * as bcrypt from "bcrypt";
+import { ApiBadRequestResponse } from '@nestjs/swagger';
 
 @Injectable()
 export class UsuarioService {
@@ -74,24 +75,27 @@ export class UsuarioService {
     async update(id: string, updateUsuarioDto: UpdateUserDto) {
         try {
             const existingUser = await this.userRepository.findOneBy({ id });
-            if (!existingUser) {
-                throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);
-            }
             
-            if (updateUsuarioDto.password) {
-                updateUsuarioDto.password = await bcrypt.hash(updateUsuarioDto.password, 10);
-            }
-              
+            if (!existingUser) {throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);}
+            
+            const upDateUser : Partial<UpdateUserDto> = {}
+
+            if(updateUsuarioDto.name){upDateUser.name = updateUsuarioDto.name}
+            if(updateUsuarioDto.email){upDateUser.email = updateUsuarioDto.email}    
+            if(updateUsuarioDto.password) {upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10)}
+            else{throw new BadRequestException("Datos no modificables")}
+
+
             const updatedUser = { ...existingUser, ...updateUsuarioDto };
             await this.userRepository.save(updatedUser);
 
-        
             const { password, ...userWithoutPassword } = updatedUser;
             return userWithoutPassword;
 
 
         } catch (error) {
-            throw new InternalServerErrorException('Error al actualizar el usuario');
+
+            throw new BadRequestException('Error al actualizar el usuario'+error);
         }
     }
 
