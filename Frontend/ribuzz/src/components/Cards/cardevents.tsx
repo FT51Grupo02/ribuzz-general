@@ -17,7 +17,7 @@ const CardEvents: React.FC<CardEventsProps> = ({ events = defaultEvents }) => {
 
   return (
     <div className="flex flex-col items-center w-full px-4 md:px-6 lg:px-8">
-      {events && events.map((event: Event) => ( 
+      {events.map((event: Event) => ( 
         <div
           key={event.id}
           className="relative flex flex-col md:flex-row w-full max-w-4xl bg-black bg-opacity-90 shadow-lg rounded-lg overflow-hidden mb-6 hover:shadow-2xl border border-transparent hover:border-cyan-800 hover:transition duration-300"
@@ -27,8 +27,8 @@ const CardEvents: React.FC<CardEventsProps> = ({ events = defaultEvents }) => {
             <Image
               src={event.image}
               alt={event.name}
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               className="w-full h-full"
             />
           </div>
