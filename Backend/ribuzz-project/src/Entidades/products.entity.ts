@@ -12,23 +12,10 @@ export class Products {
     id: string;
 
     @Column({
-        type:'varchar',
-        length:100,
+        type: 'text',
         nullable: true
     })
     name: string;
-
-    @Column({
-        type: 'varchar',
-        length: 250
-    })
-    description: string;
-
-    @Column("simple-array", { nullable: true })
-    images: string[];
-
-    @Column("simple-array", { nullable: true })
-    videos: string[];
 
     @Column({
         type: 'decimal',
@@ -38,26 +25,35 @@ export class Products {
     })
     price: number;
 
-    @Column({
-        type: 'int',
-        nullable: false
-    })
-    stock: number;
+    @Column("simple-array", { nullable: true })
+    images: string[];
+
+    @Column("simple-array", { nullable: true })
+    videos: string[];
 
     @Column({
         type: 'float',
         nullable: true
     })
     rating: number;
+    
+    @Column({
+        type: 'varchar',
+        length: 250
+    })
+    description: string;
+
+    @Column({
+        type: 'int',
+        nullable: false
+    })
+    stock: number;
 
     @Column("simple-json", { nullable: true })
-    providerInfo?: {
+    sellerInfo?: {
         name: string;
         contact: string;
     };
-
-    @Column("simple-array", { nullable: true })
-    customizationOptions?: string[];
 
     @Column("simple-json", { nullable: true })
     reviews?: {
