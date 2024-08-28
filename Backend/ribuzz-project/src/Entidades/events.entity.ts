@@ -80,5 +80,7 @@ export class Events {
     @JoinTable()
     provider: Users;
 
-
-}
+    @Column({
+        nullable:true
+    })
+    name:string;

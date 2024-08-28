@@ -11,17 +11,58 @@ export class AuthService {
         private jwtService: JwtService,
     ) {}
 
-    async signIn(email: string, password: string) {
+    async signInClient(email: string, password: string) {
         try {
+
             const find_user = await this.userService.findUserEmail(email);
             if (!find_user) {
                 throw new BadRequestException("Credenciales no validas");
             }
 
+
             const isValidatePass = await bcrypt.compare(password, find_user.password);
             if (!isValidatePass) {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
+            
+           if(find_user.rol !== "cliente"){throw new BadRequestException("El rol no esta asignado con el usuario")}
+
+            const usePayload = {
+                id: find_user.id,
+                correo: find_user.email,
+                rol: find_user.rol,
+            };
+
+            const token = await this.jwtService.sign(usePayload);
+
+            return {
+                message: "Ingreso éxitoso",
+                token,
+            };
+        } catch (error) {
+            if (error instanceof BadRequestException) {
+                throw error;
+            } else {
+                throw new InternalServerErrorException(`Error al iniciar sesión: ${(error as Error).message}`);
+            }
+        }
+    }
+
+    async signInEntrepreneur(email: string, password: string) {
+        try {
+
+            const find_user = await this.userService.findUserEmail(email);
+            if (!find_user) {
+                throw new BadRequestException("Credenciales no validas");
+            }
+
+
+            const isValidatePass = await bcrypt.compare(password, find_user.password);
+            if (!isValidatePass) {
+                throw new BadRequestException("Correo y/o contraseña invalidas");
+            }
+            
+           if(find_user.rol !== "emprendedor"){throw new BadRequestException("El rol no esta asignado con el usuario")}
 
             const usePayload = {
                 id: find_user.id,

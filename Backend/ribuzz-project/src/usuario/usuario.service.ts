@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable prettier/prettier */
 import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -78,12 +77,19 @@ export class UsuarioService {
             if (!existingUser) {
                 throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);
             }
-        
+            
+            if (updateUsuarioDto.password) {
+                updateUsuarioDto.password = await bcrypt.hash(updateUsuarioDto.password, 10);
+            }
+              
             const updatedUser = { ...existingUser, ...updateUsuarioDto };
             await this.userRepository.save(updatedUser);
+
         
             const { password, ...userWithoutPassword } = updatedUser;
             return userWithoutPassword;
+
+
         } catch (error) {
             throw new InternalServerErrorException('Error al actualizar el usuario');
         }
