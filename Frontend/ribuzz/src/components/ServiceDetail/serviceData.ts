@@ -11,7 +11,6 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.5,
     description: "Consultoría profesional para ayudar a tu empresa a alcanzar sus objetivos estratégicos.",
     duration: "2 horas",
     providerInfo: {
@@ -39,14 +38,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 5,
-    ribuzzRating: 4.8,
     description: "Diseño web personalizado para mejorar la presencia online de tu negocio.",
     duration: "1 semana",
     providerInfo: {
     name: "José Pérez",
     contact: "jose.perez@example.com"
     },
-    customizationOptions: [
+    details: [
     "Diseño: Moderno, Clásico",
     "Funcionalidades: E-commerce, Blog"
     ],
@@ -67,14 +65,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 3,
-    ribuzzRating: 3.7,
     description: "Estrategias de marketing digital para aumentar tu visibilidad y atraer más clientes.",
     duration: "1 mes",
     providerInfo: {
     name: "María López",
     contact: "maria.lopez@example.com"
     },
-    customizationOptions: [
+    details: [
     "Campañas: SEO, SEM, Redes Sociales",
     "Analítica: Básica, Avanzada"
     ],
@@ -95,14 +92,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.2,
     description: "Asesoría legal especializada para resolver tus dudas y problemas jurídicos.",
     duration: "1 hora",
     providerInfo: {
     name: "Pedro Gómez",
     contact: "pedro.gomez@example.com"
     },
-    customizationOptions: [
+    details: [
     "Tipo: Consultoría, Litigios",
     "Formato: Presencial, Virtual"
     ],
@@ -123,14 +119,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 5,
-    ribuzzRating: 4.9,
     description: "Sesiones fotográficas profesionales para eventos y retratos.",
     duration: "3 horas",
     providerInfo: {
     name: "Fernando Díaz",
     contact: "fernando.diaz@example.com"
     },
-    customizationOptions: [
+    details: [
     "Tipo: Eventos, Retratos",
     "Paquete: Básico, Avanzado"
     ],
@@ -151,14 +146,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.3,
     description: "Traducción de documentos y textos en diferentes idiomas.",
     duration: "Varía según el texto",
     providerInfo: {
     name: "Luis Fernández",
     contact: "luis.fernandez@example.com"
     },
-    customizationOptions: [
+    details: [
     "Idioma: Inglés, Francés, Alemán",
     "Formato: Documento, Audio"
     ],
@@ -179,14 +173,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 4,
-    ribuzzRating: 4.0,
     description: "Entrenamiento personalizado para mejorar tu condición física y alcanzar tus metas.",
     duration: "1 hora",
     providerInfo: {
     name: "Marta Sánchez",
     contact: "marta.sanchez@example.com"
     },
-    customizationOptions: [
+    details: [
     "Tipo: Fuerza, Cardio",
     "Ubicación: Gimnasio, Virtual"
     ],
@@ -207,14 +200,13 @@ export const services = [
     ],
     videos: ["/videos/service-demo.mp4"],
     rating: 5,
-    ribuzzRating: 4.9,
     description: "Desarrollo de aplicaciones móviles y web a medida para tus necesidades.",
     duration: "3 semanas",
     providerInfo: {
     name: "Sofia Ruiz",
     contact: "sofia.ruiz@example.com"
     },
-    customizationOptions: [
+    details: [
     "Plataforma: iOS, Android, Web",
     "Funcionalidades: Personalizado, E-commerce"
     ],

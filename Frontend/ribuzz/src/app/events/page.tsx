@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from "react";
-import EventCard from "@/components/Events/EventCard";
+import CardEvents from "@/components/Cards/cardevents";
 import SearchBarEvents from "@/components/SearchBar/SearchBarEvents";
 import PaginatorCyan from "@/components/Paginator/PaginatorCyan";
 import Image from "next/image";
@@ -40,7 +40,7 @@ return (
 
     <SearchBarEvents />
 
-    <EventCard />
+    <CardEvents />
 
     <PaginatorCyan
         currentPage={currentPage}
