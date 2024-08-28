@@ -5,29 +5,29 @@ import { useCart } from '../Context/CartContext';
 import { useRouter } from 'next/navigation';
 
 export interface Review {
-    username: string;
-    comment: string;
-    rating: number;
+  username: string;
+  comment: string;
+  rating: number;
 }
 
-export interface providerInfo {
-    name: string;
-    contact: string;
+export interface ProviderInfo {
+  name: string;
+  contact: string;
 }
 
 export interface EventProps {
-    id: string;
-    name: string;
-    date: string;
-    location: string;
-    description: string;
-    images: string[];
-    videos?: string[];
-    reviews?: Review[];
-    time: string[];
-    stock: number;
-    providerInfo?: providerInfo;
-    price: number;
+  id: string;
+  name: string;
+  date: string;
+  location: string;
+  description: string;
+  images: string[];
+  videos?: string[];
+  reviews?: Review[];
+  time: string[];
+  stock: number;
+  ProviderInfo?: ProviderInfo;
+  price: number;
 }
 
 const Event: FC<EventProps> = ({
@@ -35,28 +35,30 @@ const Event: FC<EventProps> = ({
   description,
   images = [],
   videos = [],
-  providerInfo = { name: 'Desconocido', contact: 'No disponible' },
-  // details = [],
+  ProviderInfo = { name: 'Desconocido', contact: 'No disponible' },
   reviews = [],
   price,
   stock,
+  location,
+  date,
+  time,
 }) => {
   const { addToCart } = useCart();
   const router = useRouter(); 
 
   const handleAddToCart = () => {
-      const eventToAdd = {
-          name,
-          price,
-          image: images[0], 
-          description,
-          stock,
-          categoryId: 0, 
-          id: Date.now(),
-      };
+    const eventToAdd = {
+      name,
+      price,
+      image: images[0], 
+      description,
+      stock,
+      categoryId: 0, 
+      id: Date.now(),
+    };
 
-      addToCart(eventToAdd);
-      router.push('/cart');
+    addToCart(eventToAdd);
+    router.push('/cart');
   };
 
   return (
@@ -76,16 +78,15 @@ const Event: FC<EventProps> = ({
           <div className="lg:w-3/5">
             <h1 className="text-4xl font-bold mb-8 text-cyan-400">{name}</h1>
             <p className="mb-8 text-lg leading-relaxed">{description}</p>
+
+            
             <div className="mb-8">
-              {/* Contenedor cuadrado para video y fotos */}
               <div className="relative w-full h-auto min-h-[400px] sm:min-h-[600px] lg:min-h-[600px]">
-                {/* Video en la parte superior */}
                 {videos.length > 0 && (
                   <video controls className="absolute inset-0 w-full h-1/2 object-cover rounded-lg">
                     <source src={videos[0]} type="video/mp4" />
                   </video>
                 )}
-                {/* Imágenes en la parte inferior */}
                 <div className="absolute bottom-0 left-0 right-0 h-1/2 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2 p-2">
                   {images.length > 0 && images.map((img, idx) => (
                     <div key={idx} className="relative w-full h-full mt-2 hover:scale-105 transition duration-300">
@@ -103,19 +104,15 @@ const Event: FC<EventProps> = ({
             </div>
           </div>
           <div className="lg:w-2/5">
-            <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Vendedor:</h2>
-            <p className="mb-4 text-lg"><strong>Nombre:</strong> {providerInfo.name}</p>
-            <p className="mb-8 text-lg"><strong>Contacto:</strong> {providerInfo.contact}</p>
-            {details?.length > 0 && (
-              <div className="mb-8">
-                {/* <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Detalles:</h2> */}
-                <ul className="list-disc list-inside pl-6 text-lg space-y-2">
-                  {details.map((option, idx) => (
-                    <li key={idx}>{option}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                  <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Locación:</h2>
+                  <p className="mb-4 text-lg"><strong>Ubicación:</strong> {location}</p>
+                  <p className="mb-4 text-lg"><strong>Fecha:</strong> {date}</p>
+                  <p className="mb-8 text-lg"><strong>Horario:</strong> {time.join(', ')}</p>
+
+            <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Organizador:</h2>
+            <p className="mb-4 text-lg"><strong>Nombre:</strong> {ProviderInfo.name}</p>
+            <p className="mb-8 text-lg"><strong>Contacto:</strong> {ProviderInfo.contact}</p>
+
             <div className="mb-8">
               <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Reseñas:</h2>
               <div className="flex flex-col">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from './card';
 import { Service } from '@/components/Cards/types';
@@ -9,10 +9,24 @@ interface CardServicesProps {
 
 const CardServices: React.FC<CardServicesProps> = ({ services }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleCardClick = (serviceId: string) => {
     router.push(`/service/${serviceId}`);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-16 h-16 border-4 border-t-4 border-t-cyan-500 border-gray-200 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-screen-lg mx-auto p-4">
