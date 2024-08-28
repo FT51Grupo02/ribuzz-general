@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { Event } from '@/components/Cards/types'; 
@@ -10,10 +10,24 @@ interface CardEventsProps {
 
 const CardEvents: React.FC<CardEventsProps> = ({ events = defaultEvents }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleViewDetails = (eventId: string) => {
     router.push(`/event/${eventId}`);
   };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="w-16 h-16 border-4 border-t-4 border-t-cyan-500 border-gray-200 rounded-full animate-spin"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center w-full px-4 md:px-6 lg:px-8">
@@ -22,7 +36,6 @@ const CardEvents: React.FC<CardEventsProps> = ({ events = defaultEvents }) => {
           key={event.id}
           className="relative flex flex-col md:flex-row w-full max-w-4xl bg-black bg-opacity-90 shadow-lg rounded-lg overflow-hidden mb-6 hover:shadow-2xl border border-transparent hover:border-cyan-800 hover:transition duration-300"
         >
-
           <div className="relative w-full md:w-1/3 lg:w-1/4 h-48 md:h-auto">
             <Image
               src={event.images[0]}
