@@ -6,7 +6,6 @@ import { Repository } from 'typeorm';
 import { Users } from '../Entidades/user.entity';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 import * as bcrypt from "bcrypt";
-import { ApiBadRequestResponse } from '@nestjs/swagger';
 
 @Injectable()
 export class UsuarioService {
@@ -75,32 +74,45 @@ export class UsuarioService {
     async update(id: string, updateUsuarioDto: UpdateUserDto) {
         try {
             const existingUser = await this.userRepository.findOneBy({ id });
+    
+            if (!existingUser) {
+                throw new NotFoundException("Usuario no encontrado.");
+            }
+    
             
-            if (!existingUser) {throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);}
-
             if ('rol' in updateUsuarioDto || 'date' in updateUsuarioDto) {
                 throw new BadRequestException("Los campos 'rol' y 'date' no son modificables.");
             }
+    
             
-            const upDateUser : Partial<UpdateUserDto> = {}
-
-            if(updateUsuarioDto.name){upDateUser.name = updateUsuarioDto.name}
-            if(updateUsuarioDto.email){upDateUser.email = updateUsuarioDto.email}    
-            if(updateUsuarioDto.password) {upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10)}
+            const upDateUser: Partial<UpdateUserDto> = { ...existingUser };
+    
+            
+            if (updateUsuarioDto.password) {
+                upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10);
+            }
+    
            
-
-            const updatedUser = { ...existingUser, ...updateUsuarioDto };
-            await this.userRepository.save(updatedUser);
-
-            const { password, ...userWithoutPassword } = updatedUser;
+            if (updateUsuarioDto.name) {
+                upDateUser.name = updateUsuarioDto.name;
+            }
+    
+            if (updateUsuarioDto.email) {
+                upDateUser.email = updateUsuarioDto.email;
+            }
+    
+            
+            await this.userRepository.save(upDateUser);
+    
+            
+            const { password, ...userWithoutPassword } = upDateUser;
             return userWithoutPassword;
-
-
+    
         } catch (error) {
-
-            throw new BadRequestException('Error al actualizar el usuario'+error);
+            throw new BadRequestException('Error al actualizar el usuario: ' + error);
         }
     }
+    
 
     async deleteUser(id: string) {
         try {
