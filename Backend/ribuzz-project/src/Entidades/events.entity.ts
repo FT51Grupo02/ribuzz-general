@@ -79,6 +79,4 @@ export class Events {
     @ManyToMany(() => Users, user => user.id)
     @JoinTable()
     provider: Users;
-
- 
 }
