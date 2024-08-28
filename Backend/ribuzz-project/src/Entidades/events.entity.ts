@@ -28,7 +28,11 @@ export class Events {
     @Column("simple-array", { nullable: true })
     images: string[];
 
-    @Column("varchar",{length:15, })
+    @Column("simple-array", { nullable: true })
+    videos: string[];
+
+
+    @Column("varchar",{length:15, nullable: true  })
     date:string
   
     @Column("varchar",{length:100, })
