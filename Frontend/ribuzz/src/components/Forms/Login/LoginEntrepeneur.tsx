@@ -74,7 +74,7 @@ const LoginEntrepeneur = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, handleChange, values, setFieldTouched  }) => (
               <Form className="w-full">
                 <div className="mb-3 md:mb-4">
                   <Field
@@ -82,6 +82,10 @@ const LoginEntrepeneur = () => {
                     name="email"
                     placeholder="Email"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setFieldTouched('email', true, true);
+                    }}
                   />
                   {errors.email && touched.email && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.email}</div>
@@ -93,9 +97,17 @@ const LoginEntrepeneur = () => {
                     name="password"
                     placeholder="*******"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setFieldTouched('password', true, true);
+                    }}
                   />
-                  {errors.password && touched.password && (
-                    <div className="text-red-500 text-xs md:text-sm">{errors.password}</div>
+                 {touched.password && (
+                    <div className="text-red-500 text-xs md:text-sm">
+                      {!values.password.match(/[A-Z]/) && 'Debe incluir al menos una mayúscula. '}
+                      {!values.password.match(/[!@#$%^&*]/) && 'Debe incluir al menos un carácter especial. '}
+                      {values.password.length < 8 && 'Debe tener al menos 8 caracteres. '}
+                    </div>
                   )}
                 </div>
                 <button

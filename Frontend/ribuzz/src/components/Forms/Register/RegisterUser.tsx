@@ -1,18 +1,21 @@
 'use client'
-
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { useAuth } from '@/components/Context/AuthContext';
-import { IRegisterProps, UserRole } from '@/interfaces/Types';
+import { IRegisterProps } from '@/interfaces/Types';
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Name is required'),
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  password: Yup.string().required('Password is required'),
+  name: Yup.string().required('Requerido'),
+  email: Yup.string().email('Cuenta de email inválida').required('Requerido'),
+  password: Yup.string()
+    .min(8, 'La contraseña debe poseer 8 caracteres mínimo')
+    .matches(/[A-Z]/, 'La contraseña debe poseer al menos una mayúscula')
+    .matches(/[!@#$%^&*]/, 'La contraseña debe poseer al menos un carácter especial')
+    .required('Requerido'),
   date: Yup.date().required('Fecha requerida').typeError('Fecha inválida'),
-  rol: Yup.string().oneOf(['emprendedor', 'cliente', 'admin'], 'Invalid role').optional(), 
+  rol: Yup.string().oneOf(['emprendedor', 'cliente', 'admin'], 'Rol inválido').optional(), 
 });
 
 const RegisterUser = () => {
@@ -21,7 +24,6 @@ const RegisterUser = () => {
 
   const handleSubmit = async (values: IRegisterProps) => {
     try {
-      console.log("Valores enviados al backend:", values);
       const registerData = {
         name: values.name,
         email: values.email,
@@ -30,7 +32,6 @@ const RegisterUser = () => {
         rol: values.rol 
       };
 
-      console.log("Datos que se envían al backend:", registerData);
       const result = await register(registerData);
   
       if (result) {
@@ -59,8 +60,10 @@ const RegisterUser = () => {
             initialValues={{ name: '', email: '', password: '', date: new Date(), rol: 'client' }} 
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
+            validateOnChange={true}  
+            validateOnBlur={true}    
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, setFieldTouched, handleChange, values }) => (
               <Form className="w-full">
                 <div className="mb-3 md:mb-4">
                   <Field
@@ -68,6 +71,10 @@ const RegisterUser = () => {
                     name="name"
                     placeholder="Nombre"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setFieldTouched('name', true, true);
+                    }}
                   />
                   {errors.name && touched.name && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.name}</div>
@@ -79,6 +86,10 @@ const RegisterUser = () => {
                     name="email"
                     placeholder="Email"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>)=> {
+                      handleChange(e);
+                      setFieldTouched('email', true, true);
+                    }}
                   />
                   {errors.email && touched.email && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.email}</div>
@@ -90,9 +101,17 @@ const RegisterUser = () => {
                     name="password"
                     placeholder="Contraseña"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>)=> {
+                      handleChange(e);
+                      setFieldTouched('password', true, true);
+                    }}
                   />
-                  {errors.password && touched.password && (
-                    <div className="text-red-500 text-xs md:text-sm">{errors.password}</div>
+                  {touched.password && (
+                    <div className="text-red-500 text-xs md:text-sm">
+                      {!values.password.match(/[A-Z]/) && 'Debe incluir al menos una mayúscula. '}
+                      {!values.password.match(/[!@#$%^&*]/) && 'Debe incluir al menos un carácter especial. '}
+                      {values.password.length < 8 && 'Debe tener al menos 8 caracteres. '}
+                    </div>
                   )}
                 </div>
                 <div className="mb-3 md:mb-4">
@@ -100,6 +119,10 @@ const RegisterUser = () => {
                     type="date"
                     name="date"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setFieldTouched('date', true, true);
+                    }}
                   />
                   {errors.date && touched.date && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.date as string}</div>
@@ -111,7 +134,7 @@ const RegisterUser = () => {
                     <label className="mr-4">
                       <Field
                         type="radio"
-                        name="rol" // Cambiado de "role" a "rol"
+                        name="rol"
                         value="emprendedor"
                       />
                       <span className="ml-2">Emprendedor</span>
@@ -119,19 +142,11 @@ const RegisterUser = () => {
                     <label className="mr-4">
                       <Field
                         type="radio"
-                        name="rol" // Cambiado de "role" a "rol"
+                        name="rol"
                         value="cliente"
                       />
                       <span className="ml-2">Cliente</span>
                     </label>
-                   {/*  <label>
-                      <Field
-                        type="radio"
-                        name="rol" // Cambiado de "role" a "rol"
-                        value="admin"
-                      />
-                      <span className="ml-2">Admin</span>
-                    </label> */}
                   </div>
                   {errors.rol && touched.rol && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.rol}</div>
@@ -153,4 +168,3 @@ const RegisterUser = () => {
 };
 
 export default RegisterUser;
-
