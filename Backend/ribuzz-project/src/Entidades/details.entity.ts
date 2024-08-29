@@ -42,7 +42,6 @@ export class Details {
     })
     color?: string;
 
-
     @ManyToMany(() => Products, (product) => product.details)
     @JoinTable()
     products: Products[];

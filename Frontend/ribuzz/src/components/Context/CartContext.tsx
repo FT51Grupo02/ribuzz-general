@@ -12,6 +12,7 @@ export interface IProduct {
   stock: number;
   categoryId: number;
   id: number;
+  quantity: number;
 }
 
 interface CartContextProps {
@@ -19,6 +20,8 @@ interface CartContextProps {
   addToCart: (product: IProduct) => void;
   removeFromCart: (productId: number) => void;
   clearCart: () => void;
+  increaseQuantity: (productId: number) => void;
+  decreaseQuantity: (productId: number) => void;
 }
 
 const CartContext = createContext<CartContextProps>({
@@ -31,6 +34,12 @@ const CartContext = createContext<CartContextProps>({
   },
   clearCart: () => {
     console.warn('clearCart not implemented');
+  },
+  increaseQuantity: () => {
+    console.warn('increaseQuantity not implemented');
+  },
+  decreaseQuantity: () => {
+    console.warn('decreaseQuantity not implemented');
   },
 });
 
@@ -94,7 +103,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     setCart(prevCart => {
-      const updatedCart = [...prevCart, product].sort((a, b) => a.price - b.price);
+      const productIndex = prevCart.findIndex(item => item.id === product.id);
+
+      if (productIndex > -1) {
+        Swal.fire({
+          title: 'Ojo!',
+          text: 'Este producto ya se encuentra en el carrito.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
+        return prevCart;
+      }
+
+      const updatedCart = [...prevCart, { ...product, quantity: 1 }].sort((a, b) => a.price - b.price);
       return updatedCart;
     });
     Swal.fire({
@@ -112,6 +133,29 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
+  const increaseQuantity = (productId: number) => {
+    setCart(prevCart => {
+      const updatedCart = prevCart.map(product =>
+        product.id === productId && product.quantity < product.stock
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      );
+      return updatedCart;
+    });
+  };
+
+  const decreaseQuantity = (productId: number) => {
+    setCart(prevCart => {
+      const updatedCart = prevCart.map(product =>
+        product.id === productId && product.quantity > 1
+          ? { ...product, quantity: product.quantity - 1 }
+          : product
+      );
+      return updatedCart;
+    });
+  };
+
+
   const clearCart = () => {
     if (typeof window !== 'undefined' && token) {
       localStorage.removeItem(`cart_${token}`);
@@ -120,7 +164,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{  cart, addToCart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity }}>
       {children}
     </CartContext.Provider>
   );

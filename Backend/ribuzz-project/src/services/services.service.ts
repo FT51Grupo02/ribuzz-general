@@ -16,7 +16,7 @@ export class ServicesService {
             return await this.servicesRepository.find({
                 skip,
                 take: limit,
-                relations: ['provider', 'categories' , 'details'] 
+                relations: ['provider', 'categories' ] 
             });
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los servicios: ' + error);
@@ -50,44 +50,44 @@ export class ServicesService {
         }
     }
 
-    async updateService(id: string, service: Partial<Services>): Promise<Services> {
-        try {
-            // Actualiza las propiedades simples
-            const { provider, categories, ...otherProperties } = service;
-            await this.servicesRepository.update(id, otherProperties);
+    // async updateService(id: string, service: Partial<Services>): Promise<Services> {
+    //     try {
+    //         // Actualiza las propiedades simples
+    //         const { provider, categories, ...otherProperties } = service;
+    //         await this.servicesRepository.update(id, otherProperties);
 
-            // Recupera el servicio actualizado
-            const updatedService = await this.servicesRepository.findOne({
-                where: { id },
-                relations: ['provider', 'categories']
-            });
+    //         // Recupera el servicio actualizado
+    //         const updatedService = await this.servicesRepository.findOne({
+    //             where: { id },
+    //             relations: ['provider', 'categories']
+    //         });
 
-            if (!updatedService) {
-                throw new NotFoundException(`Servicio con id ${id} no encontrado`);
-            }
+    //         if (!updatedService) {
+    //             throw new NotFoundException(`Servicio con id ${id} no encontrado`);
+    //         }
 
-            // Actualiza la relación provider si fue proporcionada
-            if (provider) {
-                updatedService.provider = provider;
-            }
+    //         // Actualiza la relación provider si fue proporcionada
+    //         if (provider) {
+    //             updatedService.provider = provider;
+    //         }
 
-            // Actualiza la relación categories si fue proporcionada
-            if (categories) {
-                updatedService.categories = categories;
-            }
+    //         // Actualiza la relación categories si fue proporcionada
+    //         if (categories) {
+    //             updatedService.categories = categories;
+    //         }
 
-            // Guarda el servicio con las relaciones actualizadas
-            await this.servicesRepository.save(updatedService);
+    //         // Guarda el servicio con las relaciones actualizadas
+    //         await this.servicesRepository.save(updatedService);
 
-            return updatedService;
-        } catch (error) {
-            console.error('Error al actualizar el servicio:', error); // Imprimir el error en la consola
-            if (error instanceof NotFoundException) {
-                throw error;
-            }
-            throw new InternalServerErrorException('Error al actualizar el servicio');
-        }
-    }
+    //         return updatedService;
+    //     } catch (error) {
+    //         console.error('Error al actualizar el servicio:', error); // Imprimir el error en la consola
+    //         if (error instanceof NotFoundException) {
+    //             throw error;
+    //         }
+    //         throw new InternalServerErrorException('Error al actualizar el servicio');
+    //     }
+    // }
 
     async deleteService(id: string): Promise<void> {
         try {

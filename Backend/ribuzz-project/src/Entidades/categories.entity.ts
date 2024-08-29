@@ -16,7 +16,8 @@ export class Categories {
     @ManyToMany(() => Products, (product) => product.categories)
     @JoinTable()
     products: Products[];
-    @ManyToMany(() => Services, (services) => services.categories)
-    @JoinTable()
-    services: Services[];
+    
+    // @ManyToMany(() => Services, (services) => services.categories)
+    // @JoinTable()
+    // services: Services[];
 }
