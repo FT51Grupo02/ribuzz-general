@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body,Controller,Get,Post,Query } from "@nestjs/common";
 import { CreateOrderDto } from "./dto/order.dto";
 import { OrderService } from "./orders.service";
@@ -10,9 +11,9 @@ export class OrderController {
 
 
 @Post()
-addOrder(@Body() order:CreateOrderDto){
+addOrderProduct(@Body() order:CreateOrderDto){
     const { userId, products} = order;
-    return this.orderService.AddOrder(userId, products);
+    return this.orderService.addOrderProduct(userId, products);
 }
 
 @Get(":id")

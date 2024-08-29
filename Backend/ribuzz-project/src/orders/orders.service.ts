@@ -55,7 +55,32 @@ export class OrderService{
             })
         )
 
-        //const new_Detail_Order = new Details()
+        const orderdetail = new Details()
+        
+        orderdetail.total = Number(Number(total_price).toFixed(2));
+        orderdetail.products = productsCar;
+        orderdetail.order = genarteNewOrder;
+        
+        //console.log(orderdetail);
+        
+        await this.orderDetailRepository.save(orderdetail);
+        
+        //console.log(orderdetail);
+        
+        return await this.orderRepository.find({ where:{ id: newOrder.id},
+        relations:{
+           orderDetails: true
+        }
+        })
+        }
+        
+        async getOrder(id:string){
+            const order = await this.orderRepository.findOne({where: {id},
+            relations:{ orderDetails:{products:true}}})
+            if(!order){
+                return "order no encontrada"
+            }
+            return order;
 
 
 
