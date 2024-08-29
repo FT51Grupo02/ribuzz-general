@@ -16,7 +16,7 @@ export class ProductsService {
             return await this.productRepository.find({
                 skip,
                 take: limit,
-                relations: ['details', 'categories'] 
+               // relations: ['orderdetails', 'categories'] 
             });
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los productos'+error);
