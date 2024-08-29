@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, JoinColumn } from "typeorm";
 import { Users } from "./user.entity";
 import { Categories } from "./categories.entity";
 import { Details } from "./details.entity";
@@ -68,7 +68,7 @@ export class Services {
     provider: Users;
     
     @ManyToMany(() => Details, (detail) => detail.products)
-    @JoinTable()
+    @JoinColumn()
     details: Details[];
 
     @ManyToMany(() => Categories, (category) => category.products)
