@@ -24,7 +24,19 @@ export class OrderService{
     @InjectRepository(Products) 
     private productsRepository:Repository<Products>){}
 
-    //Ordenar un producto
+
+    //Lista de ordenes de compra
+
+    async orderList(page:number, limit:number){
+        const orders = await this.orderRepository.find();
+        const start = (page - 1) * limit;
+        const end = start + limit;
+        const listProduct = orders.slice(start,end)
+        
+        return listProduct.map((list) => list);
+    }
+
+    //Generar una orden de compra 
     async addOrderProduct(userId: string, product:any){
         
         const user = await this.userRepository.findOneBy({id:userId})
@@ -81,9 +93,6 @@ export class OrderService{
                 return "order no encontrada"
             }
             return order;
-
-
-
     }
 
 }
