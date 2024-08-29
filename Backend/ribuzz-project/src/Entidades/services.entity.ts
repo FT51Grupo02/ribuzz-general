@@ -73,7 +73,7 @@ export class Services {
     
     @ManyToMany(() => Details, (detail) => detail.products)
     @JoinColumn()
-    details: Details[];
+    orderdetails: Details[];
 
     @ManyToMany(() => Categories, (category) => category.products)
     @JoinTable()
