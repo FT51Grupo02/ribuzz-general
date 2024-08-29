@@ -38,11 +38,11 @@ const CardServices: React.FC<CardServicesProps> = ({ services }) => {
 
   return (
     <div className="max-w-screen-lg mx-auto p-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {services.map((service) => (
           <div 
             key={service.id} 
-            className="flex justify-center transition duration-300 transform hover:scale-105 shadow-lg rounded-lg overflow-hidden"
+            className="flex justify-center transition duration-300 transform hover:scale-105 rounded-lg overflow-hidden"
           >
             {service ? (
               <Card

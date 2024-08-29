@@ -15,14 +15,14 @@ const Services: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:3000/services');
+        const response = await fetch(`http://localhost:3000/services?page=${currentPage}`);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Error en la respuesta de la red');
         }
         const data: Service[] = await response.json();
         setServices(data);
       } catch (error) {
-        console.error('Error fetching services:', error);
+        console.error('Error al obtener los servicios:', error);
       }
     };
 
@@ -31,7 +31,6 @@ const Services: React.FC = () => {
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Llamada a la API para cargar datos de la página específica si es necesario
   };
 
   return (

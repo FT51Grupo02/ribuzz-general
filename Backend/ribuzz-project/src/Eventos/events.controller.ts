@@ -18,7 +18,7 @@ export class EventController {
     @Get()
     async getEvent(
         @Query('page') page: number = 1,
-        @Query('limit') limit: number = 5
+        @Query('limit') limit: number = 3,
     ) {
         return this.eventService.getEvent(page, limit);
     }

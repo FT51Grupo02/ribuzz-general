@@ -83,12 +83,12 @@ const Page2 = () => {
           onClick={handleClose}
         >
           <div
-            className="relative bg-black text-white p-4 sm:p-8 md:p-12 lg:p-16 rounded-lg max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-4xl w-full bg-opacity-80"
+            className="relative bg-black text-white p-4 sm:p-8 md:p-12 lg:p-16 rounded-xl max-w-full sm:max-w-lg md:max-w-2xl lg:max-w-4xl w-full bg-opacity-80 max-sm:pt-10"
             onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del contenido cierre el modal
           >
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center mb-2 sm:mb-4 md:mb-6 lg:mb-10 text-white">{titles[activeIndex]}</h2>
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-center mb-2 sm:mb-4 md:mb-6 lg:mb-10 text-white max-lg:pt-8">{titles[activeIndex]}</h2>
             <p className="text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed mb-4 sm:mb-6 md:mb-8 text-cyan-100">{content[activeIndex]}</p>
-            <div className="flex justify-center mt-6 sm:mt-8 md:mt-10">
+            <div className="flex justify-center">
               <Image
                 src="/11.png"
                 alt="Logo"
@@ -100,7 +100,7 @@ const Page2 = () => {
           </div>
           <button
             onClick={() => setActiveIndex(null)}
-            className="absolute bottom-10 w-12 h-12 flex items-center justify-center bg-black bg-opacity-80 text-white rounded-full shadow-lg text-2xl transition duration-300 hover:scale-110"
+            className="absolute bottom-10 w-12 h-12 flex items-center justify-center bg-black bg-opacity-80 text-white rounded-full shadow-lg text-2xl transition duration-300 hover:scale-110 max-sm:bottom-0 max-lg:bottom-4"
           >
             <IoMdClose className='transition duration-300 hover:scale-110' size={30} />
           </button>
