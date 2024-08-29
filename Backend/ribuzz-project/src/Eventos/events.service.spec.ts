@@ -1,16 +1,16 @@
 /* eslint-disable prettier/prettier */
 import { Test, TestingModule } from '@nestjs/testing';
-import { EventosService} from "./events.service";
+import { EventService} from "./events.service";
 
 describe('UserService', () => {
-  let service: EventosService;
+  let service: EventService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [EventosService]
+      providers: [EventService]
     }).compile();
 
-    service = module.get<EventosService>(EventosService);
+    service = module.get<EventService>(EventService);
   });
 
   it('should be defined', () => {
