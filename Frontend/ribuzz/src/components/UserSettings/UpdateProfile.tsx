@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import { useAuth } from '@/components/Context/AuthContext';
@@ -14,16 +14,20 @@ const UpdateProfileSchema = Yup.object().shape({
       .matches(/[!@#$%^&*]/, 'La contraseña debe poseer al menos un carácter especial')
       .required('Requerido'),
     name: Yup.string().required('Requerido'),
-    profilePhoto: Yup.mixed().notRequired() // Opcional: puedes agregar validaciones específicas para el archivo si es necesario
 });
 
 const UpdateProfile: React.FC = () => {
     const { token } = useAuth();
     const [imagePreview, setImagePreview] = useState<string>('/0.png');
+    const [userId, setUserId] = useState<string | null>(null);
 
-    const handleSubmit = async (values: { email: string; password: string; name: string; date?: string; rol?: string;}) => {
+    useEffect(() => {
         const id = localStorage.getItem('userId');
-        if (!token || !id) {
+        if (id) setUserId(id);
+    }, []);
+
+    const handleSubmit = async (values: { email: string; password: string; name: string; }) => {
+        if (!token || !userId) {
             console.error('No se ha encontrado el token o ID de usuario.');
             return;
         }
@@ -32,18 +36,11 @@ const UpdateProfile: React.FC = () => {
             name: values.name,
             email: values.email,
             password: values.password,
-            date: values.date || '', // Usa una cadena vacía si no se proporciona una fecha
-            rol: values.rol || ''  // Usa una cadena vacía si no se proporciona un rol
         };
 
         try {
-            await updateUserProfile(id, profileData, token);
+            await updateUserProfile(userId, profileData, token);
             console.log('Perfil actualizado');
-            
-            /* if (values.profilePhoto) {
-                await updateUserProfilePhoto(userId, values.profilePhoto, token);
-                console.log('Foto de perfil actualizada');
-            } */
         } catch (error) {
             console.error('Error al actualizar perfil:', error);
         } 
@@ -62,7 +59,7 @@ const UpdateProfile: React.FC = () => {
 
     return (
         <Formik
-            initialValues={{ email: '', password: '', name: '', date: '', rol: '', profilePhoto: null }}
+            initialValues={{ email: '', password: '', name: '', profilePhoto: null }}
             validationSchema={UpdateProfileSchema}
             onSubmit={handleSubmit}
         >
@@ -86,7 +83,7 @@ const UpdateProfile: React.FC = () => {
                                 className="absolute bottom-0 right-0 opacity-0 w-10 h-10 cursor-pointer"
                             />
                         </div>
-                        <div className="ml-4 flex flex-col justify-between">
+                        <div className="ml-4 flex flex-col justify-between w-full">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium text-gray-300">Nombre</label>
                                 <Field
