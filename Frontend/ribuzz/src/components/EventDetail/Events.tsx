@@ -129,7 +129,7 @@ const Event: FC<EventProps> = ({
                     <source src={videos[0]} type="video/mp4" />
                   </video>
                 )}
-                <div className="absolute bottom-0 left-0 right-0 h-1/2 grid grid-cols-2 sm:grid-cols-4 gap-2 p-2">
+                <div className="absolute bottom-0 left-0 right-0 h-1/2 grid grid-cols-4 sm:grid-cols-4 gap-2 p-2">
                   {images.length > 0 &&
                     images.map((img, idx) => (
                       <div
@@ -199,7 +199,7 @@ const Event: FC<EventProps> = ({
                   </ul>
                 </div>
 
-                <div className="mt-10 sm:mt-8 mb-4 p-4 bg-black rounded-lg shadow-lg border border-transparent border-cyan-800">
+                <div className="mt-10 sm:mt-8 mb-4 p-4 rounded-lg shadow-lg border border-transparent border-cyan-800">
                   <h2 className="text-2xl sm:text-3xl font-semibold mb-4 text-white text-center ">Comprar tickets:</h2>
                   <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
                     <p className="text-base sm:text-lg text-center">Stock: <span className="font-semibold">{stock}</span></p>
@@ -229,7 +229,7 @@ const Event: FC<EventProps> = ({
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 sm:gap-6 mt-8 md:justify-center max-sm:justify-center">
+                  <div className="flex items-center gap-3 sm:gap-6 mt-8 md:justify-center max-sm:justify-center">
                     <p className="text-white text-base sm:text-lg font-bold">
                       Total: ${price * quantity}
                     </p>
