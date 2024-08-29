@@ -121,7 +121,7 @@ const Service: FC<ServiceProps> = ({
                                 <div className="flex-grow">
                                     <ul className="space-y-6">
                                         {reviews.map((review, idx) => (
-                                            <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-cyan-600 to-cyan-400 p-6 rounded-lg hover:scale-105 transition duration-300">
+                                            <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-cyan-700 to-cyan-500 p-6 rounded-lg hover:scale-105 transition duration-300">
                                                 <p className="text-lg"><strong>{review.username}:</strong> {review.comment}</p>
                                                 <p className="text-lg">Rating: {review.rating} / 5</p>
                                             </li>

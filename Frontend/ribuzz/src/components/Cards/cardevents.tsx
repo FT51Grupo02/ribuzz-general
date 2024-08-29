@@ -78,7 +78,7 @@ const CardEvents: React.FC<CardEventsProps> = ({ events = defaultEvents }) => {
 
             <button
               onClick={() => handleViewDetails(event.id)}
-              className="transition duration-300 transform hover:scale-105 mt-4 md:mt-0 md:absolute md:bottom-6 md:right-6 lg:bottom-8 lg:right-8 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg text-sm md:text-lg lg:text-xl"
+              className="transition duration-300 transform hover:scale-105 mt-4 md:mt-0 md:absolute md:bottom-6 md:right-6 lg:bottom-8 lg:right-8 bg-gradient-to-r from-cyan-500 to-cyan-700 text-white py-2 px-4 rounded-lg shadow-md hover:shadow-lg text-sm md:text-lg lg:text-xl"
             >
               Ver detalles
             </button>

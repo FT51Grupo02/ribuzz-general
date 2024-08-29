@@ -104,10 +104,10 @@ const Navbar = () => {
             Inicio
           </Link>
           <Link 
-            href="/marketplace" 
-            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/marketplace') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+            href="/services" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/services') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
           >
-            Marketplace
+            Servicios
           </Link>
           <Link 
             href="/products" 
@@ -207,11 +207,11 @@ const Navbar = () => {
             Inicio
           </Link>
           <Link 
-            href="/marketplace" 
-            className={`block px-4 py-2 text-center w-full ${isActive('/marketplace') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            href="/services" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/services') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            Marketplace
+            services
           </Link>
           <Link 
             href="/products" 
