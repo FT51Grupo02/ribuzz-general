@@ -15,23 +15,22 @@ const Products: React.FC = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('http://localhost:3000/products');
+        const response = await fetch(`http://localhost:3000/products?page=${currentPage}`);
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Error en la respuesta de la red');
         }
         const data: Product[] = await response.json();
         setProducts(data);
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error('Error al obtener los productos:', error);
       }
     };
-
+  
     fetchProducts();
-  }, [currentPage]);
+  }, [currentPage]);  
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
-    // Acá se podrías hacer una llamada a la API para cargar los datos de la página específica si es necesario
   };
 
   return (

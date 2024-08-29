@@ -14,23 +14,23 @@ const Events: React.FC = () => {
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await fetch("http://localhost:3000/events");
+                const response = await fetch(`http://localhost:3000/events?page=${currentPage}`);
                 const data = await response.json();
-                console.log("Fetched events:", data); 
+                console.log("Eventos obtenidos:", data); 
                 if (Array.isArray(data)) {
                     setEvents(data);
                 } else {
-                    console.error("Data is not an array:", data);
+                    console.error("Los datos no son un arreglo:", data);
                     setEvents([]);
                 }
             } catch (error) {
-                console.error("Error fetching events:", error);
+                console.error("Error al obtener los eventos:", error);
                 setEvents([]);
             }
         };
 
         fetchEvents();
-    }, []);
+    }, [currentPage]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
