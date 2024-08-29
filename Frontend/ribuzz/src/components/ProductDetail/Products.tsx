@@ -1,8 +1,10 @@
 'use client'
+
 import Image from 'next/image';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useCart } from '../Context/CartContext';
 import { useRouter } from 'next/navigation';
+import StarRating from '@/components/StarRating/StarRating';
 
 export interface Review {
   username: string;
@@ -41,21 +43,40 @@ const Product: FC<ProductProps> = ({
   const { addToCart } = useCart();
   const router = useRouter(); 
 
-  const handleAddToCart = () => {
-      const productToAdd = {
-          name,
-          price,
-          image: images[0], 
-          description,
-          stock,
-          categoryId: 0, 
-          id: Date.now(),
-      };
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [selectedRating, setSelectedRating] = useState<number>(0);
+  const [comment, setComment] = useState<string>('');
 
-      addToCart(productToAdd);
-      router.push('/cart');
+  const handleAddToCart = () => {
+    const productToAdd = {
+      name,
+      price,
+      image: images[0], 
+      description,
+      stock,
+      categoryId: 0, 
+      id: Date.now(),
+    };
+
+    addToCart(productToAdd);
+    router.push('/cart');
   };
 
+  const handleAddComment = () => {
+    // Lógica para manejar el envío del comentario
+    console.log(`Comentario enviado: ${comment} con calificación de ${selectedRating}`);
+  };
+
+  const openModal = (image: string) => {
+    setSelectedImage(image);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+    setIsModalOpen(false);
+  };
 
   return (
     <div className="relative w-full h-full min-h-screen bg-black text-white">
@@ -75,15 +96,15 @@ const Product: FC<ProductProps> = ({
             <h1 className="text-3xl lg:text-4xl font-bold mb-6 lg:mb-8 text-pink-500">{name}</h1>
             <p className="mb-6 lg:mb-8 text-base lg:text-lg leading-relaxed">{description}</p>
             <div className="mb-6 lg:mb-8">
-              {/* Contenedor cuadrado para video y fotos */}
+
               <div className="relative w-full h-auto min-h-[400px] sm:min-h-[600px] lg:min-h-[600px]">
-                {/* Video en la parte superior */}
+
                 {videos.length > 0 && (
                   <video controls className="absolute inset-0 w-full h-1/2 object-cover rounded-lg">
                     <source src={videos[0]} type="video/mp4" />
                   </video>
                 )}
-                {/* Imágenes en la parte inferior */}
+
                 <div className="absolute bottom-0 left-0 right-0 h-1/2 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2 p-2">
                   {images.length > 0 && images.map((img, idx) => (
                     <div key={idx} className="relative w-full h-full mt-2 hover:scale-105 transition duration-300">
@@ -92,7 +113,8 @@ const Product: FC<ProductProps> = ({
                         alt={`Product Image ${idx + 1}`}
                         layout="fill"
                         objectFit="cover"
-                        className="rounded-lg"
+                        className="rounded-lg cursor-pointer"
+                        onClick={() => openModal(img)} // Abre el modal al hacer clic
                       />
                     </div>
                   ))}
@@ -117,13 +139,13 @@ const Product: FC<ProductProps> = ({
             <div className="mb-6 lg:mb-8">
               <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Reseñas:</h2>
               <div className="flex flex-col">
-                {/* Contenedor para alinear comentarios con la sección de imágenes */}
+                
                 <div className="flex-grow">
                   <ul className="space-y-4 lg:space-y-6">
                     {reviews.map((review, idx) => (
                       <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-[#cc1184] to-[#a80054] p-4 lg:p-6 rounded-lg hover:scale-105 transition duration-300">
                         <p className="text-base lg:text-lg"><strong>{review.username}:</strong> {review.comment}</p>
-                        <p className="text-base lg:text-lg">Rating: {review.rating} / 5</p>
+                        <StarRating rating={review.rating} />
                       </li>
                     ))}
                   </ul>
@@ -136,20 +158,69 @@ const Product: FC<ProductProps> = ({
                     Precio: ${price}
                   </p>
                   <button
-                       type="button"
-                          onClick={handleAddToCart}
-                          className="w-full sm:w-2/3 lg:w-1/2 p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-[#cc1184] to-[#a80054] shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
-                          >
-                          <span className="inline-block transition duration-300 hover:scale-110">
-                            Agregar al carrito
-                          </span>
+                    type="button"
+                    onClick={handleAddToCart}
+                    className="w-full sm:w-2/3 lg:w-1/2 p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-[#cc1184] to-[#a80054] shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
+                  >
+                    <span className="inline-block transition duration-300 hover:scale-110">
+                      Agregar al carrito
+                    </span>
                   </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+        <div className="">
+          <div className="flex flex-col sm:flex-row items-start max-sm:items-center justify-between mb-4">
+            <h2 className="text-2xl sm:text-3xl font-semibold text-pink-500 text-center sm:text-left">Dejanos tu opinión:</h2>
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:items-center">
+              <StarRating rating={selectedRating} onChange={setSelectedRating} />
+            </div>
+          </div>
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            className="w-full p-4 mb-4 rounded-lg bg-black text-white border border-pink-600 bg-opacity-80"
+            rows={4}
+            placeholder="Escribe tu comentario aquí..."
+          />
+          <button
+            type="button"
+            onClick={handleAddComment}
+            className="p-2 bg-gradient-to-r from-pink-700 to-pink-500 text-white shadow-md w-full duration-800 ease-in-out transform rounded-lg"
+          >
+            <span className="inline-block text-white hover:scale-110 transition duration-300">
+              Enviar mensaje
+            </span>
+          </button>
+        </div>
       </div>
+
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+          onClick={closeModal} // Cierra el modal al hacer clic fuera del contenido
+        >
+          <div className="relative max-w-3xl mx-auto" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-white text-3xl font-bold"
+            >
+              &times;
+            </button>
+            <Image
+              src={selectedImage!}
+              alt="Product Image"
+              width={800}
+              height={600}
+              className="rounded-lg"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -17,8 +17,8 @@
       "contact": "juan.perez@example.com"
     },
     "details": [
-      "Color: Rojo, Azul, Verde",
-      "Tamaño: S, M, L, XL"
+      "Color: Rojo / Azul / Verde",
+      "Tamaño: S / M / L / XL"
     ],
     "reviews": [
       { "username": "Ana", "comment": "Excelente producto, superó mis expectativas.", "rating": 5 },
@@ -43,8 +43,8 @@
       "contact": "maria.lopez@example.com"
     },
     "details": [
-      "Color: Negro, Gris",
-      "Tamaño: M, L"
+      "Color: Negro / Gris",
+      "Tamaño: M / L"
     ],
     "reviews": [
       { "username": "Carlos", "comment": "Excelente calidad y diseño.", "rating": 5 },
@@ -69,8 +69,8 @@
       "contact": "pedro.gomez@example.com"
     },
     "details": [
-      "Color: Blanco, Negro",
-      "Tamaño: S, M"
+      "Color: Blanco / Negro",
+      "Tamaño: S / M"
     ],
     "reviews": [
       { "username": "Ana", "comment": "Aceptable para el precio.", "rating": 3 },
@@ -95,8 +95,8 @@
       "contact": "ana.martinez@example.com"
     },
     "details": [
-      "Color: Dorado, Plata",
-      "Tamaño: L, XL"
+      "Color: Dorado / Plata",
+      "Tamaño: L / XL"
     ],
     "reviews": [
       { "username": "Carlos", "comment": "Muy buena calidad.", "rating": 4 },
@@ -121,8 +121,8 @@
       "contact": "luis.fernandez@example.com"
     },
     "details": [
-      "Color: Verde, Naranja",
-      "Tamaño: M, L"
+      "Color: Verde / Naranja",
+      "Tamaño: M / L"
     ],
     "reviews": [
       { "username": "Ana", "comment": "Bueno, pero podría ser mejor.", "rating": 4 },
@@ -147,8 +147,8 @@
       "contact": "jose.perez@example.com"
     },
     "details": [
-      "Color: Azul, Verde",
-      "Tamaño: S, M, L"
+      "Color: Azul / Verde",
+      "Tamaño: S / M / L"
     ],
     "reviews": [
       { "username": "Carlos", "comment": "Increíble, vale cada centavo.", "rating": 5 },
@@ -173,8 +173,8 @@
       "contact": "marta.sanchez@example.com"
     },
     "details": [
-      "Color: Amarillo, Naranja",
-      "Tamaño: M, L"
+      "Color: Amarillo / Naranja",
+      "Tamaño: M / L"
     ],
     "reviews": [
       { "username": "Luis", "comment": "Buena calidad por el precio.", "rating": 3 },
@@ -199,8 +199,8 @@
       "contact": "fernando.diaz@example.com"
     },
     "details": [
-      "Color: Negro, Blanco",
-      "Tamaño: S, M, L, XL"
+      "Color: Negro / Blanco",
+      "Tamaño: S / M / L / XL"
     ],
     "reviews": [
       { "username": "Carlos", "comment": "Producto excelente y bien diseñado.", "rating": 4 },

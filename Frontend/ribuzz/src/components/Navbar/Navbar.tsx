@@ -211,7 +211,7 @@ const Navbar = () => {
             className={`block px-4 py-2 text-center w-full ${isActive('/services') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            services
+            Servicios
           </Link>
           <Link 
             href="/products" 
