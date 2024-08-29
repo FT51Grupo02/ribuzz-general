@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToOne, JoinTable } from "typeorm";
 import { Orders } from "./orders.entity";
 import { Products } from "./products.entity";
 import { Services } from "./services.entity";
@@ -19,37 +19,36 @@ export class Details {
         length: 100,
         nullable: true
     })
-    Horario?: string;
+    schudule?: string;
 
     @Column({
         type: 'varchar',
         length: 250,
         nullable: true
     })
-    Ubicación?: string;
+    ubication?: string;
 
     @Column({
         type: 'varchar',
         length: 50,
         nullable: true
     })
-    Tamaño?: string;
+    size?: string;
 
     @Column({
         type: 'varchar',
         length: 50,
         nullable: true
     })
-    Color?: string;
+    color?: string;
 
-
-    @ManyToMany(() => Products, (product) => product.orderdetails)
+    @ManyToMany(() => Products, (product) => product.details)
+    @JoinTable()
     products: Products[];
 
     @ManyToMany(() => Services, (services) => services.details)
     services: Services[];
 
     @OneToOne(() => Orders,(order) => order.orderDetails )
-    @JoinColumn({name: 'order_id'})
     order: Orders;
 }
