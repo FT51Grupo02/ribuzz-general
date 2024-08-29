@@ -6,7 +6,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { useState } from 'react';
 import Image from 'next/image';
 import { useAuth } from '@/components/Context/AuthContext'; // Importar el contexto de autenticación
-import {  ILoginPropsUSer } from '@/interfaces/Types';
+import { ILoginPropsUSer } from '@/interfaces/Types';
 
 // Definir el esquema de validación usando Yup
 const validationSchema = Yup.object({
@@ -21,28 +21,24 @@ const validationSchema = Yup.object({
 const LoginUser = () => {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setUser, setToken, loginUserC } = useAuth(); // Obtener la función de login del contexto
+  const { loginUserC } = useAuth(); // Obtener la función de login del contexto
 
-   const handleSubmit = async (values: ILoginPropsUSer) => {
+  const handleSubmit = async (values: ILoginPropsUSer) => {
     try {
       console.log("Valores enviados al backendCliente:", values);
       const isSuccess = await loginUserC(values); // Llamar a la función de login con los valores del formulario
       if (isSuccess) {
         router.push('/'); // Redirigir al usuario después de un login exitoso
       } else {
-        // Manejar el caso de login fallido aquí (mostrar mensajes, etc.)
         console.error("Login fallido, no se pudo redirigir");
-        // Puedes agregar aquí código para mostrar un mensaje al usuario, por ejemplo:
-        // alert("Email o contraseña incorrectos");
       }
     } catch (error) {
       console.error("Error en el login:", error);
-      // Manejar errores de login aquí (mostrar mensajes, etc.)
     }
   };
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
-    
       <div className="hidden md:flex md:w-1/2 flex-shrink-0 relative">
         <Image 
           src="/0.png" 
@@ -51,7 +47,6 @@ const LoginUser = () => {
           style={{ objectFit: 'cover' }} 
         />
       </div>
-
      
       <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 bg-black text-white">
         <div className="md:hidden relative w-full mb-4 bg-black flex items-center justify-center">
@@ -71,7 +66,7 @@ const LoginUser = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, handleChange, values, setFieldTouched }) => (
               <Form className="w-full">
                 <div className="mb-3 md:mb-4">
                   <Field
@@ -79,6 +74,10 @@ const LoginUser = () => {
                     name="email"
                     placeholder="Email"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setFieldTouched('email', true, true);
+                    }}
                   />
                   {errors.email && touched.email && (
                     <div className="text-red-500 text-xs md:text-sm">{errors.email}</div>
@@ -90,9 +89,17 @@ const LoginUser = () => {
                     name="password"
                     placeholder="*******"
                     className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                      handleChange(e);
+                      setFieldTouched('password', true, true);
+                    }}
                   />
-                  {errors.password && touched.password && (
-                    <div className="text-red-500 text-xs md:text-sm">{errors.password}</div>
+                  {touched.password && (
+                    <div className="text-red-500 text-xs md:text-sm">
+                      {!values.password.match(/[A-Z]/) && 'Debe incluir al menos una mayúscula. '}
+                      {!values.password.match(/[!@#$%^&*]/) && 'Debe incluir al menos un carácter especial. '}
+                      {values.password.length < 8 && 'Debe tener al menos 8 caracteres. '}
+                    </div>
                   )}
                 </div>
                 <button
