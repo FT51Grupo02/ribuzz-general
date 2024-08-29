@@ -58,7 +58,7 @@ const SearchBarEvents: React.FC = () => {
             <div className="flex items-center">
               <button
                 onClick={handleSearch}
-                className="px-4 py-1.5 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-cyan-400 to-cyan-600 text-gray-50 hover:filter hover:bg-white transition duration-300"
+                className="px-4 py-1.5 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-700 text-gray-50 hover:filter hover:bg-white transition duration-300"
               >
                 <span className="transition duration-300 hover:scale-110 inline-block text-lg">
                   Buscar
