@@ -1,7 +1,7 @@
 'use client'
 
+import React, { FC, useState } from 'react';
 import Image from 'next/image';
-import { FC, useState } from 'react';
 import { useCart } from '../Context/CartContext';
 import { useRouter } from 'next/navigation';
 import StarRating from '@/components/StarRating/StarRating';
@@ -52,22 +52,7 @@ const Event: FC<EventProps> = ({
   const [userReviews, setUserReviews] = useState<Review[]>(reviews);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [selectedRating, setSelectedRating] = useState<number>(5);
-
-  const renderStars = (rating: number) => {
-    const totalStars = 5;
-    const stars = [];
-
-    for (let i = 1; i <= totalStars; i++) {
-      stars.push(
-        <span key={i} className={`text-base md:text-xl lg:text-2xl ${i <= rating ? 'text-yellow-500' : 'text-gray-400'}`}>
-          ★
-        </span>
-      );
-    }
-
-    return <div className="flex">{stars}</div>;
-  };
+  const [selectedRating, setSelectedRating] = useState<number>(0);
 
   const handleAddToCart = () => {
     const eventToAdd = {
@@ -86,11 +71,11 @@ const Event: FC<EventProps> = ({
   };
 
   const handleAddComment = () => {
-    if (comment.trim()) {
+    if (comment.trim() && selectedRating > 0) {
       const newReview: Review = { username: 'Anonymous', comment: comment.trim(), rating: selectedRating };
       setUserReviews((prevReviews) => [...prevReviews, newReview]);
       setComment('');
-      setSelectedRating(5);
+      setSelectedRating(0);
     }
   };
 
@@ -175,6 +160,7 @@ const Event: FC<EventProps> = ({
               </button>
             </div>
           </div>
+          
           <div className="lg:w-2/5">
             <h2 className="text-2xl sm:text-3xl font-semibold mb-4 sm:mb-6 text-cyan-400 text-center lg:text-left">Locación:</h2>
             <p className="mb-4 text-base sm:text-lg text-center lg:text-left"><strong>Ubicación:</strong> {location}</p>
@@ -193,7 +179,7 @@ const Event: FC<EventProps> = ({
                     {userReviews.map((review, idx) => (
                       <li key={idx} className="bg-opacity-50 bg-gradient-to-r from-cyan-700 to-cyan-500 p-4 rounded-lg hover:scale-105 transition duration-300">
                         <p className="text-base sm:text-lg"><strong>{review.username}:</strong> {review.comment}</p>
-                        {renderStars(review.rating)}
+                        <StarRating rating={review.rating} onChange={() => {}} />
                       </li>
                     ))}
                   </ul>

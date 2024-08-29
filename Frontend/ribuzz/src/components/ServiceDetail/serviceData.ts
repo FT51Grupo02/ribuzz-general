@@ -55,8 +55,8 @@
         "contact": "jose.perez@example.com"
         },
         "details": [
-        "Diseño: Moderno, Clásico",
-        "Funcionalidades: E-commerce, Blog"
+        "Diseño: Moderno / Clásico",
+        "Funcionalidades: E-commerce / Blog"
         ],
         "reviews": [
         {
@@ -91,8 +91,8 @@
         "contact": "maria.lopez@example.com"
         },
         "details": [
-        "Campañas: SEO, SEM, Redes Sociales",
-        "Analítica: Básica, Avanzada"
+        "Campañas: SEO / SEM / Redes Sociales",
+        "Analítica: Básica / Avanzada"
         ],
         "reviews": [
         {
@@ -127,8 +127,8 @@
         "contact": "pedro.gomez@example.com"
         },
         "details": [
-        "Tipo: Consultoría, Litigios",
-        "Formato: Presencial, Virtual"
+        "Tipo: Consultoría / Litigios",
+        "Formato: Presencial / Virtual"
         ],
         "reviews": [
         {
@@ -163,8 +163,8 @@
         "contact": "fernando.diaz@example.com"
         },
         "details": [
-        "Tipo: Eventos, Retratos",
-        "Paquete: Básico, Avanzado"
+        "Tipo: Eventos / Retratos",
+        "Paquete: Básico / Avanzado"
         ],
         "reviews": [
         {
@@ -199,8 +199,8 @@
         "contact": "luis.fernandez@example.com"
         },
         "details": [
-        "Idioma: Inglés, Francés, Alemán",
-        "Formato: Documento, Audio"
+        "Idioma: Inglés / Francés / Alemán",
+        "Formato: Documento / Audio"
         ],
         "reviews": [
         {
@@ -235,8 +235,8 @@
         "contact": "marta.sanchez@example.com"
         },
         "details": [
-        "Tipo: Fuerza, Cardio",
-        "Ubicación: Gimnasio, Virtual"
+        "Tipo: Fuerza / Cardio",
+        "Ubicación: Gimnasio / Virtual"
         ],
         "reviews": [
         {
@@ -271,8 +271,8 @@
         "contact": "sofia.ruiz@example.com"
         },
         "details": [
-        "Plataforma: iOS, Android, Web",
-        "Funcionalidades: Personalizado, E-commerce"
+        "Plataforma: iOS / Android / Web",
+        "Funcionalidades: Personalizado / E-commerce"
         ],
         "reviews": [
         {

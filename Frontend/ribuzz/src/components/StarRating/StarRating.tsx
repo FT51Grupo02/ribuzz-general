@@ -15,7 +15,7 @@ const StarRating: FC<StarRatingProps> = ({ rating, onChange }) => {
       {[1, 2, 3, 4, 5].map((star) => (
         <span
           key={star}
-          className={`max-sm:text-5xl cursor-pointer text-3xl ${star <= rating ? 'text-yellow-500' : 'text-gray-400'}`}
+          className={`max-sm:text-4xl cursor-pointer text-3xl ${star <= rating ? 'text-yellow-500' : 'text-gray-400'}`}
           onClick={() => handleClick(star)}
         >
           ★

@@ -1,9 +1,10 @@
 'use client'
 
 import Image from 'next/image';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useCart } from '../Context/CartContext';
 import { useRouter } from 'next/navigation';
+import StarRating from '@/components/StarRating/StarRating';
 
 export interface Review {
     username: string;
@@ -41,6 +42,11 @@ const Service: FC<ServiceProps> = ({
 }) => {
     const { addToCart } = useCart();
     const router = useRouter();
+    
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+    const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [selectedRating, setSelectedRating] = useState<number>(0);
+    const [comment, setComment] = useState<string>('');
 
     const handleAddToCart = () => {
         const serviceToAdd = {
@@ -55,6 +61,29 @@ const Service: FC<ServiceProps> = ({
 
         addToCart(serviceToAdd);
         router.push('/cart');
+    };
+
+    const openModal = (image: string) => {
+        setSelectedImage(image);
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setSelectedImage(null);
+        setIsModalOpen(false);
+    };
+
+    const handleAddComment = () => {
+        if (selectedRating && comment) {
+            const newReview: Review = {
+                username: 'Usuario anónimo',
+                comment: comment,
+                rating: selectedRating
+            };
+            reviews.push(newReview);
+            setComment('');
+            setSelectedRating(0);
+        }
     };
 
     return (
@@ -92,7 +121,8 @@ const Service: FC<ServiceProps> = ({
                                                 alt={`Service Image ${idx + 1}`}
                                                 layout="fill"
                                                 objectFit="cover"
-                                                className="rounded-lg"
+                                                className="rounded-lg cursor-pointer"
+                                                onClick={() => openModal(img)} // Abre el modal al hacer clic
                                             />
                                         </div>
                                     ))}
@@ -101,12 +131,12 @@ const Service: FC<ServiceProps> = ({
                         </div>
                     </div>
                     <div className="lg:w-2/5">
-                        <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Proveedor:</h2>
+                        <h2 className="text-3xl font-semibold mb-4 text-cyan-400">Proveedor:</h2>
                         <p className="mb-4 text-lg"><strong>Nombre:</strong> {providerInfo.name || 'No disponible'}</p>
                         <p className="mb-8 text-lg"><strong>Contacto:</strong> {providerInfo.contact || 'No disponible'}</p>
                         {details?.length > 0 && (
                             <div className="mb-8">
-                                <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Detalles:</h2>
+                                <h2 className="text-3xl font-semibold mb-4 text-cyan-400">Detalles:</h2>
                                 <ul className="list-disc list-inside pl-6 text-lg space-y-2">
                                     {details.map((option, idx) => (
                                         <li key={idx}>{option}</li>
@@ -115,15 +145,15 @@ const Service: FC<ServiceProps> = ({
                             </div>
                         )}
                         <div className="mb-8">
-                            <h2 className="text-3xl font-semibold mb-6 text-cyan-400">Reseñas:</h2>
+                            <h2 className="text-3xl font-semibold text-cyan-400 mb-4">Reseñas:</h2>
                             <div className="flex flex-col">
-
                                 <div className="flex-grow">
                                     <ul className="space-y-6">
                                         {reviews.map((review, idx) => (
                                             <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-cyan-700 to-cyan-500 p-6 rounded-lg hover:scale-105 transition duration-300">
-                                                <p className="text-lg"><strong>{review.username}:</strong> {review.comment}</p>
-                                                <p className="text-lg">Rating: {review.rating} / 5</p>
+                                                <p className="text-lg"><strong>{review.username}:</strong></p>
+                                                <p className="text-lg mb-2">{review.comment}</p>
+                                                <StarRating rating={review.rating} />
                                             </li>
                                         ))}
                                     </ul>
@@ -146,7 +176,58 @@ const Service: FC<ServiceProps> = ({
                         </div>
                     </div>
                 </div>
+
+                {/* Sección de comentarios */}
+                <div className="">
+                    <div className="flex flex-col sm:flex-row items-start max-sm:items-center justify-between mb-4">
+                        <h2 className="text-2xl sm:text-3xl font-semibold text-cyan-400 text-center sm:text-left">Dejanos tu opinión:</h2>
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:items-center">
+                            <StarRating rating={selectedRating} onChange={setSelectedRating} />
+                        </div>
+                    </div>
+                    <textarea
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
+                        className="w-full p-4 mb-4 rounded-lg bg-black text-white border border-cyan-800 bg-opacity-80"
+                        rows={4}
+                        placeholder="Escribe tu comentario aquí..."
+                    />
+                    <button
+                        type="button"
+                        onClick={handleAddComment}
+                        className="p-2 bg-gradient-to-r from-cyan-700 to-cyan-500 text-white shadow-md w-full duration-800 ease-in-out transform rounded-lg"
+                    >
+                        <span className="inline-block text-white hover:scale-110 transition duration-300">
+                            Enviar mensaje
+                        </span>
+                    </button>
+                </div>
             </div>
+            
+            {isModalOpen && (
+                <div 
+                    className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+                    onClick={closeModal} // Cierra el modal al hacer clic fuera del contenido
+                >
+                    <div className="relative max-w-3xl mx-auto" onClick={(e) => e.stopPropagation()}> {/* Detiene la propagación del evento */}
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="absolute top-4 right-4 text-white text-3xl font-bold"
+                        >
+                            &times;
+                        </button>
+                        <Image
+                            src={selectedImage!}
+                            alt="Selected Image"
+                            layout="intrinsic"
+                            width={1200}
+                            height={800}
+                            className="rounded-lg"
+                        />
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
