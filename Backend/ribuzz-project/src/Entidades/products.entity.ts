@@ -61,6 +61,10 @@ export class Products {
         comment: string;
         rating: number;
     }[];
+    
+    @Column("simple-array", { nullable: true })
+    details: string[];
+
 
     @ManyToOne(() => Users, user => user.id)
     @JoinTable()
@@ -69,6 +73,7 @@ export class Products {
     @ManyToMany(() => Details, (detail) => detail.products)
     @JoinColumn()
     details: Details[];
+
 
     @ManyToMany(() => Categories, (category) => category.products)
     @JoinTable()

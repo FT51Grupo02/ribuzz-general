@@ -17,7 +17,7 @@ const Navbar = () => {
   const menuRef = useRef(null);
 
   const router = useRouter();
-  const { user, token, setUser, setToken, logout  } = useAuth(); 
+  const { user, token, setUser, setToken, logout } = useAuth();
 
   const isActive = (href: string) => pathname === href;
 
@@ -36,12 +36,12 @@ const Navbar = () => {
     // Abrir el menú al deslizar hacia abajo
     if (deltaY > 30 && !isMenuOpen) {
       setIsMenuOpen(true);
-      e.preventDefault(); // Prevenir el comportamiento predeterminado del desplazamiento
+      e.preventDefault();
     }
     // Cerrar el menú al deslizar hacia arriba
     else if (deltaY < -30 && isMenuOpen) {
       setIsMenuOpen(false);
-      e.preventDefault(); // Prevenir el comportamiento predeterminado del desplazamiento
+      e.preventDefault();
     }
   };
 
@@ -51,7 +51,6 @@ const Navbar = () => {
 
   const handleLogout = () => {
     Swal.fire({
-      //title: `Hasta luego, ${user?.name || 'Hasta Luego'}!`,
       title: `Hasta luego!`,
       text: 'Gracias por visitarnos. Te esperamos pronto!',
       icon: 'info',
@@ -62,8 +61,8 @@ const Navbar = () => {
     });
   };
 
-   // Extraer las iniciales del nombre del usuario
-   const getInitials = (name: string) => {
+  // Extraer las iniciales del nombre del usuario
+  const getInitials = (name: string) => {
     const nameParts = name.split(' ');
     const initials = nameParts.map(part => part[0].toUpperCase()).join('');
     return initials.slice(0, 2); // Tomar solo las primeras dos letras
@@ -105,10 +104,10 @@ const Navbar = () => {
             Inicio
           </Link>
           <Link 
-            href="/marketplace" 
-            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/marketplace') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
+            href="/services" 
+            className={`transition duration-300 hover:scale-105 ease-in-out px-4 py-2 rounded-xl ${isActive('/services') ? 'bg-white text-black' : 'hover:bg-white hover:text-black'}`}
           >
-            Marketplace
+            Servicios
           </Link>
           <Link 
             href="/products" 
@@ -147,10 +146,10 @@ const Navbar = () => {
                 />
               </Link>
               
-                <Link href="/cart">
-                  <CartIcon isActive={isActive('/cart')} />
-                </Link>
-                <div className="relative flex items-center justify-center w-8 h-8 bg-gray-500 text-white rounded-full">
+              <Link href="/cart">
+                <CartIcon isActive={isActive('/cart')} />
+              </Link>
+              <div className="relative flex items-center justify-center w-8 h-8 bg-gray-500 text-white rounded-full">
                 {user ? getInitials(user.name) : ''}
               </div>
               <button 
@@ -164,13 +163,13 @@ const Navbar = () => {
             <>
               <Link href="/login" className="text-gray-600 hover:text-black">
                 <button className="flex items-center text-white">
-                  <FaUser size={20} />
-                  <span className="ml-2">Log In</span>
+                  <FaUser size={20} className='-translate-y-0.5 transition duration-300 transform hover:scale-105 mr-1 hover:text-pink-400' />
+                  <span className="ml-2 transition duration-300 transform hover:scale-105 hover:text-pink-400">Ingresar</span>
                 </button>
               </Link>
               <Link href="/register" className="text-gray-600 hover:text-black">
                 <button className="flex items-center text-white">
-                  <span className="ml-2">Register</span>
+                  <span className="ml-2 transition duration-300 transform hover:scale-105 hover:text-pink-400">Registro</span>
                 </button>
               </Link>
             </>
@@ -192,68 +191,64 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Mobile Menu */}
       <div 
-        className={`fixed top-[68px] opacity-90 right-0 w-full bg-black lg:hidden transition-transform duration-300 ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'} p-4 overflow-x-hidden z-40`}
+        className={`fixed top-[80px] opacity-90 right-0 w-full overflow-visible bg-black lg:hidden transition-transform duration-300 ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'} p-4 overflow-hidden z-40`}
         ref={menuRef}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
-        <div className="flex flex-col items-center relative">
+        <div className="relative flex flex-col items-center">
           <Link 
             href="/" 
             className={`block px-4 py-2 text-center w-full ${isActive('/') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            Home
+            Inicio
           </Link>
           <Link 
-            href="/marketplace" 
-            className={`block px-4 py-2 text-center w-full ${isActive('/marketplace') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
+            href="/services" 
+            className={`block px-4 py-2 text-center w-full ${isActive('/services') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            Marketplace
+            services
           </Link>
           <Link 
             href="/products" 
             className={`block px-4 py-2 text-center w-full ${isActive('/products') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            Products
+            Productos
           </Link>
           <Link 
             href="/events" 
             className={`block px-4 py-2 text-center w-full ${isActive('/events') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            Events
+            Eventos
           </Link>
           <Link 
             href="/about" 
             className={`block px-4 py-2 text-center w-full ${isActive('/about') ? 'bg-white text-black' : 'text-white hover:bg-white hover:text-black'}`}
             onClick={toggleMenu}
           >
-            About
+            Nosotros
           </Link>
-          {token && ( //si el usuario esta autenticado aparece este boton
-          <>
+          {token && (
             <button 
-            onClick={handleLogout} 
-            className="block px-4 py-2 text-center w-full text-white hover:bg-red-600 hover:text-white"
-          >
-            <div className="flex items-center space-x-2">
-              <FiLogOut size={20} />
-              <span>Logout</span>
-            </div>
-         </button>
-         </>
-        )}
-
-          {/* Close Button */}
+              onClick={handleLogout} 
+              className="block px-4 py-2 text-center w-full text-white hover:bg-red-600 hover:text-white"
+            >
+              <div className="flex items-center space-x-2">
+                <FiLogOut size={20} />
+                <span>Logout</span>
+              </div>
+            </button>
+          )}
+          <div className="w-16 h-1 bg-pink-500 opacity-80 rounded-full mb-6 mt-4 cursor-pointer" />
           <button 
             onClick={toggleMenu} 
-            className="absolute top-2 right-2 text-white"
+            className={`absolute inset-0 m-auto bg-black text-white rounded-full w-12 h-12 flex items-center justify-center top-full opacity-90 ${isMenuOpen ? 'overflow-visible' : 'hidden'}`}
           >
             <FaTimes size={24} />
           </button>
@@ -264,6 +259,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
- 

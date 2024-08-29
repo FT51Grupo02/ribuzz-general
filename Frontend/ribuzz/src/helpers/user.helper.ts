@@ -60,21 +60,29 @@ export const getAuthenticatedUser = async (token: string): Promise<IUser | null>
 
 //Helper para actualizar informacion
 
-export const updateUserProfile = async (id: string, data: { name: string; email: string; password: string; date?: string; rol?: string; }, token: string) => {
-    console.log('Token:', token);
-    const response = await fetch(`${APIURL}/users/${id}`, {
+export const updateUserProfile = async (
+    id: string, 
+    data: { name: string; email: string; password: string; }, 
+    token: string
+  ) => {
+    try {
+      const response = await fetch(`${APIURL}/users/${id}`, {
         method: 'PUT',
         headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
-    });
-
-    if (!response.ok) {
-        throw new Error('Error al actualizar perfil');
+        body: JSON.stringify(data),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar el perfil. Por favor, intenta de nuevo.');
+      }
+  
+      return await response.json();
+    } catch (error) {
+      console.error('Error en la solicitud de actualización:', error);
+      throw error;  // Propagar el error para que pueda ser manejado por el componente
     }
-
-    return response.json();
-};
+  };
 

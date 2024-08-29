@@ -7,7 +7,7 @@ import PaginatorCyan from '@/components/Paginator/PaginatorCyan';
 import CardServices from '@/components/Cards/cardsservices';
 import { Service } from '@/components/Cards/types';
 
-const Marketplace: React.FC = () => {
+const Services: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [services, setServices] = useState<Service[]>([]);
   const totalPages = 3;
@@ -47,7 +47,7 @@ const Marketplace: React.FC = () => {
       </div>
       <div className="relative z-10 pb-10 shadow-2xl">
         <h2 className="max-sm:px-1 pt-3 text-center text-2xl md:text-3xl lg:text-4xl font-extralight text-black" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8', textShadow: '1px 1px 2px rgba(0, 0, 0, 0.3), -1px -1px 2px rgba(0, 0, 0, 0.3)' }}>
-          El mejor <span style={{ color: '#1EC9E5' }}>Marketplace</span> para Emprendedores
+          Los mejores <span style={{ color: '#1EC9E5' }}>Servicios</span> de Emprendedores
         </h2>
         <SearchBarServices />
         <CardServices services={services} />
@@ -61,4 +61,4 @@ const Marketplace: React.FC = () => {
   );
 };
 
-export default Marketplace;
+export default Services;

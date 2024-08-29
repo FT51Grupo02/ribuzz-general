@@ -30,7 +30,7 @@ export class ServicesController {
     
     @Put(':id')
     async updateService(@Param('id') id: string, @Body() service: Services) {
-        return this.servicesService.updateService(id, service);
+      //  return this.servicesService.updateService(id, service);
     }
 
     

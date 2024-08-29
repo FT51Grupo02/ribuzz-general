@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -14,6 +13,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ServicesModule } from './services/services.module';
 import { OrderModule } from './orders/orders.module';
 import { EventModule } from './Eventos/events.module';
+import { StripeModule } from './stripe/stripe.module';
 
 @Module({
   imports: [
@@ -39,7 +39,8 @@ import { EventModule } from './Eventos/events.module';
     AuthModule,
     ServicesModule,
     OrderModule,
-    EventModule
+    EventModule,
+    StripeModule
   ],
   controllers: [AppController],
   providers: [AppService],
