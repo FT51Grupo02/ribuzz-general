@@ -1,7 +1,6 @@
+/* eslint-disable prettier/prettier */
 import { ArrayMinSize, IsArray, IsNotEmpty, IsUUID } from "class-validator";
 import { Products } from "../../Entidades/products.entity";
-
-
 
 
 export class CreateOrderDto{
