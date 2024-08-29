@@ -56,7 +56,7 @@ export function FooterWithSitemap() {
             variant="small"
             className="mb-4 text-center font-normal text-blue-gray-900 md:mb-0 "
           >
-            &copy; {currentYear} <a href="#">RiBuzz</a>. Todos
+            Desarrollado por C.D.N.L.S &copy; {currentYear} <a href="#">RiBuzz</a>. Todos
             los Derechos Reservados.
           </Typography>
           <div className="flex gap-4 text-blue-gray-900 sm:justify-center">
