@@ -13,7 +13,7 @@ export class FilterDto{
 
     @IsOptional()
     @IsNumber()
-    rate:number
+    rating:number
 
     @IsOptional()
     @IsDate()

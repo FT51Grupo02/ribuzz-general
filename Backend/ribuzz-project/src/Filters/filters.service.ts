@@ -1,39 +1,50 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from '../Entidades/products.entity'
 import {FilterDto} from './Dto/filters.dto' 
+//import { Services } from 'src/Entidades/services.entity';
 
 @Injectable()
 export class FilterService {
   constructor(
     @InjectRepository(Products)
     private readonly productRepository: Repository<Products>,
+    //private readonly serviceRepository: Repository<Services>,
   ) {}
 
-  async search(dto:FilterDto): Promise<Products[]> {
-    const queryBuilder = this.productRepository.createQueryBuilder('product');
+  async search(dto:FilterDto):Promise<Products[]> {
+      try{
+       
+        const arrayProduct = await this.productRepository.createQueryBuilder('product') 
+        
+        const filter = {
 
-    // Construir filtros dinámicamente
-    const filters = {
-      ...(dto.categorie && { categorie: `%${dto.categorie}%` }),
-      ...(dto.price && { price: dto.price }),
-      ...(dto.rate && { rate: dto.rate }),
-      ...(dto.publicationDate && { publicationDate: dto.publicationDate }),
-      ...(dto.populate && { populate: dto.populate }),
-      ...(dto.location && { location: dto.location }),
-    };
-
-    // Aplicar filtros
-    Object.entries(filters).forEach(([key, value]) => {
-        if (key === 'categorie' || key === 'location') {
-          queryBuilder.andWhere(`product.${key} LIKE :${key}`, { [`${key}`]: value });
-        } else {
-          queryBuilder.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
+          ...(dto.categorie && {categotie:dto.categorie}),
+          ...(dto.price && {price:dto.price}),
+          ...(dto.rating && {rating:dto.rating}),
+          ...(dto.publicationDate && {publicationDate:dto.publicationDate}),
+          ...(dto.populate && {populate:dto.populate}),
+          ...(dto.location && {location:dto.location}),
         }
-      });
+        
+        //Aplicación de los filtros establecidos 
 
-    return await queryBuilder.getMany();
+        Object.entries(filter).forEach(([key, value]) => {
+          if (key === 'categorie' || key === 'location') {
+            arrayProduct.andWhere(`product.${key} LIKE :${key}`, { [`${key}`]: value });
+          } else {
+            arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
+          }
+        })
+
+        return await arrayProduct.getMany()
+
+      }
+      catch(error){
+        throw new InternalServerErrorException("Error al encontrar el producto"+ error) 
+      }
   }
+  
 }
