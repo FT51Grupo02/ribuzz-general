@@ -43,8 +43,8 @@ const LoginEntrepeneur = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
-      <div className="hidden md:flex md:w-1/2 flex-shrink-0 relative">
+    <div className="flex flex-col md:flex-row h-screen bg-black overflow-x-hidden">
+      <div className="hidden md:flex md:w-1/2 flex-shrink-0 relative md:translate-x-3 lg:translate-x-0">
         <Image 
           src="/14.png" 
           alt="Imagen de fondo" 
@@ -56,7 +56,7 @@ const LoginEntrepeneur = () => {
 
       <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 bg-black text-white relative z-10">
         {/* Imagen en la parte superior solo en móviles */}
-        <div className="md:hidden relative w-full mb-4">
+        <div className="md:hidden relative w-full mb-6">
           <Image 
             src="/5.png" 
             alt="Logo" 
@@ -66,11 +66,11 @@ const LoginEntrepeneur = () => {
           />
         </div>
         
-        <div className="w-full max-w-sm md:max-w-lg p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg mb-4">
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 md:mb-6">INGRESAR</h1>
+        <div className="w-full max-w-md md:max-w-md p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg mb-4">
+          <h1 className="text-5xl md:text-6xl font-bold mb-4 md:mb-6 lg:text-7xl">INGRESAR</h1>
           <h3 className="text-base md:text-lg font-medium mb-4 md:mb-6">Ingresa con tu cuenta de emprendedor</h3>
           <Formik
-            initialValues={{ email: '', password: '', rol:'emprendedor' }}
+            initialValues={{ email: '', password: '', rol: 'emprendedor' }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
@@ -81,7 +81,7 @@ const LoginEntrepeneur = () => {
                     type="email"
                     name="email"
                     placeholder="tucorreo@mail.com"
-                    className="w-full p-3 text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-gray-300"
+                    className="w-full p-3 text-base md:text-lg rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-gray-300"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleChange(e);
                       setFieldTouched('email', true, true);
@@ -96,7 +96,7 @@ const LoginEntrepeneur = () => {
                     type={showPassword ? "text" : "password"}
                     name="password"
                     placeholder="●●●●●●●●●"
-                    className="w-full p-3 mb-2 text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-gray-300"
+                    className="w-full p-3 text-base md:text-lg rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-gray-300"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleChange(e);
                       setFieldTouched('password', true, true);
@@ -114,7 +114,7 @@ const LoginEntrepeneur = () => {
                   type="submit"
                   className="w-full p-3 mb-6 text-white font-semibold rounded-full bg-gradient-to-r from-[#C87DAB] to-[#C12886] shadow-md hover:shadow-lg transition-shadow"
                 >
-                  <span className="transition duration-300 hover:scale-110 inline-block text-lg">
+                  <span className="transition duration-300 hover:scale-110 inline-block text-lg md:text-xl">
                     Ingresar
                   </span>
                 </button>
@@ -126,11 +126,11 @@ const LoginEntrepeneur = () => {
           <h5 className="text-sm md:text-base mb-2">O continúa con:</h5>
           <button
             type="button"
-            className="flex items-center bg-[#303030] text-white p-3 rounded-lg text-base md:text-sm"
+            className="flex items-center bg-[#303030] text-white p-3 rounded-lg text-base md:text-lg"
           >
-            <FcGoogle className="w-6 h-6 md:w-8 md:h-8 mr-2 transition duration-300 hover:scale-110" />
+            <FcGoogle className="w-6 h-6 md:w-7 md:h-7 mr-2 transition duration-300 hover:scale-110" />
             <span className="transition duration-300 hover:scale-110 inline-block text-lg">
-            Google
+              Google
             </span>
           </button>
         </div>

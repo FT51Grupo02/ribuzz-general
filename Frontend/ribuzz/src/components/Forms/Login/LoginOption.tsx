@@ -2,7 +2,7 @@
 
 import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'; // Asegúrate de que la importación sea correcta
 import { FormValues } from '../../../interfaces/FormValues';
 import Image from 'next/image';
 
@@ -23,10 +23,10 @@ const LoginOption = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen">
+    <div className="flex flex-col md:flex-row h-screen bg-black overflow-x-hidden ">
       
       {/* Imagen para pantallas grandes */}
-      <div className="hidden md:flex md:w-1/2 flex-shrink-0 relative">
+      <div className="hidden md:block md:w-1/2 flex-shrink-0 relative md:translate-x-3 lg:translate-x-0">
         <Image 
           src="/14.png" 
           alt="Imagen de fondo" 
@@ -37,7 +37,7 @@ const LoginOption = () => {
       </div>
      
       {/* Sección del Formulario */}
-      <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 bg-black text-white relative z-10">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-10 bg-black text-white relative z-10">
         {/* Imagen en la parte superior solo en móviles */}
         <div className="md:hidden relative w-full mb-4">
           <Image 
@@ -49,8 +49,8 @@ const LoginOption = () => {
           />
         </div>
         <div className="w-full max-w-sm md:max-w-lg p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg">
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 md:mb-6">INGRESAR</h1>
-          <h3 className="text-base md:text-lg font-medium mb-4 md:mb-6">Elige una opción:</h3>
+          <h1 className="text-5xl max-sm:text-center md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 max-sm:mb-8">INGRESAR</h1>
+          <h3 className="text-base md:text-lg max-sm:text-center lg:text-xl font-medium mb-4 md:mb-6">Elige una opción:</h3>
           <Formik
             initialValues={{ userType: '' }}
             validationSchema={validationSchema}
@@ -74,6 +74,16 @@ const LoginOption = () => {
                   >
                     CUENTA DE USUARIO
                   </button>
+                </div>
+                {/* Imagen debajo de los botones solo en pantallas pequeñas */}
+                <div className="md:hidden flex justify-center mt-14">
+                  <Image 
+                    src="/9.png" 
+                    alt="Imagen adicional" 
+                    width={180} 
+                    height={100}
+                    className="mx-auto"
+                  />
                 </div>
               </Form>
             )}

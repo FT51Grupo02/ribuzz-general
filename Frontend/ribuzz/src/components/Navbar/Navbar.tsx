@@ -181,7 +181,7 @@ const Navbar = () => {
           {/* Menu Desplegable */}
           <button 
             onClick={toggleMenu} 
-            className="block lg:hidden relative text-white focus:outline-none translate-y-0.5"
+            className="block lg:hidden relative text-white focus:outline-none"
           >
             <Image 
               src="/menu.png" 
