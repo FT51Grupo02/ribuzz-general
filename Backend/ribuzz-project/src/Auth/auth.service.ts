@@ -25,7 +25,7 @@ export class AuthService {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
             
-           if(find_user.rol !== "cliente"){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            if(find_user.rol !== "cliente"){throw new BadRequestException("El rol no esta asignado con el usuario")}
 
             const usePayload = {
                 id: find_user.id,
@@ -62,7 +62,7 @@ export class AuthService {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
             
-           if(find_user.rol !== "emprendedor"){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            if(find_user.rol !== "emprendedor"){throw new BadRequestException("El rol no esta asignado con el usuario")}
 
             const usePayload = {
                 id: find_user.id,
@@ -84,4 +84,17 @@ export class AuthService {
             }
         }
     }
+
+    // AuthGoogle
+
+    googleLogin(req){
+        if(!req.user){
+            return 'No user from google'
+        }
+        return {
+            message: 'User Info from Google',
+            user: req.user
+        }
+    }
+
 }
