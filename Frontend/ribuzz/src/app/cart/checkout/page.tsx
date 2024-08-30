@@ -1,6 +1,11 @@
+'use client'
+import React from 'react';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
 import Checkout from '@/components/Checkout/Checkout';
 import Image from 'next/image';
-import React from 'react';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
 
 const CheckoutP: React.FC = () => {
   return (
@@ -15,10 +20,13 @@ const CheckoutP: React.FC = () => {
       />
 
       <div className="relative">
-        <Checkout />
+          <Elements stripe={stripePromise}>
+          <Checkout />
+        </Elements>
+           
       </div>
     </div>
   );
-}
+};
 
 export default CheckoutP;

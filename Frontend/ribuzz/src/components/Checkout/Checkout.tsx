@@ -6,6 +6,11 @@ import { useCart } from '@/components/Context/CartContext';
 import { useAuth } from '../Context/AuthContext';
 import PayCard from './PayCard';
 import Swal from 'sweetalert2';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+
+// Cargar Stripe con tu clave pública desde el archivo .env.local
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
 
 const Checkout: React.FC = () => {
   const { user, token } = useAuth();
@@ -13,6 +18,7 @@ const Checkout: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [orderDate, setOrderDate] = useState<string>('');
+  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false); // Nuevo estado para verificar el éxito del pago
 
   const router = useRouter();
 
@@ -32,6 +38,55 @@ const Checkout: React.FC = () => {
     (total, product) => total + product.price * (product.quantity || 1),
     0
   );
+
+  // Manejar la finalización del pedido después de un pago exitoso
+  const handlePlaceOrder = async (paymentIntent: any) => {
+    setLoading(true);
+    setPaymentSuccess(false); // Reiniciar el estado de éxito
+
+    console.log('Datos enviados al backend:', {
+      userId: user?.id,
+      cart: sanitizedCart,
+      total,
+      paymentIntentId: paymentIntent.id,
+    });
+
+    try {
+      const response = await fetch('http://localhost:3000/orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          userId: user?.id,
+          cart: sanitizedCart,
+          total,
+          paymentIntentId: paymentIntent.id,
+        }),
+      });
+
+      const result = await response.json();
+
+      console.log('Respuesta del backend en Checkout:', result);
+
+      if (result.error) {
+        setError(result.error);
+        Swal.fire('Error', result.error, 'error');
+      } else {
+        setPaymentSuccess(true); // Marcar el pago como exitoso
+        Swal.fire('Éxito', 'Compra realizada con éxito', 'success');
+        clearCart();
+        router.push('/cart'); // Redirigir a la página de agradecimiento
+      }
+    } catch (err) {
+      console.error('Error:', err);
+      setError('Error al realizar la compra.');
+      Swal.fire('Error', 'Error al realizar la compra.', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-black text-white p-4 bg-opacity-80">
@@ -65,7 +120,7 @@ const Checkout: React.FC = () => {
 
           <div className="bg-transparent p-4 rounded-lg shadow-lg border border-transparent mb-6">
             <h2 className="text-2xl font-bold mb-2 text-pink-400 max-md:text-center">Productos</h2>
-            {cart.length === 0 ? (
+            {sanitizedCart.length === 0 ? (
               <p>No hay productos.</p>
             ) : (
               <div className="space-y-4">
@@ -98,7 +153,9 @@ const Checkout: React.FC = () => {
         {/* Componente de pago y resumen */}
         <div className="lg:w-1/3 flex flex-col lg:sticky lg:top-0 lg:space-y-6 lg:ml-8">
           <div className="bg-transparent p-4 rounded-lg shadow-lg border border-transparent mb-6">
-            <PayCard />
+          <Elements stripe={stripePromise}>
+        <PayCard onPaymentSuccess={handlePlaceOrder} />
+      </Elements>
           </div>
 
           <div className="bg-transparent p-4 rounded-lg shadow-lg border border-transparent flex flex-col lg:flex-row lg:items-center lg:justify-between">
@@ -111,11 +168,11 @@ const Checkout: React.FC = () => {
             <div className="mt-4 lg:mt-0">
               {error && <p className="text-red-500 mb-4">{error}</p>}
               <button
-                /* onClick={handlePlaceOrder} */
+                onClick={() => handlePlaceOrder({ id: 'payment-intent-id' })}
                 className={`w-full p-3 md:p-4 mb-4 text-white font-semibold rounded-full bg-gradient-to-r from-[#C87DAB] to-[#C12886] shadow-md hover:shadow-lg transition-shadow text-sm md:text-base ${
-                  loading ? 'opacity-50 cursor-not-allowed' : ''
+                  loading || !paymentSuccess ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
-                disabled={loading}
+                disabled={loading || !paymentSuccess}
               >
                 <span className="inline-block transition duration-300 hover:scale-110">
                   {loading ? 'Procesando...' : 'Realizar compra'}
