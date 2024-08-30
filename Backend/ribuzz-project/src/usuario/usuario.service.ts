@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import { Users } from '../Entidades/user.entity';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 import * as bcrypt from "bcrypt";
+import { transporter } from 'src/config/nodemailer';
 
 @Injectable()
 export class UsuarioService {
@@ -34,6 +35,15 @@ export class UsuarioService {
                 }
                 const newUser = await this.userRepository.save(user);
                 const { password, rol, ...userPassword } = newUser;
+               
+                 const info = await transporter.sendMail({
+                 from: '"RiBuzz team👻" <pfgrupo2ft51@gmail.com>', 
+                  to: newUser.email, 
+                  subject: "Welcome!", 
+                  text: "welcome to RiBuzz",
+                  html: `<h1>bienvenido ${newUser.name}!!</h1>`, 
+                 });
+
                 return userPassword;
 
             } catch (error) {
