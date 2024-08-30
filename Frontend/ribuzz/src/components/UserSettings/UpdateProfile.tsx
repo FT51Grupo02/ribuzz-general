@@ -105,7 +105,7 @@ const UpdateProfile: React.FC = () => {
                                     <div className="text-red-500 text-sm">{errors.name}</div>
                                 ) : null}
                             </div>
-
+ 
                             <div>
                                 <label htmlFor="email" className="block text-sm font-medium text-gray-300 pt-4 overflow-hidden text-ellipsis">Email</label>
                                 <Field
