@@ -25,26 +25,26 @@ const CartIcon: React.FC<CartIconProps> = ({ className, isActive }) => {
   return (
     <div className={`relative ${className}`}>
       <button
-       className={`flex items-center p-1 rounded-full hover:ring-2 hover:ring-white`}   /* ${isActive ? 'bg-white' : ''} ${isActive ? 'filter invert' : ''} */
-         /* onMouseEnter={() => setDropdownOpen(true)}
-        onMouseLeave={() => setDropdownOpen(false)}
-        aria-label="Cart" */
+        className={`flex items-center rounded-full hover:ring-1 ${isActive ? 'text-black' : 'text-white'}`}
+        onClick={() => setDropdownOpen(prev => !prev)}  // Alterna el estado del desplegable (abierto/cerrado)
+        aria-label="Cart"
       >
         <Image
           src="/cart.png"
           alt="Cart"
           width={30}
           height={40}
-          className="transition duration-300"
+          className={`transition duration-300 ${isActive ? 'filter invert' : ''}`}
         />
         {cart.length > 0 && (
-          <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center -translate-x-1/6 translate-y-1/5">
-          {cart.length}
-        </span>
+          <span className="absolute bottom-4 left-4 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center -translate-x-1/6 translate-y-1/5">
+            {cart.length}
+          </span>
         )}
       </button>
 
-      {dropdownOpen && (
+      {/* Menú desplegable del carrito - Desactivado */}
+      {false && (  // Cambiado a false para ocultar el desplegable
         <div 
           className="absolute right-0 top-full mt-2 w-60 bg-white shadow-lg rounded-lg p-4 border border-gray-200 z-50"
           role="menu"
@@ -52,7 +52,7 @@ const CartIcon: React.FC<CartIconProps> = ({ className, isActive }) => {
           <div className="flex justify-between items-center mb-2">
             <h3 className="text-lg font-semibold">Cart</h3>
             <button 
-              onClick={() => setDropdownOpen(false)} 
+              onClick={() => setDropdownOpen(false)}
               className="text-gray-600 hover:text-black"
               aria-label="Close cart"
             >
@@ -63,7 +63,7 @@ const CartIcon: React.FC<CartIconProps> = ({ className, isActive }) => {
             {cart.map((item: IProduct) => (
               <li key={item.id} className="flex justify-between text-gray-700">
                 <span>{item.name}</span>
-                <span>x ${item.price.toFixed(2)}</span>
+                <span>x ${Number(item.price).toFixed(2)}</span>
               </li>
             ))}
           </ul>

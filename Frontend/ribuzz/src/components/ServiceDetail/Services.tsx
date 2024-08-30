@@ -76,7 +76,7 @@ const Service: FC<ServiceProps> = ({
     const handleAddComment = () => {
         if (selectedRating && comment) {
             const newReview: Review = {
-                username: 'Usuario anónimo',
+                username: 'Anónimo',
                 comment: comment,
                 rating: selectedRating
             };

@@ -111,7 +111,7 @@ const HomeContainer: React.FC = () => {
             <FaArrowRight className="text-white text-4xl" />
           </div>
           {/* Imagen */}
-          <img src="/5.png" alt="Imagen descriptiva" className="w-29 h-28 flex items-center justify-center border-4 border-transparent rounded-full z-20 " />
+          <img src="/5.png" alt="Imagen descriptiva" className="my-4 w-29 h-28 flex items-center justify-center border-4 border-transparent rounded-full z-20 ml-4"/>
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
           <div className="w-24 h-24 flex items-center justify-center border-4 border-white rounded-full">
@@ -122,7 +122,7 @@ const HomeContainer: React.FC = () => {
           <p className="text-[#00e1d4] text-center font-bold mb-4 font-Moonhouse">Eventos</p>
           <p className="text-gray-300 text-center font-Moonhouse">Fomentar entorno de negocios y networking</p>
         </div>
-        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
+        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center mt-6">
           <div className="w-24 h-24 flex items-center justify-center border-4 border-white rounded-full">
             <FaPeopleGroup className="text-6xl text-gray-100" />
           </div>

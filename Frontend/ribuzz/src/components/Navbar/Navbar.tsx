@@ -135,28 +135,31 @@ const Navbar = () => {
             <>
               <Link 
                 href="/user" 
-                className={`relative hover:bg-white rounded-full p-1 ${isActive('/profile') ? 'bg-white' : ''}`}
+                className={`relative rounded-full hover:ring-2 hover:ring-white p-1 ${isActive('/user') ? 'bg-white text-black' : ''}`}
               >
                 <Image 
                   src="/profile.png" 
                   alt="Profile" 
                   width={30} 
                   height={40} 
-                  className={`transition duration-300 ${isActive('/profile') ? 'filter invert' : 'hover:filter hover:invert'}`}
+                  className={`transition duration-300 ${isActive('/user') ? 'filter invert' : ''}`}
                 />
               </Link>
               
-              <Link href="/cart">
+              <Link 
+                href="/cart" 
+                className={`relative rounded-full hover:ring-2 hover:ring-white p-1 ${isActive('/cart') ? 'bg-white text-black' : ''}`}
+              >
                 <CartIcon isActive={isActive('/cart')} />
               </Link>
-              <div className="relative flex items-center justify-center w-8 h-8 bg-gray-500 text-white rounded-full">
+              <div className="relative flex items-center justify-center border w-8 h-8 text-2xl bg-black text-white  rounded-full">
                 {user ? getInitials(user.name) : ''}
               </div>
               <button 
                 onClick={handleLogout} 
-                className="hidden md:block text-white focus:outline-none"
+                className="hidden md:block text-white focus:outline-none "
               >
-                <FiLogOut size={20} />
+                <FiLogOut size={28} className='transition duration-300 transform hover:scale-110'/>
               </button>
             </>
           ) : (
@@ -235,15 +238,15 @@ const Navbar = () => {
             Nosotros
           </Link>
           {token && (
-            <button 
-              onClick={handleLogout} 
-              className="block px-4 py-2 text-center w-full text-white hover:bg-red-600 hover:text-white"
-            >
-              <div className="flex items-center space-x-2">
-                <FiLogOut size={20} />
-                <span>Logout</span>
-              </div>
-            </button>
+          <button 
+            onClick={handleLogout} 
+            className="block px-4 py-2 text-center w-full text-white hover:bg-red-600 hover:text-white flex items-center justify-center"
+          >
+              <span>Cerrar Sesión</span>
+            <div className="ml-2 flex items-center space-x-2">
+              <FiLogOut size={20} />
+            </div>
+          </button>
           )}
           <div className="w-16 h-1 bg-pink-500 opacity-80 rounded-full mb-6 mt-4 cursor-pointer" />
           <button 

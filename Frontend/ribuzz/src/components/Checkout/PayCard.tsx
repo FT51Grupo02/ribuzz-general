@@ -33,8 +33,8 @@ const PayCard: React.FC = () => {
 
   return (
     <div className="bg-transparent p-4 rounded-lg shadow-lg border border-transparent max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-4 border-b border-gray-600 pb-2">Información de Pago</h2>
-      <form onSubmit={formik.handleSubmit} className="space-y-3">
+      <h2 className="text-2xl font-bold mb-4 border-b border-gray-600 pb-2 text-pink-400">Información de Pago</h2>
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="cardName" className="block text-sm font-medium">Nombre en la tarjeta</label>
           <input
@@ -44,10 +44,10 @@ const PayCard: React.FC = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.cardName}
-            className="w-full p-2 mt-1 bg-gray-800 text-white rounded-lg"
+            className="w-full p-3 mt-1 bg-black border border-pink-400 border-opacity-40 text-white rounded-lg text-sm md:text-base"
           />
           {formik.touched.cardName && formik.errors.cardName ? (
-            <div className="text-red-500 text-sm mt-1">{formik.errors.cardName}</div>
+            <div className="text-pink-300 text-xs md:text-sm mt-1">{formik.errors.cardName}</div>
           ) : null}
         </div>
 
@@ -60,15 +60,15 @@ const PayCard: React.FC = () => {
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             value={formik.values.cardNumber}
-            className="w-full p-2 mt-1 bg-gray-800 text-white rounded-lg"
+            className="w-full p-3 mt-1 bg-black border border-pink-400 border-opacity-40 text-white rounded-lg text-sm md:text-base"
           />
           {formik.touched.cardNumber && formik.errors.cardNumber ? (
-            <div className="text-red-500 text-sm mt-1">{formik.errors.cardNumber}</div>
+            <div className="text-pink-300 text-xs md:text-sm mt-1">{formik.errors.cardNumber}</div>
           ) : null}
         </div>
 
-        <div className="flex space-x-3">
-          <div className="w-1/2">
+        <div className="flex flex-col sm:flex-row sm:space-x-3">
+          <div className="flex-1">
             <label htmlFor="expiryDate" className="block text-sm font-medium">Fecha de Vencimiento</label>
             <input
               id="expiryDate"
@@ -77,16 +77,16 @@ const PayCard: React.FC = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.expiryDate}
-              className="w-full p-2 mt-1 bg-gray-800 text-white rounded-lg"
+              className="w-full p-3 mt-1 bg-black border border-pink-400 border-opacity-40 text-white rounded-lg text-sm md:text-base"
               placeholder="MM/YY"
             />
             {formik.touched.expiryDate && formik.errors.expiryDate ? (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.expiryDate}</div>
+              <div className="text-pink-300 text-xs md:text-sm mt-1">{formik.errors.expiryDate}</div>
             ) : null}
           </div>
 
-          <div className="w-1/2">
-            <label htmlFor="cvv" className="block text-sm font-medium">CVV</label>
+          <div className="flex-1">
+            <label htmlFor="cvv" className="block text-sm font-medium max-md:pt-4">CVV</label>
             <input
               id="cvv"
               name="cvv"
@@ -94,17 +94,21 @@ const PayCard: React.FC = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               value={formik.values.cvv}
-              className="w-full p-2 mt-1 bg-gray-800 text-white rounded-lg"
+              className="w-full p-3 mt-1 bg-black border border-pink-400 border-opacity-40 text-white rounded-lg text-sm md:text-base "
             />
             {formik.touched.cvv && formik.errors.cvv ? (
-              <div className="text-red-500 text-sm mt-1">{formik.errors.cvv}</div>
+              <div className="text-pink-300 text-xs md:text-sm mt-1">{formik.errors.cvv}</div>
             ) : null}
           </div>
         </div>
 
-        <button type="submit" className="w-50 p-2 mt-4 bg-gradient-to-r from-[#C87DAB] to-[#C12886] text-white font-bold rounded-full">
-          Confirmar Tarjeta
-        </button>
+        <div className="flex justify-center">
+          <button type="submit" className="w-full p-3 mt-4 bg-gradient-to-r from-[#C87DAB] to-[#C12886] text-white font-bold rounded-full text-sm md:text-base">
+            <span className="inline-block transition duration-300 hover:scale-110">
+              Confirmar Tarjeta
+            </span>
+          </button>
+        </div>
       </form>
     </div>
   );

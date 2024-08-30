@@ -64,9 +64,18 @@ const Product: FC<ProductProps> = ({
   };
 
   const handleAddComment = () => {
-    // Lógica para manejar el envío del comentario
-    console.log(`Comentario enviado: ${comment} con calificación de ${selectedRating}`);
-  };
+    if (selectedRating && comment) {
+        const newReview: Review = {
+            username: 'Anónimo',
+            comment: comment,
+            rating: selectedRating
+        };
+        reviews.push(newReview);
+        setComment('');
+        setSelectedRating(0);
+    }
+};
+
 
   const openModal = (image: string) => {
     setSelectedImage(image);

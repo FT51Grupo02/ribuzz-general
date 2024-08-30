@@ -84,7 +84,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         title: 'Por favor, inicia sesion!',
         text: 'Debes iniciar sesion para realizar una compra.',
         icon: 'error',
-        confirmButtonText: 'Inicia Sesion'
+        confirmButtonText: 'Inicia Sesion',
+        customClass: {
+          container: 'swal-container'
+        }
       }).then(() => {
         window.location.href = '/login';
       });
@@ -97,7 +100,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         title: 'Ojo!',
         text: 'Este producto ya se encuentra en el carrito.',
         icon: 'warning',
-        confirmButtonText: 'OK'
+        confirmButtonText: 'OK',
+        customClass: {
+          container: 'swal-container'
+        }
       });
       return;
     }
@@ -110,7 +116,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           title: 'Ojo!',
           text: 'Este producto ya se encuentra en el carrito.',
           icon: 'warning',
-          confirmButtonText: 'OK'
+          confirmButtonText: 'OK',
+          customClass: {
+            container: 'swal-container'
+          }
         });
         return prevCart;
       }
@@ -122,7 +131,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       title: 'Exito!',
       text: 'Producto añadido al carrito.',
       icon: 'success',
-      confirmButtonText: 'OK'
+      confirmButtonText: 'OK',
+      customClass: {
+        container: 'swal-container'
+      }
     });
   };
 
@@ -155,7 +167,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   };
 
-
   const clearCart = () => {
     if (typeof window !== 'undefined' && token) {
       localStorage.removeItem(`cart_${token}`);
@@ -164,7 +175,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   return (
-    <CartContext.Provider value={{  cart, addToCart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, increaseQuantity, decreaseQuantity }}>
       {children}
     </CartContext.Provider>
   );
