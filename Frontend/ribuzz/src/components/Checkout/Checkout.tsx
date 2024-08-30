@@ -7,18 +7,16 @@ import { useAuth } from '../Context/AuthContext';
 import PayCard from './PayCard';
 import Swal from 'sweetalert2';
 import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-
-// Cargar Stripe con tu clave pública desde el archivo .env.local
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
+import { useStripeContext } from '../Context/StripeContext'; // Ajusta la ruta según tu estructura
 
 const Checkout: React.FC = () => {
   const { user, token } = useAuth();
   const { cart, clearCart } = useCart();
+  const stripe = useStripeContext(); // Usar el contexto de Stripe
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [orderDate, setOrderDate] = useState<string>('');
-  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false); // Nuevo estado para verificar el éxito del pago
+  const [paymentSuccess, setPaymentSuccess] = useState<boolean>(false);
 
   const router = useRouter();
 
@@ -27,32 +25,22 @@ const Checkout: React.FC = () => {
     setOrderDate(`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`);
   }, []);
 
-  // Sanitizar cart
   const sanitizedCart = cart.map((product) => ({
     ...product,
     price: Number(product.price) || 0,
   }));
 
-  // Calcular el total
   const total = sanitizedCart.reduce(
     (total, product) => total + product.price * (product.quantity || 1),
     0
   );
 
-  // Manejar la finalización del pedido después de un pago exitoso
   const handlePlaceOrder = async (paymentIntent: any) => {
     setLoading(true);
-    setPaymentSuccess(false); // Reiniciar el estado de éxito
-
-    console.log('Datos enviados al backend:', {
-      userId: user?.id,
-      cart: sanitizedCart,
-      total,
-      paymentIntentId: paymentIntent.id,
-    });
-
+    setPaymentSuccess(false);
+  
     try {
-      const response = await fetch('http://localhost:3000/orders', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,19 +53,17 @@ const Checkout: React.FC = () => {
           paymentIntentId: paymentIntent.id,
         }),
       });
-
+  
       const result = await response.json();
-
-      console.log('Respuesta del backend en Checkout:', result);
-
+  
       if (result.error) {
         setError(result.error);
         Swal.fire('Error', result.error, 'error');
       } else {
-        setPaymentSuccess(true); // Marcar el pago como exitoso
+        setPaymentSuccess(true);
         Swal.fire('Éxito', 'Compra realizada con éxito', 'success');
         clearCart();
-        router.push('/cart'); // Redirigir a la página de agradecimiento
+        router.push('/cart');
       }
     } catch (err) {
       console.error('Error:', err);
@@ -153,9 +139,9 @@ const Checkout: React.FC = () => {
         {/* Componente de pago y resumen */}
         <div className="lg:w-1/3 flex flex-col lg:sticky lg:top-0 lg:space-y-6 lg:ml-8">
           <div className="bg-transparent p-4 rounded-lg shadow-lg border border-transparent mb-6">
-          <Elements stripe={stripePromise}>
-        <PayCard onPaymentSuccess={handlePlaceOrder} />
-      </Elements>
+            <Elements stripe={stripe}>
+              <PayCard onPaymentSuccess={handlePlaceOrder} />
+            </Elements>
           </div>
 
           <div className="bg-transparent p-4 rounded-lg shadow-lg border border-transparent flex flex-col lg:flex-row lg:items-center lg:justify-between">
@@ -185,5 +171,4 @@ const Checkout: React.FC = () => {
     </div>
   );
 };
-
 export default Checkout;

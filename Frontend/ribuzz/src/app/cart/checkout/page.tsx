@@ -1,13 +1,14 @@
 'use client'
+
 import React from 'react';
 import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
 import Checkout from '@/components/Checkout/Checkout';
 import Image from 'next/image';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
+import { useStripeContext } from '@/components/Context/StripeContext'; 
 
 const CheckoutP: React.FC = () => {
+  const stripe = useStripeContext();
+
   return (
     <div className="relative min-h-screen">
       <Image
@@ -20,10 +21,11 @@ const CheckoutP: React.FC = () => {
       />
 
       <div className="relative">
-          <Elements stripe={stripePromise}>
-          <Checkout />
-        </Elements>
-           
+        {stripe && (
+          <Elements stripe={stripe}>
+            <Checkout />
+          </Elements>
+        )}
       </div>
     </div>
   );
