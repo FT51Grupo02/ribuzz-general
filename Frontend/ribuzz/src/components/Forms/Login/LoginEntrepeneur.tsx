@@ -23,8 +23,6 @@ const LoginEntrepeneur = () => {
   const router = useRouter();
   const { setUser, setToken, loginEntrepeneurE } = useAuth(); // Obtener la función de login del contexto
 
-
-
   const handleSubmit = async (values: ILoginPropsEntrep) => {
     try {
       console.log("Valores enviados al backendEntrepreneur:", values);
@@ -43,67 +41,69 @@ const LoginEntrepeneur = () => {
       // Manejar errores de login aquí (mostrar mensajes, etc.)
     }
   };
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
-    
       <div className="hidden md:flex md:w-1/2 flex-shrink-0 relative">
         <Image 
-          src="/0.png" 
+          src="/14.png" 
           alt="Imagen de fondo" 
           fill
-          style={{ objectFit: 'cover' }} 
+          style={{ objectFit: 'cover' }}
+          quality={100}
         />
       </div>
 
-     
-      <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 bg-black text-white">
-        <div className="md:hidden relative w-full mb-4 bg-black flex items-center justify-center">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-8 bg-black text-white relative z-10">
+        {/* Imagen en la parte superior solo en móviles */}
+        <div className="md:hidden relative w-full mb-4">
           <Image 
             src="/5.png" 
             alt="Logo" 
-            fill
-            style={{ objectFit: 'contain' }} 
-            className="rounded-lg"
+            width={200} 
+            height={100}
+            className="mx-auto"
           />
         </div>
-        <div className="w-full max-w-sm md:max-w-md p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg border-b border-[#C877A9]">
-          <h1 className="text-3xl md:text-4xl font-bold mb-6 md:mb-8 font-poppins">INICIAR SESIÓN</h1>
-          <h3 className="text-sm md:text-md font-medium mb-4 md:mb-6 font-poppins">Ingresa con tu cuenta de email</h3>
+        
+        <div className="w-full max-w-sm md:max-w-lg p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg mb-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4 md:mb-6">INGRESAR</h1>
+          <h3 className="text-base md:text-lg font-medium mb-4 md:mb-6">Ingresa con tu cuenta de emprendedor</h3>
           <Formik
             initialValues={{ email: '', password: '', rol:'emprendedor' }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ errors, touched, handleChange, values, setFieldTouched  }) => (
+            {({ errors, touched, handleChange, values, setFieldTouched }) => (
               <Form className="w-full">
-                <div className="mb-3 md:mb-4">
+                <div className="mb-4">
                   <Field
                     type="email"
                     name="email"
-                    placeholder="Email"
-                    className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    placeholder="tucorreo@mail.com"
+                    className="w-full p-3 text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-gray-300"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleChange(e);
                       setFieldTouched('email', true, true);
                     }}
                   />
                   {errors.email && touched.email && (
-                    <div className="text-red-500 text-xs md:text-sm">{errors.email}</div>
+                    <div className="text-pink-300 text-sm pt-2">{errors.email}</div>
                   )}
                 </div>
-                <div className="mb-3 md:mb-4 relative">
+                <div className="mb-4 relative">
                   <Field
                     type={showPassword ? "text" : "password"}
                     name="password"
-                    placeholder="*******"
-                    className="w-full p-2 md:p-4 mb-2 text-sm md:text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-[#FFFFFF]"
+                    placeholder="●●●●●●●●●"
+                    className="w-full p-3 mb-2 text-base rounded-lg bg-[#303030] text-white border border-[#303030] placeholder-gray-300"
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       handleChange(e);
                       setFieldTouched('password', true, true);
                     }}
                   />
-                 {touched.password && (
-                    <div className="text-red-500 text-xs md:text-sm">
+                  {touched.password && (
+                    <div className="text-pink-300 text-sm">
                       {!values.password.match(/[A-Z]/) && 'Debe incluir al menos una mayúscula. '}
                       {!values.password.match(/[!@#$%^&*]/) && 'Debe incluir al menos un carácter especial. '}
                       {values.password.length < 8 && 'Debe tener al menos 8 caracteres. '}
@@ -112,23 +112,28 @@ const LoginEntrepeneur = () => {
                 </div>
                 <button
                   type="submit"
-                  className="w-full p-3 md:p-4 mb-4 text-white font-semibold rounded-full bg-gradient-to-r from-[#C87DAB] to-[#C12886] shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
+                  className="w-full p-3 mb-6 text-white font-semibold rounded-full bg-gradient-to-r from-[#C87DAB] to-[#C12886] shadow-md hover:shadow-lg transition-shadow"
                 >
-                  Ingresa
+                  <span className="transition duration-300 hover:scale-110 inline-block text-lg">
+                    Ingresar
+                  </span>
                 </button>
+                <hr className="border-t-1 border-pink-400 border-opacity-60 mb-2 pb-4" />
               </Form>
             )}
           </Formik>
-        </div>
-        <div className="flex flex-col items-center mt-4 md:mt-6">
-          <h5 className="text-xs md:text-sm font-poppins mb-2">O continua con:</h5>
+        <div className="flex flex-col items-center">
+          <h5 className="text-sm md:text-base mb-2">O continúa con:</h5>
           <button
             type="button"
-            className="flex items-center bg-gray-800 text-white p-2 rounded-lg border border-gray-600 text-xs md:text-sm"
+            className="flex items-center bg-[#303030] text-white p-3 rounded-lg text-base md:text-sm"
           >
-            <FcGoogle className="w-4 h-4 md:w-6 md:h-6" />
-            <span className="ml-2">Google</span>
+            <FcGoogle className="w-6 h-6 md:w-8 md:h-8 mr-2 transition duration-300 hover:scale-110" />
+            <span className="transition duration-300 hover:scale-110 inline-block text-lg">
+            Google
+            </span>
           </button>
+        </div>
         </div>
       </div>
     </div>

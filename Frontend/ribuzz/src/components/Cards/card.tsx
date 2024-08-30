@@ -1,4 +1,5 @@
 import React from 'react';
+import { usePathname } from 'next/navigation';
 
 interface CardProps {
   name: string;
@@ -19,9 +20,14 @@ const Card: React.FC<CardProps> = ({
   onClick,
   className
 }) => {
+  const pathname = usePathname(); 
+
+
+  const nameColor = pathname === '/products' ? 'text-pink-400' : pathname === '/services' ? 'text-cyan-400' : 'text-white';
+
   return (
     <div
-      className={`cursor-pointer ${className} flex flex-col bg-white rounded-lg shadow-xl overflow-hidden`}
+      className={`cursor-pointer ${className} flex flex-col bg-black bg-opacity-90 text-white rounded-lg shadow-xl overflow-hidden`}
       style={{ width: '300px', height: '450px', minHeight: '450px' }}
       onClick={onClick}
     >
@@ -32,39 +38,39 @@ const Card: React.FC<CardProps> = ({
         style={{ height: '200px', minHeight: '200px', objectFit: 'cover' }}
       />
       <div className="flex flex-col p-4 flex-grow">
-        <h2 
-          className="text-lg font-semibold mb-2"
-          style={{ 
-            whiteSpace: 'nowrap', 
-            overflow: 'hidden', 
-            textOverflow: 'ellipsis', 
-            maxWidth: '100%' 
+        <h2
+          className={`text-lg font-semibold mb-2 ${nameColor}`}
+          style={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            maxWidth: '100%'
           }}
         >
           {name}
         </h2>
         <p
-          className="text-gray-700 flex-grow overflow-hidden"
+          className="text-gray-100 flex-grow overflow-hidden"
           style={{
             display: '-webkit-box',
             WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 5,  // Incrementamos el número de líneas visibles
+            WebkitLineClamp: 5,
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            maxHeight: '7.5em', // Ajustamos la altura máxima acorde al número de líneas visibles
+            maxHeight: '7.5em'
           }}
           title={description}
         >
           {description}
         </p>
         <div className="flex items-center justify-between mt-auto pt-4">
-          <span 
-            className="text-xl font-bold"
-            style={{ 
-              whiteSpace: 'nowrap', 
-              overflow: 'hidden', 
-              textOverflow: 'ellipsis', 
-              maxWidth: '100%' 
+          <span
+            className="text-xl font-bold text-white"
+            style={{
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              maxWidth: '100%'
             }}
           >
             ${price}

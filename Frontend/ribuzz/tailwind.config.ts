@@ -23,7 +23,7 @@ const config: Config = {
         poppins: ['Poppins', 'sans-serif'],
       },
       maxWidth: {
-        '4.5xl': '60rem', // max-w-4.5xl
+        '4.5xl': '64rem', // max-w-4.5xl
         'screen-lg': '66rem', // max-w-screen-lg
       },
     },
