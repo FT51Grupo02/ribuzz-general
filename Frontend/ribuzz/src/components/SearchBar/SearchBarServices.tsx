@@ -50,9 +50,9 @@ const SearchBarServices: React.FC = () => {
                 placeholder="Buscar servicios..."
                 value={search}
                 onChange={handleSearchChange}
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                className="pl-10 pr-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500 placeholder:text-gray-300"
               />
-              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
             </div>
 
             <div className="flex items-center">
@@ -74,7 +74,7 @@ const SearchBarServices: React.FC = () => {
             <select
               value={rating}
               onChange={handleRatingChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Rating</option>
               <option value="5">5 estrellas</option>
@@ -87,7 +87,7 @@ const SearchBarServices: React.FC = () => {
             <select
               value={publicationDate}
               onChange={handlePublicationDateChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Fecha de publicación</option>
               <option value="last24h">Últimas 24 horas</option>
@@ -99,7 +99,7 @@ const SearchBarServices: React.FC = () => {
             <select
               value={popularity}
               onChange={handlePopularityChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Popularidad</option>
               <option value="mostPopular">Más popular</option>
@@ -109,7 +109,7 @@ const SearchBarServices: React.FC = () => {
             <select
               value={location}
               onChange={handleLocationChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Ubicación</option>
               <option value="nearby">Cerca de mí</option>

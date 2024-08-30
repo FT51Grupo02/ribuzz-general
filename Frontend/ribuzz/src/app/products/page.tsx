@@ -37,7 +37,7 @@ const Products: React.FC = () => {
     <div className="relative">
       <div className="absolute inset-0 -z-10">
         <Image
-          src="/1.png"
+          src="/3.png"
           alt="Background Image"
           layout="fill"
           objectFit="cover"

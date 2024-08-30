@@ -37,19 +37,19 @@ const Events: React.FC = () => {
     };
 
     return (
-        <div className="relative min-h-screen flex flex-col items-center justify-start">
-            <div className="absolute inset-0 -z-10">
-                <Image
-                    src="/12.png"
-                    alt="Background Image"
-                    fill
-                    className="object-cover"
-                    quality={100}
-                />
-            </div>
-
+        <div className="relative">
+          <div className="absolute inset-0 -z-10">
+            <Image
+              src="/12.png"
+              alt="Background Image"
+              layout="fill"
+              objectFit="cover"
+              quality={100}
+            />
+          </div>
+          <div className="relative z-10 pb-10 shadow-2xl">
             <h2
-                className="text-center text-2xl md:text-3xl lg:text-4xl font-extralight"
+                className="max-sm:px-1 pt-3 text-center text-2xl md:text-3xl lg:text-4xl font-extralight text-black"
                 style={{
                     fontFamily: 'Moonhouse, sans-serif',
                     color: '#DADDE8',
@@ -69,6 +69,7 @@ const Events: React.FC = () => {
                 onPageChange={handlePageChange}
             />
         </div>
+    </div>
     );
 };
 
