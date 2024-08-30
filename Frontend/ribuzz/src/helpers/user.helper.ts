@@ -21,6 +21,8 @@ const parseJwt = (token: string) => {
         const payload = decodeBase64Url(parts[1]);
         console.log('Payload decodificado:', payload); 
         return JSON.parse(payload);
+
+
     } catch (error) {
         console.error('Error al decodificar el token JWT:', error);
         throw new Error('Token JWT inválido');
