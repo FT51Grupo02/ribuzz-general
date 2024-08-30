@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar/Navbar";
 import { FooterWithSitemap } from "@/components/Footer/Footer";
 import { AuthProvider } from "@/components/Context/AuthContext";
 import { CartProvider } from "@/components/Context/CartContext";
+import { StripeProvider } from "@/components/Context/StripeContext";
 
 
 // Cargar la fuente Poppins
@@ -28,16 +29,17 @@ export default function RootLayout({
         <title>RiBuzz</title>
       </head>
       <body className="flex flex-col min-h-screen">
-        <AuthProvider>
-          <CartProvider>
-          <Navbar />
-            <main className="flex-grow">
-              {children}
-            </main>
-        
-          <FooterWithSitemap />
-          </CartProvider>
-        </AuthProvider>
+        <StripeProvider>
+            <AuthProvider>
+              <CartProvider>
+                <Navbar />
+                <main className="flex-grow">
+                  {children}
+                </main>
+                <FooterWithSitemap />
+              </CartProvider>
+            </AuthProvider>
+          </StripeProvider>
       </body>
     </html>
   );
