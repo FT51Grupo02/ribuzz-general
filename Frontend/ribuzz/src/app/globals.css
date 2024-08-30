@@ -14,6 +14,10 @@
     font-style: normal;
 }
 
+.cursor-pointer-custom {
+    cursor: pointer;
+}
+
 /* -----> Estilos para la barra de desplazamiento <----- */
 
 ::-webkit-scrollbar {
@@ -29,12 +33,40 @@
     border-radius: 10px;
 }
 
-/* -----> **************************************** <----- */
+/* -----> *******************  Estilos para alertas ********************* <----- */
 
-/* Cursor para links del footer (TEMPORAL) */
-
-.cursor-pointer-custom {
-    cursor: pointer;
+.swal2-popup {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    color: #ffffff !important;
 }
 
-/* -----> **************************************** <----- */
+.swal2-title {
+    color: #ec4899 !important;
+}
+
+.swal2-html-container {
+    color: #ffffff !important;
+}
+
+.swal2-confirm, .swal2-cancel {
+    background-color: #ff56ab !important;
+    border-color: #ff56ab !important;
+    color: white !important;
+    transition: background-color 0.3s, border-color 0.3s;
+    position: relative;
+}
+
+.swal2-confirm:hover, .swal2-cancel:hover {
+    background-color: #f53696 !important;
+    border-color: #f53696 !important;
+}
+
+.swal2-confirm:hover .swal2-styled, .swal2-cancel:hover .swal2-styled {
+    transform: scale(1.05);
+}
+
+.swal2-styled {
+    display: inline-block;
+    transition: transform 0.3s;
+}
+

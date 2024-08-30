@@ -72,7 +72,7 @@ const Event: FC<EventProps> = ({
 
   const handleAddComment = () => {
     if (comment.trim() && selectedRating > 0) {
-      const newReview: Review = { username: 'Anonymous', comment: comment.trim(), rating: selectedRating };
+      const newReview: Review = { username: 'Anónimo', comment: comment.trim(), rating: selectedRating };
       setUserReviews((prevReviews) => [...prevReviews, newReview]);
       setComment('');
       setSelectedRating(0);
