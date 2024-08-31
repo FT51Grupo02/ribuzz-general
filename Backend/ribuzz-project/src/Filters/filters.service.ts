@@ -85,6 +85,21 @@ export class FilterService {
           arrayService.andWhere(`service.${key} = :${key}`, { [`${key}`]: value });
         }
       })
+      //Deteccción de mayusculas y minusculas de l nombre del servicio:
+
+      if(dto.name &&())
+
+      //Filtrado por orden ascedente de price ay rating
+
+      if(dto.orderPrice &&( dto.orderPrice.toLowerCase()==='asc'|| dto.orderPrice.toLowerCase()==='desc')){
+        const order : 'ASC' | 'DESC' = dto.orderPrice.toLowerCase() === 'asc'? 'ASC' : 'DESC'
+        arrayService.addOrderBy('service.price',order)
+      }
+
+      if(dto.orderRating &&( dto.orderRating.toLowerCase()==='asc'|| dto.orderRating.toLowerCase()==='desc')){
+        const order : 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc'? 'ASC' : 'DESC'
+        arrayService.addOrderBy('service.rating',order)
+      }
       
       return await arrayService.getMany()
 
