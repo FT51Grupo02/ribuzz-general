@@ -40,6 +40,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         if (token) {
             console.log('Guardando token en localStorage:', token);
             localStorage.setItem('authToken', token);
+
+            //  temporizador para cerrar sesión después de 1 hora
+            const timer = setTimeout(() => {
+                logout();
+            }, 60 * 60 * 1000); // 1 hora en milisegundos
+
+            // Limpiar el temporizador cuando el componente se desmonte o el token cambie
+            return () => clearTimeout(timer);
         }
     }, [token]);
 
