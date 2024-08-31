@@ -5,6 +5,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Products } from '../Entidades/products.entity'
 import {FilterDto} from './Dto/filters.dto' 
 import { Services } from 'src/Entidades/services.entity';
+//import { Events } from 'src/Entidades/events.entity';
 
 
 @Injectable()
@@ -13,7 +14,9 @@ export class FilterService {
     @InjectRepository(Products)
     private readonly productRepository: Repository<Products>,
     @InjectRepository(Services)
-    private readonly serviceRepository: Repository<Services>
+    private readonly serviceRepository: Repository<Services>,
+    /*@InjectRepository(Events)
+    private readonly eventRepository: Repository<Events>*/
   ) {}
 
   async searchProducts(dto:FilterDto):Promise<Products[]> {
@@ -85,9 +88,6 @@ export class FilterService {
           arrayService.andWhere(`service.${key} = :${key}`, { [`${key}`]: value });
         }
       })
-      //Deteccción de mayusculas y minusculas de l nombre del servicio:
-
-      if(dto.name &&())
 
       //Filtrado por orden ascedente de price ay rating
 
@@ -107,6 +107,16 @@ export class FilterService {
     catch(error){
       throw new InternalServerErrorException("Error al encontrar el producto"+ error) 
     }
-}
+  }
+
+  /*async searchEvents(dto:FilterDto):Promise<Events[]>{
+
+    const eventArray = await this.eventRepository.createQueryBuilder('events')
+
+    const filter = {
+      ...(dto.name&&{name:dto.name})
+    }
+
+  }*/
   
 }
