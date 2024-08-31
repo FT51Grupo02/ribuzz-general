@@ -97,7 +97,7 @@ const LoginUser = () => {
                     }}
                   />
                   {touched.password && (
-                    <div className="text-pink-300 text-sm">
+                    <div className="text-pink-300 text-sm pt-2">
                       {!values.password.match(/[A-Z]/) && 'Debe incluir al menos una mayúscula. '}
                       {!values.password.match(/[!@#$%^&*]/) && 'Debe incluir al menos un carácter especial. '}
                       {values.password.length < 8 && 'Debe tener al menos 8 caracteres. '}

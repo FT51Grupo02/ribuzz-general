@@ -3,12 +3,16 @@
 import { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchBarProducts: React.FC = () => {
+interface SearchBarProductsProps {
+  onFiltersChange: (filters: any) => void;
+}
+
+const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }) => {
   const [search, setSearch] = useState<string>("");
   const [rating, setRating] = useState<string>("all");
-  const [publicationDate, setPublicationDate] = useState<string>("all");
+  const [category, setCategory] = useState<string>("all");
+  const [price, setPrice] = useState<string>("all");
   const [popularity, setPopularity] = useState<string>("all");
-  const [location, setLocation] = useState<string>("all");
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -18,31 +22,32 @@ const SearchBarProducts: React.FC = () => {
     setRating(event.target.value);
   };
 
-  const handlePublicationDateChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setPublicationDate(event.target.value);
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setCategory(event.target.value);
+  };
+
+  const handlePriceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setPrice(event.target.value);
   };
 
   const handlePopularityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setPopularity(event.target.value);
   };
 
-  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setLocation(event.target.value);
-  };
-
   const handleSearch = () => {
-    console.log("Searching for:", { search, rating, publicationDate, popularity, location });
+    onFiltersChange({
+      search,
+      rating,
+      category,
+      price,
+      popularity
+    });
   };
 
   return (
     <div className="flex flex-col items-center p-4">
-
       <div className="flex flex-col gap-4 max-w-5xl w-full">
-
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:justify-center">
-
           <div className="flex gap-4 w-full max-w-5xl">
             <div className="relative flex-1">
               <input
@@ -54,7 +59,6 @@ const SearchBarProducts: React.FC = () => {
               />
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
             </div>
-
             <div className="flex items-center">
               <button
                 onClick={handleSearch}
@@ -85,15 +89,25 @@ const SearchBarProducts: React.FC = () => {
             </select>
 
             <select
-              value={publicationDate}
-              onChange={handlePublicationDateChange}
+              value={category}
+              onChange={handleCategoryChange}
               className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
             >
-              <option value="all">Fecha de publicación</option>
-              <option value="last24h">Últimas 24 horas</option>
-              <option value="lastWeek">Última semana</option>
-              <option value="lastMonth">Último mes</option>
-              <option value="lastYear">Último año</option>
+              <option value="all">Categoría</option>
+              <option value="electronics">Electrónica</option>
+              <option value="fashion">Moda</option>
+              <option value="home">Hogar</option>
+              <option value="books">Libros</option>
+            </select>
+
+            <select
+              value={price}
+              onChange={handlePriceChange}
+              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
+            >
+              <option value="all">Precio</option>
+              <option value="lowest">Más barato</option>
+              <option value="highest">Más caro</option>
             </select>
 
             <select
@@ -102,19 +116,8 @@ const SearchBarProducts: React.FC = () => {
               className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Popularidad</option>
-              <option value="mostPopular">Más popular</option>
-              <option value="leastPopular">Menos popular</option>
-            </select>
-
-            <select
-              value={location}
-              onChange={handleLocationChange}
-              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
-            >
-              <option value="all">Ubicación</option>
-              <option value="nearby">Cerca de mí</option>
-              <option value="city">En la ciudad</option>
-              <option value="country">En el país</option>
+              <option value="mostPopular">Más vendidos</option>
+              <option value="leastPopular">Menos vendidos</option>
             </select>
           </div>
         </div>

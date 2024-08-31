@@ -6,8 +6,6 @@ import { FooterWithSitemap } from "@/components/Footer/Footer";
 import { AuthProvider } from "@/components/Context/AuthContext";
 import { CartProvider } from "@/components/Context/CartContext";
 
-
-// Cargar la fuente Poppins
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
