@@ -70,12 +70,11 @@ export class Products {
     @JoinTable()
     provider: Users;
 
-    @ManyToMany(() => Details, (detail) => detail.products)
-    @JoinColumn()
-    orderdetails: Details[];
+    @ManyToMany(()=> Details,(orderDetails) => orderDetails.products)
+    orderDetails :Details[]
 
 
-    @ManyToMany(() => Categories, (category) => category.products)
-    @JoinTable()
-    categories: Categories[];
+    @ManyToOne(()=> Categories, (categorie)=> categorie.products)
+    @JoinColumn({name: 'category_id'})
+    categories :Categories
 }

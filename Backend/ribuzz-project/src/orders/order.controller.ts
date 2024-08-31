@@ -13,7 +13,7 @@ export class OrderController {
 @Post()
 addOrderProduct(@Body() order:CreateOrderDto){
     const { userId, products} = order;
-    return this.orderService.addOrderProduct(userId, products);
+    return this.orderService.AddOrder(userId, products);
 }
 
 @Get(":id")

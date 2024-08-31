@@ -37,62 +37,62 @@ export class OrderService{
     }
 
     //Generar una orden de compra 
-    async addOrderProduct(userId: string, product:any){
-        
-        const user = await this.userRepository.findOneBy({id:userId})
-        if(!user){throw new BadRequestException("Usuario no encontrado");}
-
     
-        let total_price=0
-
-        //Generar orden de compra de productos
-        const newOrder = new Orders()
-        newOrder.user = user
-        newOrder.date = new Date()
-
-        const genarteNewOrder = await this.orderRepository.save(newOrder)
-
-        const productsCar = await Promise.all(
-            product.map(async (element)=>{
-                const diseableProduct = await this.productsRepository.findOneBy({id:element.id})
-
-                if(!diseableProduct){return {message:"Producto no disponible"}}
-
-                else if(diseableProduct.stock===0){throw new BadRequestException("No hay unidades disponibles")}
-
-                total_price += Number(product.price)
-
-                await this.productsRepository.update({id:element.id},{stock:element.stock-1})
-                return product
-            })
-        )
-
-        const orderdetail = new Details()
-        
-        orderdetail.total = Number(Number(total_price).toFixed(2));
-        orderdetail.products = productsCar;
-        orderdetail.order = genarteNewOrder;
-        
-        //console.log(orderdetail);
-        
-        await this.orderDetailRepository.save(orderdetail);
-        
-        //console.log(orderdetail);
-        
-        return await this.orderRepository.find({ where:{ id: newOrder.id},
-        relations:{
-           orderDetails: true
-        }
-        })
-        }
-        
-        async getOrder(id:string){
-            const order = await this.orderRepository.findOne({where: {id},
-            relations:{ orderDetails:{products:true}}})
-            if(!order){
-                return "order no encontrada"
-            }
-            return order;
+async AddOrder(userId: string, product: any){
+    let totals = 0;
+    const user = await this.userRepository.findOneBy({ id:userId });
+    if(!user){
+        return "user not found"
     }
-
-}
+    const order = new Orders();
+    order.date = new Date();
+    order.user = user;
+    
+    const newOrder = await this.orderRepository.save(order);
+    
+    const productsArray = await Promise.all(
+        product.map(async (element) => {
+            console.log(element);
+            const product = await this.productsRepository.findOneBy({id:element.id});
+        
+                if(!product){
+                    return "product no encontrado"
+                }
+                totals += Number(product.price);
+    
+                await this.productsRepository.update({ id: element.id}, {stock: product.stock - 1 });
+                console.log(product.price);
+                console.log(product);
+                return product
+                
+        })
+    )
+    const orderdetail = new Details()
+    
+    orderdetail.total= Number(Number(totals).toFixed(2));
+    orderdetail.products = productsArray;
+    orderdetail.order = newOrder;
+    
+    console.log(orderdetail);
+    
+    await this.orderDetailRepository.save(orderdetail);
+    
+    return await this.orderRepository.findOne({ where:{ id: newOrder.id},
+    relations:{
+       // Details: true,
+        Details:{products:true}
+    }
+    })
+    }
+    
+    async getOrder(id:string){
+        const order = await this.orderRepository.findOne({where: {id},
+        relations:{ Details:{products:true} }})
+        console.log(order);
+        
+        if(!order){
+            return "order no encontrada"
+        }
+        return order;
+    }
+    }

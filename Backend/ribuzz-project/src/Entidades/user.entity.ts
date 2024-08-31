@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Events } from "./events.entity";
 import {Orders} from "./orders.entity"
 
@@ -34,7 +34,8 @@ export class Users{
     @ManyToMany(()=>Events)
     events: Events[]
 
-    @OneToMany(()=>Orders, (order)=>order.id)
-    order: Orders[]
+    @OneToMany(()=> Orders,(order) => order.user)
+    @JoinColumn({name: 'ordersid'})
+    orders :Orders[];
 
 }
