@@ -44,7 +44,9 @@ export class ProductsService {
     async createProduct(product: Products): Promise<Products> {
         try {
             const newProduct = this.productRepository.create(product);
+            console.log(newProduct);
             return await this.productRepository.save(newProduct);
+         
         } catch (error) {
             throw new InternalServerErrorException('Error al crear el producto'+error);
         }
@@ -53,10 +55,10 @@ export class ProductsService {
     async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
         try {
             
-            const { orderdetails, categories, ...otherProperties } = product;
+            const { orderDetails, categories, ...otherProperties } = product;
             await this.productRepository.update(id, otherProperties);
 
-            if (product.stock !== undefined && product.stock < 0) {
+            if (product.stock !== undefined && product.stock <= 0) {
                 throw new BadRequestException('El stock no puede ser negativo');
             }
     
@@ -69,16 +71,17 @@ export class ProductsService {
                 throw new NotFoundException(`Producto con id ${id} no encontrado`);
             }
     
-            if (orderdetails) {
-                updatedProduct.orderdetails = orderdetails;
+            if (orderDetails) {
+                updatedProduct.orderDetails = orderDetails;
             }
     
             if (categories) {
                 updatedProduct.categories = categories;
             }
-    
+
+            console.log(updatedProduct);
             await this.productRepository.save(updatedProduct);
-    
+            console.log(updatedProduct);
             return updatedProduct;
         } catch (error) {
             console.error('Error al actualizar el producto:', error); // Imprimir el error en la consola

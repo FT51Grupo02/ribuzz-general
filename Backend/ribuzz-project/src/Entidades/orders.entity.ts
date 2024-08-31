@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column,PrimaryGeneratedColumn, ManyToOne, OneToOne } from "typeorm";
+import { Entity, Column,PrimaryGeneratedColumn, ManyToOne, OneToOne, JoinColumn } from "typeorm";
 import {Users} from "./user.entity"
 import { Details } from "./details.entity";
 
@@ -19,10 +19,11 @@ export class Orders{
     })
     pay: string;
 
-    @ManyToOne(()=>Users, (user)=>user.id)
-    user:Users
+    @ManyToOne(()=> Users,(users) => users.orders)
+    @JoinColumn({name: 'user_id'})
+    user :Users
 
     @OneToOne(() => Details,(orderDetails) => orderDetails.order )
-    orderDetails: Details[];
-   
+   Details: Details[];
+    
 }
