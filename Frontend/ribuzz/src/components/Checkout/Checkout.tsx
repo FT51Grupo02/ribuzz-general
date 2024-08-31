@@ -151,7 +151,7 @@ const Checkout: React.FC = () => {
                 <strong>Total:</strong> ${total.toFixed(2)}
               </p>
             </div>
-            <div className="mt-4 lg:mt-0">
+            {/* <div className="mt-4 lg:mt-0">
               {error && <p className="text-red-500 mb-4">{error}</p>}
               <button
                 onClick={() => handlePlaceOrder({ id: 'payment-intent-id' })}
@@ -164,7 +164,7 @@ const Checkout: React.FC = () => {
                   {loading ? 'Procesando...' : 'Realizar compra'}
                 </span>
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

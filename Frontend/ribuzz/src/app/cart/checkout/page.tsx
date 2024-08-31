@@ -1,13 +1,20 @@
-'use client'
+'use client';
 
 import React from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import Checkout from '@/components/Checkout/Checkout';
 import Image from 'next/image';
 import { useStripeContext } from '@/components/Context/StripeContext'; 
+import Loader from '@/components/Loader/Loader'; 
+
 
 const CheckoutP: React.FC = () => {
   const stripe = useStripeContext();
+
+  // Muestra un mensaje mientras Stripe se está cargando
+  if (!stripe) {
+    return <Loader />;
+  }
 
   return (
     <div className="relative min-h-screen">
@@ -21,11 +28,9 @@ const CheckoutP: React.FC = () => {
       />
 
       <div className="relative">
-        {stripe && (
-          <Elements stripe={stripe}>
-            <Checkout />
-          </Elements>
-        )}
+        <Elements stripe={stripe}>
+          <Checkout />
+        </Elements>
       </div>
     </div>
   );

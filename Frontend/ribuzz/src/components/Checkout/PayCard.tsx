@@ -133,7 +133,7 @@ const PayCard: React.FC<PayCardProps> = ({ onPaymentSuccess }) => {
             className="w-full p-3 mt-4 bg-gradient-to-r from-[#C87DAB] to-[#C12886] text-white font-bold rounded-full text-sm md:text-base"
           >
             <span className="inline-block transition duration-300 hover:scale-110">
-              Confirmar Tarjeta
+              Realizar Compra
             </span>
           </button>
         </div>
@@ -143,3 +143,4 @@ const PayCard: React.FC<PayCardProps> = ({ onPaymentSuccess }) => {
 };
 
 export default PayCard
+
