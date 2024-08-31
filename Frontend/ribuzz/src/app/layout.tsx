@@ -7,8 +7,6 @@ import { AuthProvider } from "@/components/Context/AuthContext";
 import { CartProvider } from "@/components/Context/CartContext";
 import { StripeProvider } from "@/components/Context/StripeContext";
 
-
-// Cargar la fuente Poppins
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
 export const metadata: Metadata = {

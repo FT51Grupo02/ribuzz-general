@@ -25,7 +25,7 @@ const CartIcon: React.FC<CartIconProps> = ({ className, isActive }) => {
   return (
     <div className={`relative ${className}`}>
       <button
-        className={`-translate-y-0.7 flex items-center rounded-full hover:ring-1 ${isActive ? 'text-black' : 'text-white'}`}
+        className={`flex items-center rounded-full hover:ring-1 ${isActive ? 'text-black' : 'text-white'}`}
         onClick={() => setDropdownOpen(prev => !prev)}  // Alterna el estado del desplegable (abierto/cerrado)
         aria-label="Cart"
       >

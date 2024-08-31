@@ -70,3 +70,7 @@
     transition: transform 0.3s;
 }
 
+/* Elimina el padding derecho del body cuando se muestra el alert */
+.swal2-shown {
+    padding-right: 0 !important;
+}

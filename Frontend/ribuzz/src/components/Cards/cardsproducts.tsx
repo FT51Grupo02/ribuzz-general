@@ -1,13 +1,15 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from './card';
 import { Product } from '@/components/Cards/types'; 
 
 interface CardProductsProps {
-  products: Product[];
+  products?: Product[]; // Haciendo que sea opcional
 }
 
-const CardProducts: React.FC<CardProductsProps> = ({ products }) => {
+const CardProducts: React.FC<CardProductsProps> = ({ products = [] }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
@@ -44,18 +46,14 @@ const CardProducts: React.FC<CardProductsProps> = ({ products }) => {
             key={product.id} 
             className="flex justify-center transition duration-300 transform hover:scale-105 rounded-lg overflow-hidden"
           >
-            {product ? (
-              <Card
-                name={product.name}
-                price={product.price.toString()}
-                image={product.images[0]} 
-                rating={product.rating}
-                description={product.description}
-                onClick={() => handleCardClick(product.id)}
-              />
-            ) : (
-              <div className="bg-white p-4 rounded-lg shadow-lg">Error: Producto no encontrado</div>
-            )}
+            <Card
+              name={product.name}
+              price={product.price.toString()}
+              image={product.images[0]} 
+              rating={product.rating}
+              description={product.description}
+              onClick={() => handleCardClick(product.id)}
+            />
           </div>
         ))}
       </div>
