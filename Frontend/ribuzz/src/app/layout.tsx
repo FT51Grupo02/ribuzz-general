@@ -27,17 +27,19 @@ export default function RootLayout({
         <title>RiBuzz</title>
       </head>
       <body className="flex flex-col min-h-screen">
-        <StripeProvider>
+        
             <AuthProvider>
               <CartProvider>
+               <StripeProvider>
                 <Navbar />
                 <main className="flex-grow">
                   {children}
                 </main>
                 <FooterWithSitemap />
+                </StripeProvider>
               </CartProvider>
             </AuthProvider>
-          </StripeProvider>
+          
       </body>
     </html>
   );
