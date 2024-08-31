@@ -33,5 +33,8 @@ export class FilterDto{
     duration:string;
 
     @IsOptional()
-    orderPrice: 'ASC' | 'DESC'
+    orderPrice: "ASC"| "DESC" ;
+
+    @IsOptional()
+    orderRating: "ASC"| "DESC";
 }

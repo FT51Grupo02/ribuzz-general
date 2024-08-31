@@ -41,7 +41,17 @@ export class FilterService {
           }
         })
 
-        if(dto.orderPrice){ arrayProduct.orderBy('product.price', dto.orderPrice)}
+        if (dto.orderPrice && (dto.orderPrice.toLowerCase() === 'asc' || dto.orderPrice.toLowerCase() === 'desc')) {
+            const order: 'ASC' | 'DESC' = dto.orderPrice.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+            arrayProduct.addOrderBy('product.price', order); 
+          }
+
+          if (dto.orderRating && (dto.orderRating.toLowerCase() === 'asc' || dto.orderRating.toLowerCase() === 'desc')) {
+            const order: 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+            arrayProduct.addOrderBy('product.rating', order); 
+          }
+
+     
         
         return await arrayProduct.getMany()
       }
