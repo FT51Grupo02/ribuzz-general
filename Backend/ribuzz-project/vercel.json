@@ -5,21 +5,26 @@
             "src": "dist/main.js",
             "use": "@vercel/node",
             "config": {
-            "distDir": "dist"
+                "distDir": "dist"
             }
         }
-        ],
-        "routes": [
+    ],
+    "routes": [
         {
             "src": "/(.*)",
             "dest": "/dist/main.js",
-            "methods":[
+            "methods": [
                 "GET",
                 "POST",
                 "PUT",
                 "DELETE"
             ]
         }
-        ]
-    }
-    
+    ],
+    "rewrites": [
+        { 
+            "source": "/(.*)", 
+            "destination": "/" 
+        }
+    ]
+}
