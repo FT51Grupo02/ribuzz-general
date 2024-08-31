@@ -2,6 +2,9 @@
 import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class FilterDto{
+    @IsOptional()
+    @IsString()
+    name:string;
     
     @IsOptional()
     @IsString()
@@ -24,4 +27,11 @@ export class FilterDto{
 
     @IsOptional()
     location:string
+
+    @IsOptional()
+    @IsString()
+    duration:string;
+
+    @IsOptional()
+    orderPrice: 'ASC' | 'DESC'
 }
