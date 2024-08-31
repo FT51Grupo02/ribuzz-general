@@ -4,14 +4,12 @@ import React from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import Checkout from '@/components/Checkout/Checkout';
 import Image from 'next/image';
-import { useStripeContext } from '@/components/Context/StripeContext'; 
-import Loader from '@/components/Loader/Loader'; 
-
+import { useStripeContext, StripeProvider } from '@/components/Context/StripeContext';
+import Loader from '@/components/Loader/Loader';
 
 const CheckoutP: React.FC = () => {
   const stripe = useStripeContext();
 
-  // Muestra un mensaje mientras Stripe se está cargando
   if (!stripe) {
     return <Loader />;
   }
@@ -36,4 +34,10 @@ const CheckoutP: React.FC = () => {
   );
 };
 
-export default CheckoutP;
+const CheckoutPage: React.FC = () => (
+  <StripeProvider>
+    <CheckoutP />
+  </StripeProvider>
+);
+
+export default CheckoutPage;

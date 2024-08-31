@@ -5,7 +5,6 @@ import Navbar from "@/components/Navbar/Navbar";
 import { FooterWithSitemap } from "@/components/Footer/Footer";
 import { AuthProvider } from "@/components/Context/AuthContext";
 import { CartProvider } from "@/components/Context/CartContext";
-import { StripeProvider } from "@/components/Context/StripeContext";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
 
@@ -30,13 +29,11 @@ export default function RootLayout({
         
             <AuthProvider>
               <CartProvider>
-               <StripeProvider>
                 <Navbar />
                 <main className="flex-grow">
                   {children}
                 </main>
                 <FooterWithSitemap />
-                </StripeProvider>
               </CartProvider>
             </AuthProvider>
           
