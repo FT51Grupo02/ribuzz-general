@@ -2,27 +2,27 @@
 
 import React, { createContext, useContext, ReactNode, useEffect, useState } from 'react';
 import { loadStripe, Stripe } from '@stripe/stripe-js';
-import Loader from '@/components/Loader/Loader'; 
+import Loader from '@/components/Loader/Loader';
 
 // Crear contexto de Stripe
 const StripeContext = createContext<Stripe | null>(null);
 
-// Inicializar Stripe con la clave pública
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '');
+// Recuperar la clave pública de Stripe
+const stripePublicKey = process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY || '';
 
 export const StripeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [stripe, setStripe] = useState<Stripe | null>(null);
-  const [loading, setLoading] = useState(true); // Agregar estado de carga
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const initializeStripe = async () => {
       try {
-        const stripeInstance = await stripePromise;
+        const stripeInstance = await loadStripe(stripePublicKey);
         setStripe(stripeInstance);
       } catch (error) {
         console.error('Error initializing Stripe:', error);
       } finally {
-        setLoading(false); // Marcar como cargado
+        setLoading(false);
       }
     };
 
@@ -31,7 +31,6 @@ export const StripeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
   console.log('StripeProvider rendering with stripe:', stripe);
 
-  // Mostrar un mensaje de carga si Stripe aún se está inicializando
   if (loading) {
     return <Loader />;
   }
