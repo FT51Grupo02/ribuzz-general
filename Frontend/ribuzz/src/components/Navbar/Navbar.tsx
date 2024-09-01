@@ -81,6 +81,7 @@ const Navbar = () => {
                 alt="Logo" 
                 width={200} 
                 height={60} 
+                quality={100}
                 className="hidden md:block" // Mostrar en pantallas mayores a 425px
               />
               {/* Logo para pantallas menores a 425px */}
@@ -88,6 +89,7 @@ const Navbar = () => {
                 src="/5.png" 
                 alt="Logo" 
                 width={50} 
+                quality={100}
                 height={30} 
                 className="md:hidden" // Mostrar en pantallas menores a 425px
               />
@@ -142,6 +144,7 @@ const Navbar = () => {
                   alt="Profile" 
                   width={30} 
                   height={40} 
+                  quality={100}
                   className={`transition duration-300 ${isActive('/user') ? 'filter invert' : ''}`}
                 />
               </Link>
@@ -187,6 +190,7 @@ const Navbar = () => {
               src="/menu.png" 
               alt="Menu" 
               width={30} 
+              quality={100}
               height={30} 
               className="w-8 h-8"
             />

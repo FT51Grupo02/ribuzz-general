@@ -102,8 +102,8 @@ const SearchBarEvents: React.FC = () => {
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Popularidad</option>
-              <option value="mostPopular">Más popular</option>
-              <option value="leastPopular">Menos popular</option>
+              <option value="mostPopular">Más vendido</option>
+              <option value="leastPopular">Menos vendido</option>
             </select>
 
             <select

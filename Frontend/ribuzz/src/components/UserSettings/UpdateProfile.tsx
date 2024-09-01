@@ -73,6 +73,7 @@ const UpdateProfile: React.FC = () => {
                                 alt="Perfil"
                                 width={120}
                                 height={120}
+                                quality={100}
                                 className="object-cover rounded-full border-2 border-gray-300"
                             />
                             <input

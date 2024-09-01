@@ -58,6 +58,7 @@ const LoginUser = () => {
             width={200} 
             height={100}
             className="mx-auto"
+            quality={100}
           />
         </div>
         <div className="w-full max-w-md md:max-w-md p-6 md:p-8 bg-[#000000] rounded-xl shadow-lg mb-4">

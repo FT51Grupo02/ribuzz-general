@@ -39,18 +39,27 @@ const Page2 = () => {
 
   return (
     <div className="relative flex flex-col items-center justify-center overflow-hidden py-40 max-sm:py-10">
+      {/* Video background with a fallback image */}
       <div className="absolute inset-0 rotate-180">
-        <Image
-          src="/1.png"
-          alt="Background Image"
-          layout="fill"
-          objectFit="cover"
-          quality={100}
-          priority
-        />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="absolute inset-0 w-full h-full object-cover rotate-180"
+          poster="/1.png"
+        >
+          <source src="/background2.mp4" type="video/mp4" />
+          {/* Add WebM format for better quality in supported browsers */}
+          <source src="/background3.webm" type="video/webm" />
+          {/* Fallback content for browsers that do not support the video element */}
+          Your browser does not support the video tag.
+        </video>
       </div>
+
       <div className="relative z-10 text-center px-4">
-        <h1 className="text-white text-3xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-12">La historia de nuestra marca</h1>
+        <h1 className="text-white drop-shadow-xl text-3xl sm:text-5xl md:text-7xl font-bold mb-6 sm:mb-12">La historia de nuestra marca</h1>
 
         <div className="flex flex-wrap justify-center gap-4 w-full">
           {titles.map((title, index) => (
@@ -95,6 +104,7 @@ const Page2 = () => {
                 width={200}
                 height={50}
                 objectFit="contain"
+                quality={100}
               />
             </div>
           </div>

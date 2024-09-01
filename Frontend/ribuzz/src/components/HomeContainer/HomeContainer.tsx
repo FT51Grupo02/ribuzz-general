@@ -28,16 +28,16 @@ const HomeContainer: React.FC = () => {
           <Image
             src="/3.png"
             alt="Imagen descriptiva"
-            width={500}
+            width={600}
             height={500}
             className="rounded-lg shadow-lg"
           />
-          {/* Imagen superpuesta */}
+          {/* Imagen de tarjeta */}
           <div className="absolute inset-0 flex items-center justify-center">
             <Image
               src="/card.png"
               alt="Imagen superpuesta"
-              width={200}
+              width={300}
               height={200}
               className="rounded-lg"
             />
@@ -48,52 +48,52 @@ const HomeContainer: React.FC = () => {
             <Image
               src="/9.png"
               alt="Imagen descriptiva"
-              width={500}
+              width={600}
               height={500}
               className="rounded-lg shadow-lg"
             />
           </div>
-          <p className="text-gray-300 text-center mb-6 text-lg">
+          <p className="text-gray-300 text-center mb-6 text-2xl">
             Escalabilidad y acceso al mercado <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Entorno para hacer negocios <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Errores en gestión <br />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Acceso a capital
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entorno para hacer negocios <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Errores en gestión <br />
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Acceso a capital
           </p>
         </div>
       </section>
-      <section className="flex flex-col justify-center items-center h-32 mb-16">
-        <h2 className="text-center text-2xl md:text-3xl font-extralight mb-5" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8' }}>
+      <section className="flex flex-col justify-center items-center h-36 mb-16">
+        <h2 className="text-center text-2xl md:text-4xl font-extralight mb-5" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8' }}>
           Conectando <span style={{ color: '#00e1d4' }}>Emprendedores</span> Apasionados con Oportunidades
         </h2>
-        <p className="text-center text-lg md:text-xl mt-4 mb-8" style={{ fontFamily: 'Poppins, sans-serif', color: '#DADDE8' }}>
+        <p className="text-center text-lg md:text-2xl mt-4 mb-8" style={{ color: '#DADDE8' }}>
           Tu tarea es contar la historia detrás de tu sonrisa,<br />
-          RiBuzz <span style={{ color: '#00e1d4' }}>conecta y crea para ti</span>
+          RiBuzz <span style={{ color: '#00e1d4' }}>conecta y crea para tí</span>
         </p>
       </section>
-      <div className="mb-10 mt-6">
-        <h1 className="text-center text-4xl md:text-6xl font-semibold" style={{ fontFamily: 'Poppins, sans-serif', color: '#DADDE8' }}>
+      <div className="my-10">
+        <h1 className="text-center text-4xl md:text-7xl font-semibold mt-20" style={{ color: '#DADDE8' }}>
           Plataforma <span style={{ color: '#00e1d4' }}>integral</span>
         </h1>
       </div>
       {/* Segunda Sección */}
-      <section className="grid grid-cols-3 gap-4 mb-12 font-extralight hidden md:grid" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8' }}>
+      <section className="text-2xl grid grid-cols-3 gap-4 mb-12 font-extralight hidden md:grid" style={{ color: '#DADDE8' }}>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
           <p className="text-[#00e1d4] text-center font-bold mb-4">Marketplace:</p>
           <p className="text-gray-300 text-center mb-4">Escalar ventas</p>
           <p className="text-gray-300 text-center mb-4">Unir emprendedor con clientes.</p>
         </div>
-        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
-          <div className="w-24 h-24 flex items-center justify-center border-4 border-white rounded-full">
-            <FaHome className="text-6xl text-gray-100" />
+        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center mb-20">
+          <div className="w-36 h-36 flex items-center justify-center border-4 border-white rounded-full">
+            <FaHome className="text-8xl text-gray-100 " />
           </div>
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
-          <p className="text-[#00e1d4] text-center font-bold mb-4 font-Moonhouse">Mentorías y asesorías:</p>
-          <p className="text-gray-300 text-center font-Moonhouse">Errores de gestión</p>
+          <p className="text-[#00e1d4] text-center font-bold mb-4">Mentorías y asesorías:</p>
+          <p className="text-gray-300 text-center">Errores de gestión</p>
         </div>
-        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
-          <div className="w-24 h-24 flex items-center justify-center border-4 border-white rounded-full">
-            <PiCalendarStarFill className="text-6xl text-gray-100" />
+        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center pt-16">
+          <div className="w-36 h-36 flex items-center justify-center border-4 border-white rounded-full">
+            <PiCalendarStarFill className="text-8xl text-gray-100" />
           </div>
         </div>
         <div className="relative bg-transparent p-6 rounded-lg flex flex-col items-center">
@@ -111,63 +111,63 @@ const HomeContainer: React.FC = () => {
             <FaArrowRight className="text-white text-4xl" />
           </div>
           {/* Imagen */}
-          <img src="/5.png" alt="Imagen descriptiva" className="my-4 w-29 h-28 flex items-center justify-center border-4 border-transparent rounded-full z-20 ml-4"/>
+          <img src="/5.png" alt="Imagen descriptiva" className="my-10 w-44 flex items-center justify-center border-4 border-transparent rounded-full z-20 ml-4"/>
         </div>
-        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
-          <div className="w-24 h-24 flex items-center justify-center border-4 border-white rounded-full">
-            <GiPencil className="text-6xl text-gray-100" />
+        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center pt-16">
+          <div className="w-36 h-36 flex items-center justify-center border-4 border-white rounded-full">
+            <GiPencil className="text-8xl text-gray-100" />
           </div>
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
-          <p className="text-[#00e1d4] text-center font-bold mb-4 font-Moonhouse">Eventos</p>
-          <p className="text-gray-300 text-center font-Moonhouse">Fomentar entorno de negocios y networking</p>
+          <p className="text-[#00e1d4] text-center font-bold mb-4">Eventos</p>
+          <p className="text-gray-300 text-center">Fomentar entorno de negocios y networking</p>
         </div>
-        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center mt-6">
-          <div className="w-24 h-24 flex items-center justify-center border-4 border-white rounded-full">
-            <FaPeopleGroup className="text-6xl text-gray-100" />
+        <div className="bg-transparent p-6 rounded-lg flex flex-col items-center mt-20">
+          <div className="w-36 h-36 flex items-center justify-center border-4 border-white rounded-full">
+            <FaPeopleGroup className="text-8xl text-gray-100" />
           </div>
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
-          <p className="text-[#00e1d4] text-center font-bold mb-4 font-Moonhouse">Red de alto valor:</p>
-          <p className="text-gray-300 text-center font-Moonhouse">Fomentar alianzas, inversiones y oportunidades</p>
+          <p className="text-[#00e1d4] text-center font-bold mb-4">Red de alto valor:</p>
+          <p className="text-gray-300 text-center">Fomentar alianzas, inversiones y oportunidades</p>
         </div>
       </section>
       {/* Tercera Sección */}
       <section className="flex flex-col items-center justify-center bg-transparent py-2 px-4 md:px-10 lg:px-16">
-        <div className="flex flex-row items-center justify-center space-x-4 mb-4">
-        <BsBuildings className="text-4xl md:text-6xl lg:text-8xl text-white" />
-        <GiSandsOfTime className="text-4xl md:text-6xl lg:text-8xl text-white" />
-        <GiReceiveMoney className="text-4xl md:text-6xl lg:text-8xl text-white" />
+        <div className="flex flex-row items-center justify-center space-x-10 mb-4 mt-10">
+        <BsBuildings className="text-4xl md:text-8xl lg:text-9xl text-white" />
+        <GiSandsOfTime className="text-4xl md:text-8xl lg:text-9xl text-white" />
+        <GiReceiveMoney className="text-4xl md:text-8xl lg:text-9xl text-white" />
         </div>
-        <p className="text-center text-sm md:text-base lg:text-lg font-light text-[#DADDE8]" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
-        Empresa - <span style={{ color: '#00e1d4' }}>Ahorrar</span> tiempo y costes
+        <p className="text-center text-sm md:text-base lg:text-3xl font-light text-[#DADDE8]">
+        Empresa - <span className='text-[#00e1d4] font-semibold'>Ahorrar</span> tiempo y costes
         </p>
-        <p className="text-center text-sm md:text-base lg:text-lg font-light text-[#DADDE8]" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
-        Soluciones - <span style={{ color: '#C87DAB' }}>Confiables y de calidad</span>
+        <p className="text-center text-sm md:text-base lg:text-3xl font-light text-[#DADDE8]">
+        Soluciones - <span className='text-pink-500 font-semibold'>Confiables y de calidad</span>
         </p>
   </section>
 
       <section className="text-center bg-transparent py-12 mb-6">
         {/* Título */}
-        <h2 className="text-3xl font-light text-[#DADDE8] mb-12" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
+        <h2 className="text-5xl font-light text-[#DADDE8] mb-12 mt-10" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
           Modelo de <span style={{ color: '#00e1d4' }}>Comisión</span> B2B
         </h2>
 
         {/* Contenido con flechas e imagen */}
-        <div className="flex flex-col md:flex-row items-center justify-center space-x-6 mb-12">
+        <div className="flex flex-col md:flex-row items-center justify-center space-x-6 mb-12 ">
           <div className="flex items-center">
-            <p className="text-[#DADDE8] font-light text-lg" style={{ fontFamily: 'Moonhouse, sans-serif' }}>Emprendimiento</p>
+            <p className="text-[#DADDE8] font-light text-2xl text-pink-500">Emprendimiento</p>
             <FaArrowRight className="text-4xl text-[#DADDE8] ml-4" />
           </div>
-          <img src="/5.png" alt="Marca" className="w-29 h-28 flex items-center justify-center border-4 border-transparent rounded-full z-20 "/>
+          <img src="/5.png" alt="Marca" className="w-40 flex items-center justify-center border-4 border-transparent rounded-full z-20 "/>
           <div className="flex items-center">
             <FaArrowRight className="text-4xl text-[#DADDE8] mr-4" />
-            <p className="text-[#DADDE8] font-light text-lg" style={{ fontFamily: 'Moonhouse, sans-serif' }}>Cliente final</p>
+            <p className="text-[#DADDE8] font-light text-2xl text-pink-500">Cliente final</p>
           </div>
         </div>
 
         {/* Párrafo */}
-        <p className="text-[#DADDE8] text-lg font-light" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
+        <p className="text-[#DADDE8] font-light text-2xl">
           Modelo Transacción B2C -&gt; Eventos, mentorías, asesorías
           <br />
           Suscripción -&gt; Acceso especial y anticipado a eventos y oportunidades
