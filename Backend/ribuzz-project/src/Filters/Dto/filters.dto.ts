@@ -8,7 +8,7 @@ export class FilterDto{
     
     @IsOptional()
     @IsString()
-    categorie:string;
+    categories:string;
 
     @IsOptional()
     @IsNumber()

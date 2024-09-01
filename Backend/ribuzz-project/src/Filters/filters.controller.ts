@@ -4,6 +4,7 @@ import { FilterService } from "./filters.service";
 import { Products } from "src/Entidades/products.entity";
 import { FilterDto } from "./Dto/filters.dto";
 import { Services } from "src/Entidades/services.entity";
+import { Events } from "src/Entidades/events.entity";
 
 @Controller('search')
 export class FilterController {
@@ -17,5 +18,10 @@ export class FilterController {
   @Get('/services')
   async searchServices(@Query() any:FilterDto) :Promise<Services[]>{
     return this.filterService.searchServices(any);
+  }
+
+  @Get('/events')
+  async searchEvents(@Query() any:FilterDto) :Promise<Events[]>{
+    return this.filterService.searchEvents(any);
   }
 }

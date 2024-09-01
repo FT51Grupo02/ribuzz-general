@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, JoinColumn } from "typeorm";
-import { Details } from "./details.entity";
-import { Categories } from "./categories.entity";
-import { Users } from "./user.entity";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
+import { Details } from './details.entity';
+import { Categories } from './categories.entity';
+import { Users } from './user.entity';
 
 @Entity({
     name: "products"
@@ -65,16 +65,13 @@ export class Products {
     @Column("simple-array", { nullable: true })
     details: string[];
 
-
     @ManyToOne(() => Users, user => user.id)
-    @JoinTable()
     provider: Users;
 
-    @ManyToMany(()=> Details,(orderDetails) => orderDetails.products)
-    orderDetails :Details[]
+    @ManyToMany(() => Details, (orderDetails) => orderDetails.products)
+    orderDetails: Details[];
 
-
-    @ManyToOne(()=> Categories, (categorie)=> categorie.products)
-    @JoinColumn({name: 'category_id'})
-    categories :Categories
+    @ManyToMany(() => Categories, (category) => category.products, { cascade: true })
+    @JoinTable()
+    categories: Categories[];
 }

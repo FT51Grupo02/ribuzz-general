@@ -3,11 +3,13 @@ import { Injectable, NotFoundException, InternalServerErrorException, BadRequest
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
+import { Categories } from "src/Entidades/categories.entity";
 
 @Injectable()
 export class ProductsService {
     constructor(
-        @InjectRepository(Products) private productRepository: Repository<Products>
+        @InjectRepository(Products) private productRepository: Repository<Products>,
+        @InjectRepository(Categories) private categorieRepository: Repository<Categories>
     ) {}
 
     async getProducts(page: number, limit: number): Promise<Products[]> {
@@ -16,7 +18,8 @@ export class ProductsService {
             return await this.productRepository.find({
                 skip,
                 take: limit,
-               // relations: ['orderdetails', 'categories'] 
+                relations: ['categories']
+                //relations: ['orderdetails', 'categories'] 
             });
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los productos'+error);
@@ -41,14 +44,33 @@ export class ProductsService {
         }
     }
 
-    async createProduct(product: Products): Promise<Products> {
-        try {
-            const newProduct = this.productRepository.create(product);
-            console.log(newProduct);
-            return await this.productRepository.save(newProduct);
-         
-        } catch (error) {
-            throw new InternalServerErrorException('Error al crear el producto'+error);
+    async createProduct(categoryNames: string[], product: Partial<Products>): Promise<Products> {
+
+        try{
+            const categories =[]
+
+            if(!categoryNames || !Array.isArray(categoryNames) || categoryNames.length===0){
+                throw new BadRequestException("Por favor ingrese la categorias para este producto")
+            }
+
+            for(const name of categoryNames){
+                const category = await this.categorieRepository.findOneBy({name})
+                if(!category){throw new BadRequestException("La(s) categoria(s) no se encuentra(n) registrada(s)")}
+                else{ categories.push(category)}
+            }
+
+            const new_product = await this.productRepository.create({
+                ...product,
+                categories
+            })
+            
+            return await this.productRepository.save(new_product)
+        }
+        catch(error){
+            if( error instanceof BadRequestException ){
+                throw error
+            }
+            else {throw new InternalServerErrorException('Error al crear el producto: ' + error)}
         }
     }
 
