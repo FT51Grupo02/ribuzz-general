@@ -1,0 +1,47 @@
+# render.yaml
+services:
+- type: web
+  name: ribuzz-backend
+  runtime: node
+  repo: https://github.com/FT51Grupo02/ribuzz-general
+  plan: free
+  envVars:
+  - key: CORS_ORIGIN
+    sync: false
+  - key: GOOGLE_CALLBACK_URL
+    sync: false
+  - key: GOOGLE_CLIENT_SECRET
+    sync: false
+  - key: GOOGLE_CLIENT_ID
+    sync: false
+  - key: STRIPE_SECRET_KEY
+    sync: false
+  - key: CLAUDINARY_APY_SECRET
+    sync: false
+  - key: CLAUDINARY_APY_KEY
+    sync: false
+  - key: CLAUDINARY_CLOUD_NAME
+    sync: false
+  - key: JWT_SECRET
+    sync: false
+  - key: PSQL_COMAND
+    sync: false
+  - key: DATABASE_INTERNAL_URL
+    sync: false
+  - key: DATABASE_EXTERNAL_URL
+    sync: false
+  - key: PASSWORD_DB
+    sync: false
+  - key: USERNAME_DB
+    sync: false
+  - key: PORT_DB
+    sync: false
+  - key: DATABASE_DB
+    sync: false
+  - key: HOST_DB
+    sync: false
+  region: oregon
+  buildCommand: npm install && npm run build
+  startCommand: npm run start:prod
+  rootDir: Backend/ribuzz-project/
+version: "1"
