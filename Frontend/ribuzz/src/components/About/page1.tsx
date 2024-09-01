@@ -8,22 +8,32 @@ const Page1 = () => {
   const router = useRouter();
 
   const handleClick = () => {
-    router.push('/marketplace');
+    router.push('/services');
   };
 
   return (
     <div className="relative w-full flex flex-col items-center justify-start overflow-hidden">
       <div className="relative w-full flex flex-col md:flex-row md:py-32 sm:py-10">
+        {/* Video background with a fallback image */}
         <div className="absolute inset-0">
-          <Image
-            src="/1.png"
-            alt="Background Image"
-            layout="fill"
-            objectFit="cover"
-            quality={100}
-            priority
-          />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="absolute inset-0 w-full h-full object-cover"
+            poster="/1.png"
+          >
+            <source src="/background.mp4" type="video/mp4" />
+            {/* Add WebM format for better quality in supported browsers */}
+            <source src="/background3.webm" type="video/webm" />
+            {/* Fallback content for browsers that do not support the video element */}
+            Your browser does not support the video tag.
+          </video>
         </div>
+
+        {/* Content Section */}
         <div className="relative z-10 flex flex-col justify-center p-6 md:w-1/2 md:ml-10 space-y-6 order-2 md:order-1">
           <h1 className="text-white text-4xl md:text-6xl font-bold">Diseñamos un espacio que te encantará</h1>
           <div className="h-1 bg-pink-400 w-1/4 md:w-1/6 mt-4 opacity-80"></div>
@@ -43,6 +53,8 @@ const Page1 = () => {
             </span>
           </button>
         </div>
+
+        {/* Image Section */}
         <div className="relative z-10 flex items-center justify-center md:w-1/2 order-1 md:order-2">
           <Image
             src="/card.png"

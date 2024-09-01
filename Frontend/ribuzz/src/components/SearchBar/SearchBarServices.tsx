@@ -1,9 +1,19 @@
 'use client'
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { FiSearch } from "react-icons/fi";
 
-const SearchBarServices: React.FC = () => {
+interface SearchBarServicesProps {
+  onSearch: (filters: {
+    search: string;
+    rating: string;
+    publicationDate: string;
+    popularity: string;
+    location: string;
+  }) => void;
+}
+
+const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
   const [search, setSearch] = useState<string>("");
   const [rating, setRating] = useState<string>("all");
   const [publicationDate, setPublicationDate] = useState<string>("all");
@@ -18,9 +28,7 @@ const SearchBarServices: React.FC = () => {
     setRating(event.target.value);
   };
 
-  const handlePublicationDateChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handlePublicationDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setPublicationDate(event.target.value);
   };
 
@@ -33,16 +41,13 @@ const SearchBarServices: React.FC = () => {
   };
 
   const handleSearch = () => {
-    console.log("Searching for:", { search, rating, publicationDate, popularity, location });
+    onSearch({ search, rating, publicationDate, popularity, location });
   };
 
   return (
     <div className="flex flex-col items-center p-4">
-
       <div className="flex flex-col gap-4 max-w-5xl w-full">
-
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:justify-center">
-
           <div className="flex gap-4 w-full max-w-5xl">
             <div className="relative flex-1">
               <input
@@ -102,8 +107,8 @@ const SearchBarServices: React.FC = () => {
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Popularidad</option>
-              <option value="mostPopular">Más popular</option>
-              <option value="leastPopular">Menos popular</option>
+              <option value="mostPopular">Más vendido</option>
+              <option value="leastPopular">Menos vendido</option>
             </select>
 
             <select

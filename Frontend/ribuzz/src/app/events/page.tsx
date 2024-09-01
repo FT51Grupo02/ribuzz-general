@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import CardEvents from "@/components/Cards/cardevents";
 import SearchBarEvents from "@/components/SearchBar/SearchBarEvents";
-import PaginatorCyan from "@/components/Paginator/PaginatorCyan";
+import PaginatorEvents from "@/components/Paginator/PaginatorEvents";
 import Image from "next/image";
 
 const Events: React.FC = () => {
@@ -63,7 +63,7 @@ const Events: React.FC = () => {
 
             <CardEvents events={events} currentPage={currentPage} />
 
-            <PaginatorCyan
+            <PaginatorEvents
                 currentPage={currentPage}
                 totalPages={totalPages}
                 onPageChange={handlePageChange}

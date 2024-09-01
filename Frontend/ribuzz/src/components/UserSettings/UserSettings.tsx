@@ -18,6 +18,7 @@ const UserSettings: React.FC = () => {
         alt="Background Image"
         layout="fill"
         objectFit="cover"
+        quality={100}
         className="absolute inset-0 z-0"
       />
 

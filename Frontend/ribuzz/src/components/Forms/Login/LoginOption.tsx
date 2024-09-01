@@ -45,6 +45,7 @@ const LoginOption = () => {
             alt="Logo" 
             width={200} 
             height={100}
+            quality={100}
             className="mx-auto"
           />
         </div>
