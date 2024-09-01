@@ -87,6 +87,23 @@ export class AuthService {
 
     // AuthGoogle
 
+    async generateToken(user: any) {
+        try {
+            const payload = {
+                email: user.email,
+                name: user.firstName,
+                photo: user.picture,
+            };
+
+            return await this.jwtService.signAsync(payload, {
+                secret: process.env.JWT_SECRET || 'default_secret',
+                expiresIn: '60m',
+            });
+        } catch (error) {
+            throw new InternalServerErrorException(`Error al generar el token: ${(error as Error).message}`);
+        }
+    }
+
     googleLogin(req){
         if(!req.user){
             return 'No user from google'
