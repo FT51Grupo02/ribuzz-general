@@ -1,5 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, JoinColumn } from "typeorm";
+import { Details } from "./details.entity";
 
 //import { Details } from "./details.entity";
 //import { Categories } from "./categories.entity";
@@ -80,4 +81,8 @@ export class Events {
     @ManyToMany(() => Users, user => user.id)
     @JoinTable()
     provider: Users;
+
+    @ManyToMany(() => Details, (detail) => detail.events)
+    @JoinColumn()
+    orderdetails_events: Details[];
 }

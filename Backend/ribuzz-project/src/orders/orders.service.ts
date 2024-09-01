@@ -6,6 +6,8 @@ import { Details } from "../Entidades/details.entity";
 import { Orders } from "../Entidades/orders.entity";
 import { Products } from "../Entidades/products.entity";
 import { Users } from "../Entidades/user.entity";
+import { Services } from "src/Entidades/services.entity";
+import { Events } from "src/Entidades/events.entity";
 //import { CreateProductDto } from "src/products/Dto/products.dto";
 
 @Injectable()
@@ -20,6 +22,13 @@ export class OrderService{
 
     @InjectRepository(Users) 
     private userRepository:Repository<Users>,
+
+    @InjectRepository(Services) 
+    private serviceRepository:Repository<Services>,
+
+    @InjectRepository(Events) 
+    private eventsRepository:Repository<Events>,
+
 
     @InjectRepository(Products) 
     private productsRepository:Repository<Products>){}
@@ -38,7 +47,7 @@ export class OrderService{
 
     //Generar una orden de compra 
     
-async AddOrder(userId: string, product: any){
+async AddOrder(userId: string, product:any,service:any,events:any){
     let totals = 0;
     const user = await this.userRepository.findOneBy({ id:userId });
     if(!user){
@@ -67,27 +76,64 @@ async AddOrder(userId: string, product: any){
                 
         })
     )
+    const servicesArray = await Promise.all(
+        service.map(async (element) => {
+            console.log(element);
+            const service = await this.serviceRepository.findOneBy({id:element.id});
+        
+                if(!service){
+                    return "product no encontrado"
+                }
+                totals += Number(service.price);
+    
+                //await this.serviceRepository.update({ id: element.id}, );
+                console.log(service.price);
+                console.log(service);
+                return service
+                
+        })
+    )
+
+    const eventsArray = await Promise.all(
+        events.map(async (element) => {
+            console.log(element);
+            const events = await this.eventsRepository.findOneBy({id:element.id});
+        
+                if(!events){
+                    return "product no encontrado"
+                }
+                totals += Number(events.price);
+    
+                //await this.serviceRepository.update({ id: element.id}, );
+                console.log(events.price);
+                console.log(events);
+                return events
+                
+        })
+    )
     const orderdetail = new Details()
     
     orderdetail.total= Number(Number(totals).toFixed(2));
     orderdetail.products = productsArray;
+    orderdetail.service = servicesArray;
+    orderdetail.events = eventsArray;
     orderdetail.order = newOrder;
     
     console.log(orderdetail);
     
     await this.orderDetailRepository.save(orderdetail);
     
-    return await this.orderRepository.findOne({ where:{ id: newOrder.id},
+    return await this.orderRepository.find({ where:{ id: newOrder.id},
     relations:{
-       // Details: true,
-        Details:{products:true}
+        Details:true
     }
     })
     }
     
     async getOrder(id:string){
-        const order = await this.orderRepository.findOne({where: {id},
-        relations:{ Details:{products:true} }})
+        const order = await this.orderRepository.find({where: {id:id},
+            relations:{ Details:{products:true,service:true , events:true}
+        }})
         console.log(order);
         
         if(!order){
