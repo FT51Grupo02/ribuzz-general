@@ -1,10 +1,10 @@
-/* eslint-disable prettier/prettier */
+// Renombrar el segundo ClientGuard a EntrepreneurGuard
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import {RoleValidatorService} from "./role.guard"
+import { RoleValidatorService } from "./role.guard";
 
 @Injectable()
-export class ClientGuard implements CanActivate{
-    constructor(private roleValidationService: RoleValidatorService){}
+export class EntrepreneurGuard implements CanActivate {
+    constructor(private roleValidationService: RoleValidatorService) {}
 
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
@@ -18,5 +18,4 @@ export class ClientGuard implements CanActivate{
         if (!authorizate) { throw new UnauthorizedException("No tiene permisos para esta transacción"); }
         return request.headers.authorization.split(' ')[1];
     }
-        
 }
