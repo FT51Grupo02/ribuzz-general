@@ -71,9 +71,9 @@ export class Services {
     @JoinTable()
     provider: Users;
     
-    @ManyToMany(() => Details, (detail) => detail.products)
+    @ManyToMany(() => Details, (detail) => detail.service)
     @JoinColumn()
-    orderdetails: Details[];
+    orderdetails_service: Details[];
 
     @ManyToMany(() => Categories, (category) => category.products)
     @JoinTable()
