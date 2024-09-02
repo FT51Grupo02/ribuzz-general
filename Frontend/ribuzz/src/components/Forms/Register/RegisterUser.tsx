@@ -6,6 +6,7 @@
   import { useAuth } from '@/components/Context/AuthContext';
   import GoogleLoginButton from '@/components/Google/Button/GoogleButton';
   import { IRegisterProps } from '@/interfaces/Types';
+  import Swal from 'sweetalert2';
 
   // Definir el esquema de validación usando Yup
   const validationSchema = Yup.object().shape({
@@ -37,7 +38,13 @@
         const result = await register(registerData);
 
         if (result) {
-          router.push('/login'); // Redirigir al login después del registro exitoso
+          Swal.fire({
+            title: 'Registro exitoso',
+            text: 'Tu cuenta ha sido creada con éxito.',
+            icon: 'success',
+            confirmButtonText: 'Aceptar'
+          });
+          router.push('/login');  // Redirigir al login después del registro exitoso
         }
       } catch (error) {
         console.error('Error en el registro:', error);
@@ -77,7 +84,7 @@
               Crea una nueva cuenta
             </h3>
             <Formik
-              initialValues={{ name: '', email: '', password: '', date: new Date(), rol: 'cliente' }}
+              initialValues={{ name: '', email: '', password: '', date: new Date(), rol: 'client' }}
               validationSchema={validationSchema}
               onSubmit={handleSubmit}
               validateOnChange={true}
@@ -135,19 +142,19 @@
                     )}
                   </div>
                   <div className="mb-8">
-                    <Field
-                      type="date"
-                      name="date"
-                      className="w-full p-3 text-base rounded-lg bg-[#303030] text-white border border-[#303030]"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        handleChange(e);
-                        setFieldTouched('date', true, true);
-                      }}
-                    />
-                    {errors.date && touched.date && (
-                      <div className="text-pink-300 text-sm pt-2">{errors.date}</div>
-                    )}
-                  </div>
+                        <Field
+                            type="date"
+                            name="date"
+                            className="w-full p-3 text-base rounded-lg bg-[#303030] text-white border border-[#303030]"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                handleChange(e);
+                                setFieldTouched('date', true, true);
+                            }}
+                        />
+                        {errors.date && touched.date && (
+                            <div className="text-pink-300 text-sm pt-2">{String(errors.date)}</div> 
+                        )}
+                    </div>
                   <hr className="border-t-1 border-pink-400 border-opacity-60 mb-2 pb-4" />
                   <div className="mb-4">
                     <label className="block text-white mb-2 text-xl">Rol:</label>
@@ -173,8 +180,8 @@
                       Registrarse
                     </span>
                   </button>
-                  <p>O registrate con:</p>
-                  <GoogleLoginButton />
+                {/*   <p>O registrate con:</p>
+                  <GoogleLoginButton /> */}
                 </Form>
               )}
             </Formik>
