@@ -72,6 +72,6 @@ export class Products {
     orderDetails: Details[];
 
     @ManyToMany(() => Categories, (category) => category.products, { cascade: true })
-    @JoinTable()
+    @JoinTable({name: 'products_categories'})
     categories: Categories[];
 }

@@ -43,7 +43,8 @@ import { FilterModule } from './Filters/filters.module';
     OrderModule,
     EventModule,
     StripeModule,
-    FilterModule
+    FilterModule,
+    ServicesModule
   ],
   controllers: [AppController],
   providers: [AppService],

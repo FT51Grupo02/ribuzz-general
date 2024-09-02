@@ -9,7 +9,7 @@ import { Categories } from "src/Entidades/categories.entity";
 export class ProductsService {
     constructor(
         @InjectRepository(Products) private productRepository: Repository<Products>,
-        @InjectRepository(Categories) private categorieRepository: Repository<Categories>
+        @InjectRepository(Categories) private categoryRepository: Repository<Categories>
     ) {}
 
     async getProducts(page: number, limit: number): Promise<Products[]> {
@@ -54,7 +54,7 @@ export class ProductsService {
             }
 
             for(const name of categoryNames){
-                const category = await this.categorieRepository.findOneBy({name})
+                const category = await this.categoryRepository.findOneBy({name})
                 if(!category){throw new BadRequestException("La(s) categoria(s) no se encuentra(n) registrada(s)")}
                 else{ categories.push(category)}
             }
@@ -74,16 +74,37 @@ export class ProductsService {
         }
     }
 
-    async updateProduct(id: string, product: Partial<Products>): Promise<Products> {
+    
+    async updateProduct(id: string, categoryNames: string[], product: Partial<Products>): Promise<Products> {
         try {
-            
-            const { orderDetails, categories, ...otherProperties } = product;
-            await this.productRepository.update(id, otherProperties);
-
+            const categories = [];
+    
+            // Validar si el objeto product es válido
+            if (!product) {
+                throw new BadRequestException('Los datos del producto son necesarios');
+            }
+    
+            // Validar stock antes de intentar actualizar
             if (product.stock !== undefined && product.stock <= 0) {
                 throw new BadRequestException('El stock no puede ser negativo');
             }
     
+            // Buscar y validar las categorías por nombre
+            for (const name of categoryNames) {
+                const category = await this.categoryRepository.findOneBy({ name });
+                if (!category) {
+                    throw new BadRequestException("Por favor ingrese una categoria existente");
+                } else {
+                    categories.push(category);
+                }
+            }
+    
+            const { orderDetails, ...otherProperties } = product;
+    
+            // Actualizar propiedades generales del producto
+            await this.productRepository.update(id, otherProperties);
+    
+            // Buscar el producto actualizado junto con sus relaciones
             const updatedProduct = await this.productRepository.findOne({
                 where: { id },
                 relations: ['details', 'categories'] 
@@ -93,21 +114,22 @@ export class ProductsService {
                 throw new NotFoundException(`Producto con id ${id} no encontrado`);
             }
     
+            // Asignar las categorías al producto
+            updatedProduct.categories = categories;
+    
+            // Asignar orderDetails si están presentes
             if (orderDetails) {
                 updatedProduct.orderDetails = orderDetails;
             }
     
-            if (categories) {
-                updatedProduct.categories = categories;
-            }
-
-            console.log(updatedProduct);
+            // Guardar el producto actualizado con las relaciones
             await this.productRepository.save(updatedProduct);
-            console.log(updatedProduct);
+    
             return updatedProduct;
+    
         } catch (error) {
-            console.error('Error al actualizar el producto:', error); // Imprimir el error en la consola
-            if (error instanceof NotFoundException) {
+            console.error('Error al actualizar el producto:', error);
+            if (error instanceof NotFoundException || error instanceof BadRequestException) {
                 throw error;
             }
             throw new InternalServerErrorException('Error al actualizar el producto');
