@@ -104,14 +104,43 @@ export class AuthService {
         }
     }
 
-    googleLogin(req){
-        if(!req.user){
-            return 'No user from google'
-        }
-        return {
-            message: 'User Info from Google',
-            user: req.user
+    async googleLogin(req) {
+        try {
+            // Busca el usuario por email
+            const user = await this.userService.findUserEmail(req.user.email);
+    
+            if (!user) {
+                // Crea un nuevo objeto de usuario con las propiedades necesarias
+                const newUser = {
+                    email: req.user.email,
+                    name: req.user.name,
+                    photo: req.user.photo,
+                    rol: 'cliente', // Asigna un rol predeterminado
+                    password: '', // Contraseña vacía por defecto
+                    date: new Date(),
+                    events: [], // Inicializa eventos si es necesario
+                    orders: [] // Inicializa pedidos si es necesario
+                };
+    
+                // Guarda el nuevo usuario en la base de datos
+                await this.userService.createUser(newUser);
+    
+                // Redirige al formulario de registro para completar la información
+                return { redirectTo: `/complete-registration?email=${encodeURIComponent(req.user.email)}` };
+            }
+    
+            // Genera un token para el usuario existente
+            const token = await this.generateToken(user);
+    
+            return {
+                message: 'User Info from Google',
+                user: req.user,
+                token: token,
+            };
+        } catch (error) {
+            throw new InternalServerErrorException(`Error during Google login: ${(error as Error).message}`);
         }
     }
+    
 
 }
