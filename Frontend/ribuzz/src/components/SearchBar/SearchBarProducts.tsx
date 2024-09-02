@@ -1,10 +1,17 @@
-'use client'
+"use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
+import debounce from "lodash/debounce";
 
 interface SearchBarProductsProps {
-  onFiltersChange: (filters: any) => void;
+  onFiltersChange: (filters: {
+    search: string;
+    rating: string;
+    category: string;
+    price: string;
+    popularity: string;
+  }) => void;
 }
 
 const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }) => {
@@ -14,6 +21,22 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
   const [price, setPrice] = useState<string>("all");
   const [popularity, setPopularity] = useState<string>("all");
 
+  // Debounced function to handle filters change
+  const debouncedFiltersChange = debounce(() => {
+    onFiltersChange({
+      search,
+      rating,
+      category,
+      price,
+      popularity,
+    });
+  }, 300);
+
+  useEffect(() => {
+    debouncedFiltersChange();
+  }, [search, rating, category, price, popularity]);
+
+  // Functions to handle changes in inputs
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
@@ -34,16 +57,6 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
     setPopularity(event.target.value);
   };
 
-  const handleSearch = () => {
-    onFiltersChange({
-      search,
-      rating,
-      category,
-      price,
-      popularity
-    });
-  };
-
   return (
     <div className="flex flex-col items-center p-4">
       <div className="flex flex-col gap-4 max-w-5xl w-full">
@@ -59,26 +72,16 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
               />
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
             </div>
-            <div className="flex items-center">
-              <button
-                onClick={handleSearch}
-                className="px-4 py-1.5 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-pink-500 to-pink-700 text-gray-50 hover:filter hover:bg-white transition duration-300"
-              >
-                <span className="transition duration-300 hover:scale-110 inline-block text-lg">
-                  Buscar
-                </span>
-              </button>
-            </div>
           </div>
         </div>
 
-        {/* Filtros */}
+        {/* Filters */}
         <div className="flex flex-col gap-4 w-full items-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl">
             <select
               value={rating}
               onChange={handleRatingChange}
-              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             >
               <option value="all">Rating</option>
               <option value="5">5 estrellas</option>
@@ -91,19 +94,19 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
             <select
               value={category}
               onChange={handleCategoryChange}
-              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             >
               <option value="all">Categoría</option>
-              <option value="electronics">Electrónica</option>
-              <option value="fashion">Moda</option>
-              <option value="home">Hogar</option>
-              <option value="books">Libros</option>
+              <option value="Electrónica">Electrónica</option>
+              <option value="Moda">Moda</option>
+              <option value="Hogar">Hogar</option>
+              <option value="Libros">Libros</option>
             </select>
 
             <select
               value={price}
               onChange={handlePriceChange}
-              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             >
               <option value="all">Precio</option>
               <option value="lowest">Más barato</option>
@@ -113,11 +116,11 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
             <select
               value={popularity}
               onChange={handlePopularityChange}
-              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 text-ellipsis text-overflow-hidden"
+              className="w-full px-4 py-2 border border-pink-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500"
             >
               <option value="all">Popularidad</option>
-              <option value="mostPopular">Más vendidos</option>
-              <option value="leastPopular">Menos vendidos</option>
+              <option value="mostPopular">Más vendido</option>
+              <option value="leastPopular">Menos vendido</option>
             </select>
           </div>
         </div>

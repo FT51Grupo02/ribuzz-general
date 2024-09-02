@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import CardProducts from '@/components/Cards/cardsproducts';
-import PaginatorPink from '@/components/Paginator/PaginatorPink';
+import PaginatorProducts from '@/components/Paginator/PaginatorProducts';
 import SearchBarProducts from '@/components/SearchBar/SearchBarProducts';
 import axios from 'axios';
 import { Product } from '@/components/Cards/types';
@@ -17,25 +17,26 @@ const Products: React.FC = () => {
     rating: 'all',
     category: 'all',
     price: 'all',
-    location: 'all'
+    popularity: 'all',
   });
   const productsPerPage = 4;
-  const totalPages = Math.ceil(products.length / productsPerPage);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const { search, rating, category, price, location } = filters;
-        const response = await axios.get(`http://localhost:3000/search/products`, {
+        const { search, rating, category, price, popularity } = filters;
+
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/products`, {
           params: {
-            page: currentPage,
-            search,
+            name: search || undefined,
             rating: rating !== 'all' ? rating : undefined,
-            category: category !== 'all' ? category : undefined,
-            price: price !== 'all' ? price : undefined,
-            location: location !== 'all' ? location : undefined
-          }
+            categorie: category !== 'all' ? category : undefined,
+            orderPrice: price === 'highest' ? 'desc' : price === 'lowest' ? 'asc' : undefined,
+            populate: popularity === 'mostPopular' ? 'alta' : popularity === 'leastPopular' ? 'baja' : undefined,
+            page: currentPage,
+          },
         });
+
         setProducts(response.data || []);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
@@ -46,17 +47,20 @@ const Products: React.FC = () => {
   }, [currentPage, filters]);
 
   useEffect(() => {
-    // Filtrar los productos para la página actual
+    const filtered = products.filter((product) =>
+      product.name.toLowerCase().includes(filters.search.toLowerCase())
+    );
+
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    setFilteredProducts(products.slice(startIndex, endIndex));
-  }, [products, currentPage]);
+    setFilteredProducts(filtered.slice(startIndex, endIndex));
+  }, [products, filters, currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleFiltersChange = (newFilters: any) => {
+  const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
   };
 
@@ -77,9 +81,9 @@ const Products: React.FC = () => {
         </h2>
         <SearchBarProducts onFiltersChange={handleFiltersChange} />
         <CardProducts products={filteredProducts} />
-        <PaginatorPink
+        <PaginatorProducts
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={Math.ceil(products.length / productsPerPage)}
           onPageChange={handlePageChange}
         />
       </div>

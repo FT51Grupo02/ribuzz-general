@@ -21,15 +21,17 @@ export class AuthController{
         return this.authService.signInEntrepreneur(email,password)
     }
 
-    @Get()
+    @Get('google')
     @UseGuards(AuthGuard('google'))
     async googleAuth(@Req()req){
         
     }
 
-    @Get('auth/google/callback')
+    @Get('google/callback')
     @UseGuards(AuthGuard('google'))
-    googleAuthRedirect(@Req() req){
+    async googleAuthRedirect(@Req() req){
+        const user = req.user;
+        const token = await this.authService.generateToken(user);
         return this.authService.googleLogin(req)
     }
 

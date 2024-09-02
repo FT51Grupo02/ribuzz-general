@@ -63,6 +63,7 @@ const LoginEntrepeneur = () => {
             width={200} 
             height={100}
             className="mx-auto"
+            quality={100}
           />
         </div>
         

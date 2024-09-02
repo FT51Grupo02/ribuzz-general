@@ -1,5 +1,7 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm"; 
+import { Events } from "src/Entidades/events.entity";
+import { Services } from "src/Entidades/services.entity";
 // import { Categories } from "../Entidades/categories.entity";
 import { Details } from "../Entidades/details.entity";
 import { Orders } from "../Entidades/orders.entity";
@@ -13,7 +15,9 @@ import { OrderService } from "./orders.service";
     TypeOrmModule.forFeature([Details]),
     TypeOrmModule.forFeature([Orders]),
     TypeOrmModule.forFeature([Users]),
-    TypeOrmModule.forFeature([Products])
+    TypeOrmModule.forFeature([Products]),
+    TypeOrmModule.forFeature([Services]),
+    TypeOrmModule.forFeature([Events])
 
 ] ,
     providers: [OrderService],

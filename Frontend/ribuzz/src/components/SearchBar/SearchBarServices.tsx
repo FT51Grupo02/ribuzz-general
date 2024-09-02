@@ -1,14 +1,40 @@
-'use client'
+"use client";
 
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
+import debounce from "lodash/debounce";
 
-const SearchBarServices: React.FC = () => {
+interface SearchBarServicesProps {
+  onSearch: (filters: {
+    search: string;
+    rating: string;
+    publicationDate: string;
+    popularity: string;
+    location: string;
+  }) => void;
+}
+
+const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
   const [search, setSearch] = useState<string>("");
   const [rating, setRating] = useState<string>("all");
   const [publicationDate, setPublicationDate] = useState<string>("all");
   const [popularity, setPopularity] = useState<string>("all");
   const [location, setLocation] = useState<string>("all");
+
+  // Debounced search function
+  const debouncedSearch = debounce(() => {
+    onSearch({
+      search,
+      rating,
+      publicationDate,
+      popularity,
+      location,
+    });
+  }, 300);
+
+  useEffect(() => {
+    debouncedSearch();
+  }, [search, rating, publicationDate, popularity, location]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -18,9 +44,7 @@ const SearchBarServices: React.FC = () => {
     setRating(event.target.value);
   };
 
-  const handlePublicationDateChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
+  const handlePublicationDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setPublicationDate(event.target.value);
   };
 
@@ -32,17 +56,10 @@ const SearchBarServices: React.FC = () => {
     setLocation(event.target.value);
   };
 
-  const handleSearch = () => {
-    console.log("Searching for:", { search, rating, publicationDate, popularity, location });
-  };
-
   return (
     <div className="flex flex-col items-center p-4">
-
       <div className="flex flex-col gap-4 max-w-5xl w-full">
-
         <div className="flex flex-col md:flex-row items-center gap-4 w-full md:justify-center">
-
           <div className="flex gap-4 w-full max-w-5xl">
             <div className="relative flex-1">
               <input
@@ -53,17 +70,6 @@ const SearchBarServices: React.FC = () => {
                 className="pl-10 pr-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500 placeholder:text-gray-300"
               />
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
-            </div>
-
-            <div className="flex items-center">
-              <button
-                onClick={handleSearch}
-                className="px-4 py-1.5 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-700 text-gray-50 hover:filter hover:bg-white transition duration-300"
-              >
-                <span className="transition duration-300 hover:scale-110 inline-block text-lg">
-                  Buscar
-                </span>
-              </button>
             </div>
           </div>
         </div>
@@ -102,8 +108,8 @@ const SearchBarServices: React.FC = () => {
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500 text-ellipsis text-overflow-hidden"
             >
               <option value="all">Popularidad</option>
-              <option value="mostPopular">Más popular</option>
-              <option value="leastPopular">Menos popular</option>
+              <option value="mostPopular">Más vendido</option>
+              <option value="leastPopular">Menos vendido</option>
             </select>
 
             <select
