@@ -19,7 +19,7 @@ export class UsuarioService {
         private readonly ordersRepository: Repository<Orders>,
         */) {}
 
-        async create(user: Partial<Users>) {
+        async createUser(user: Partial<Users>) {
             try {
                 const repeatUser = await this.userRepository.find({
                       where:[{name:user.name},{email:user.email},{password:user.password}]
