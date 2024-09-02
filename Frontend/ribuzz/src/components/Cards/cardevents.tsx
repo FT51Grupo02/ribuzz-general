@@ -40,7 +40,7 @@ const CardEvents: React.FC<CardEventsProps> = ({ events }) => {
   }
 
   return (
-    <div className="flex flex-col items-center w-full px-4 md:px-6 lg:px-8">
+    <div className="flex flex-col items-center w-full pt-4 px-4 md:px-6 lg:px-8">
       {events.map((event: Event) => (
         <div
           key={event.id}

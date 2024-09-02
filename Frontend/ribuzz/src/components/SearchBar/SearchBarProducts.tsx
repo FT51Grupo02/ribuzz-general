@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { FiSearch } from "react-icons/fi";
 import debounce from "lodash/debounce";
 
@@ -21,19 +21,27 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
   const [price, setPrice] = useState<string>("all");
   const [popularity, setPopularity] = useState<string>("all");
 
-  const debouncedFiltersChange = debounce(() => {
-    onFiltersChange({
-      search,
-      rating,
-      category,
-      price,
-      popularity,
-    });
-  }, 300);
+  const debouncedFiltersChange = useCallback(
+    debounce(() => {
+      onFiltersChange({
+        search,
+        rating,
+        category,
+        price,
+        popularity,
+      });
+    }, 300),
+    [search, rating, category, price, popularity]
+  );
 
   useEffect(() => {
     debouncedFiltersChange();
-  }, [search, rating, category, price, popularity]);
+
+    // Limpiar el debounce al desmontar el componente
+    return () => {
+      debouncedFiltersChange.cancel();
+    };
+  }, [debouncedFiltersChange]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
