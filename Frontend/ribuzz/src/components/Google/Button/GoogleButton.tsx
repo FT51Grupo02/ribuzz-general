@@ -1,12 +1,15 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { FcGoogle } from 'react-icons/fc';
 
 const GoogleLoginButton = () => {
+  const router = useRouter();
+
   const handleGoogleLogin = () => {
-    // Redirige al usuario a la ruta de autenticación en tu backend
-    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    const googleAuthURL = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_FRONTEND_URL}/auth/google/callback&response_type=code&scope=openid email profile`;
+    router.push(googleAuthURL);
   };
 
   return (
@@ -17,7 +20,7 @@ const GoogleLoginButton = () => {
     >
       <FcGoogle className="w-6 h-6 md:w-7 md:h-7 mr-2 transition duration-300 hover:scale-110" />
       <span className="transition duration-300 hover:scale-110 inline-block text-lg">
-        Google
+       Google
       </span>
     </button>
   );

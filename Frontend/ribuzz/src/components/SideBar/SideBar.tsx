@@ -1,7 +1,9 @@
+// components/Layout.tsx
 'use client';
 import { ReactNode } from 'react';
 import Image from 'next/image';
 import { FaHome, FaCalendarAlt, FaHeart, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import FetchOrdersButton from './OrdersButton'; // Asegúrate de la ruta correcta para importar
 
 interface LayoutProps {
   children: ReactNode;
@@ -23,12 +25,13 @@ const Layout = ({ children }: LayoutProps) => {
 
         {/* Navigation Icons */}
         <nav className="flex flex-col space-y-10 mt-8 z-10 text-white p-2">
-          {/* Increased spacing between icons */}
           <FaHome className="text-xl hover:text-pink-400 cursor-pointer" />
           <FaCalendarAlt className="text-xl hover:text-pink-400 cursor-pointer" />
           <FaHeart className="text-xl hover:text-pink-400 cursor-pointer" />
           <FaUser className="text-xl hover:text-pink-400 cursor-pointer" />
           <FaCog className="text-xl hover:text-pink-400 cursor-pointer" />
+          {/* Agrega el botón aquí */}
+          <FetchOrdersButton />
         </nav>
 
         {/* Sign Out Icon Centered */}
@@ -46,3 +49,4 @@ const Layout = ({ children }: LayoutProps) => {
 };
 
 export default Layout;
+
