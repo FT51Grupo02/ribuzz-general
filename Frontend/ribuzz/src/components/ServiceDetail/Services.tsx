@@ -26,7 +26,6 @@ export interface ServiceProps {
     details?: string[];
     reviews?: Review[];
     price: number;
-    stock: number;
 }
 
 const Service: FC<ServiceProps> = ({
@@ -38,7 +37,6 @@ const Service: FC<ServiceProps> = ({
     details = [],
     reviews = [],
     price,
-    stock,
 }) => {
     const { addToCart } = useCart();
     const router = useRouter();
@@ -54,7 +52,6 @@ const Service: FC<ServiceProps> = ({
             price,
             image: images[0], 
             description,
-            stock,
             categoryId: 0, 
             id: Date.now(), 
         };

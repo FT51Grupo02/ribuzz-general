@@ -37,12 +37,20 @@ const ServicePage = async ({ params }: Props) => {
     return null;
   }
 
-  // Destructura el objeto de servicio para pasar solo las propiedades necesarias
-  const { id, name, price, images, rating, description } = service;
+  const { id, name, price, images, description, providerInfo, details, reviews } = service;
 
   return (
     <div>
-      <Service id={id} name={name} price={price} images={images} rating={rating} description={description} />
+      <Service
+        id={id}
+        name={name}
+        price={price}
+        images={images}
+        description={description}
+        providerInfo={providerInfo}
+        details={details}
+        reviews={reviews}
+      />
     </div>
   );
 };
