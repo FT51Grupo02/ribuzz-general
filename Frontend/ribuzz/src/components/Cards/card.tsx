@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 interface CardProps {
@@ -23,6 +22,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const pathname = usePathname(); 
 
+
   const nameColor = pathname === '/products' ? 'text-pink-400' : pathname === '/services' ? 'text-cyan-400' : 'text-white';
 
   return (
@@ -31,15 +31,12 @@ const Card: React.FC<CardProps> = ({
       style={{ width: '300px', height: '450px', minHeight: '450px' }}
       onClick={onClick}
     >
-      <div className="relative w-full" style={{ height: '200px' }}>
-        <Image
-          src={image}
-          alt={name}
-          layout="fill"
-          objectFit="cover"
-          className="rounded-t-lg"
-        />
-      </div>
+      <img
+        src={image}
+        alt={name}
+        className="w-full object-cover rounded-t-lg"
+        style={{ height: '200px', minHeight: '200px', objectFit: 'cover' }}
+      />
       <div className="flex flex-col p-4 flex-grow">
         <h2
           className={`text-lg font-semibold mb-2 ${nameColor}`}
