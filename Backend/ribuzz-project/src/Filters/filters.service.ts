@@ -24,20 +24,25 @@ export class FilterService {
 
         const arrayProduct = await this.productRepository.createQueryBuilder('product')
       
-        const filter = {
-
-          ...(dto.name && {name:dto.name}),
-          ...(dto.price && {price:dto.price}),
-          ...(dto.rating && {rating:dto.rating}),
-          ...(dto.populate && {populate:dto.populate}),
-       
-        }
+        const textFilters = {
+          ...(dto.name && { name: dto.name }),
+          ...(dto.populate && { populate: dto.populate }),
+        };
+    
+        const numberFilters = {
+          ...(dto.price && { price: dto.price }),
+          ...(dto.rating && { rating: dto.rating }),
+        };
+    
         
-        //Aplicación de los filtros establecidos 
-
-        Object.entries(filter).forEach(([key, value]) => {
+        Object.entries(textFilters).forEach(([key, value]) => {
           arrayProduct.andWhere(`product.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
-        })
+        });
+    
+  
+        Object.entries(numberFilters).forEach(([key, value]) => {
+          arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
+        });
 
         if (dto.categories) {
           const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
@@ -65,20 +70,29 @@ export class FilterService {
   async searchServices(dto: FilterDto): Promise<Services[]> {
     try {
         const arrayService = this.serviceRepository.createQueryBuilder('service');
-
+        
+        const textFilters ={
+          ...(dto.name && { name: dto.name }),
+          ...(dto.duration && {duration:dto.duration}),
+          ...(dto.publicationDate && { date: dto.publicationDate }),
+          ...(dto.location && { location: dto.location })
+      }
        
-        const filter = {
-            ...(dto.name && { name: dto.name }),
+        const numberFilters  = {
+            
             ...(dto.price && {price:dto.price}),
             ...(dto.rating && { rating: dto.rating }),
-            ...(dto.publicationDate && { date: dto.publicationDate }),
-            ...(dto.location && { location: dto.location })
-        };
+          };
+          
 
         // Aplicar filtros
-        Object.entries(filter).forEach(([key, value]) => {
+        Object.entries(textFilters).forEach(([key, value]) => {
             arrayService.andWhere(`service.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
         });
+
+        Object.entries(numberFilters).forEach(([key, value]) => {
+            arrayService.andWhere(`service.${key} = :${key}`, { [`${key}`]: value });
+        })
 
       
         if (dto.categories) {
@@ -111,20 +125,25 @@ export class FilterService {
     try {
         const arrayEvent = this.eventRepository.createQueryBuilder('event');
 
-       
-        const filter = {
-            ...(dto.name && { name: dto.name }),
+        const textFilters ={
+          ...(dto.name && { name: dto.name }),
+          ...(dto.publicationDate && { date: dto.publicationDate }),
+          ...(dto.location && { location: dto.location })
+        }
+
+        const numberFilters = {
             ...(dto.price && {price:dto.price}),
             ...(dto.rating && { rating: dto.rating }),
-            ...(dto.publicationDate && { date: dto.publicationDate }),
-            ...(dto.location && { location: dto.location })
         };
 
         // Aplicar filtros
-        Object.entries(filter).forEach(([key, value]) => {
+        Object.entries(textFilters).forEach(([key, value]) => {
             arrayEvent.andWhere(`event.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
         });
-
+        
+        Object.entries(numberFilters).forEach(([key, value]) => {
+          arrayEvent.andWhere(`event.${key} = :${key}`, { [`${key}`]: value });
+      });
       
         if (dto.categories) {
             const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
