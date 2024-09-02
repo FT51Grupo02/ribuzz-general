@@ -1,13 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Services } from "../Entidades/services.entity";
+import { Categories } from "src/Entidades/categories.entity";
 
 @Injectable()
 export class ServicesService {
     constructor(
-        @InjectRepository(Services) private servicesRepository: Repository<Services>
+        @InjectRepository(Services) 
+        private servicesRepository: Repository<Services>,
+        @InjectRepository(Categories)
+        private categoriesRepository: Repository<Categories>,
     ) {}
 
     async getServices(page: number, limit: number): Promise<Services[]> {
@@ -41,10 +45,27 @@ export class ServicesService {
         }
     }
 
-    async createService(service: Services): Promise<Services> {
+    async createService(categoryName:string[],service: Partial<Services[]>): Promise<Services> {
         try {
-            const newService = this.servicesRepository.create(service);
+
+            const categories = []
+
+            if(categoryName.length===0 || !categoryName ){
+                throw new BadRequestException("Por favor ingrese la(s) categoria(s)")
+            }
+            
+            for(const name of categoryName){
+                const category = await this.categoriesRepository.findOneBy({name})
+                if(!category){throw new NotFoundException("La(s) categoria(s) no se encontrarón")}
+                else{categories.push(category)}
+            }
+
+            const newService = this.servicesRepository.create({
+                ...service,
+                categories
+            });
             return await this.servicesRepository.save(newService);
+
         } catch (error) {
             throw new InternalServerErrorException('Error al crear el servicio: ' + error);
         }

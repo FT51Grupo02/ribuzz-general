@@ -1,8 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Body, Param, Query } from "@nestjs/common";
 import { ServicesService } from "./services.service";
-import { Services } from "src/Entidades/services.entity";
-import { AdminGuard } from "src/Guardianes/admin.guard";
+//import { Services } from "src/Entidades/services.entity";
+//import { AdminGuard } from "src/Guardianes/admin.guard";
 
 @Controller('services')
 export class ServicesController {
@@ -16,22 +16,23 @@ export class ServicesController {
         return this.servicesService.getServices(page, limit);
     }
 
-    @Get(':id')
+    @Get('/:id')
     async getServiceById(@Param('id') id: string) {
         return this.servicesService.getServiceById(id);
     }
 
     
     @Post()
-    async createService(@Body() service: Services) {
-        return this.servicesService.createService(service);
+    async createService(@Body() serviceDto: any) {
+        const{categories, ...serviceDato}=serviceDto
+        return this.servicesService.createService(serviceDato,categories);
     }
 
     
-    @Put(':id')
+    /*@Put(':id')
     async updateService(@Param('id') id: string, @Body() service: Services) {
       //  return this.servicesService.updateService(id, service);
-    }
+    }*/
 
     
     @Delete(':id')
