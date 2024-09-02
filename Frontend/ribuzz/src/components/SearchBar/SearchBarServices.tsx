@@ -21,7 +21,6 @@ const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
   const [popularity, setPopularity] = useState<string>("all");
   const [location, setLocation] = useState<string>("all");
 
-  // Debounced search function
   const debouncedSearch = debounce(() => {
     onSearch({
       search,

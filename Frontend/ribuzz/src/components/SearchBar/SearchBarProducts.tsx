@@ -21,7 +21,6 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
   const [price, setPrice] = useState<string>("all");
   const [popularity, setPopularity] = useState<string>("all");
 
-  // Debounced function to handle filters change
   const debouncedFiltersChange = debounce(() => {
     onFiltersChange({
       search,
@@ -36,7 +35,6 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
     debouncedFiltersChange();
   }, [search, rating, category, price, popularity]);
 
-  // Functions to handle changes in inputs
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
@@ -75,7 +73,7 @@ const SearchBarProducts: React.FC<SearchBarProductsProps> = ({ onFiltersChange }
           </div>
         </div>
 
-        {/* Filters */}
+        {/* Filtros */}
         <div className="flex flex-col gap-4 w-full items-center">
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl">
             <select

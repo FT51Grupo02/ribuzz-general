@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
 import debounce from "lodash/debounce";
 
@@ -21,7 +21,6 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
   const [popularity, setPopularity] = useState<string>("all");
   const [location, setLocation] = useState<string>("all");
 
-  // Debounced function to handle filters change
   const debouncedFiltersChange = debounce(() => {
     onFiltersChange({
       search,
@@ -36,6 +35,26 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
     debouncedFiltersChange();
   }, [search, rating, publicationDate, popularity, location]);
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  const handleRatingChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setRating(event.target.value);
+  };
+
+  const handlePublicationDateChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setPublicationDate(event.target.value);
+  };
+
+  const handlePopularityChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setPopularity(event.target.value);
+  };
+
+  const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setLocation(event.target.value);
+  };
+
   return (
     <div className="flex flex-col items-center p-4">
       <div className="flex flex-col gap-4 max-w-5xl w-full">
@@ -46,8 +65,8 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
                 type="text"
                 placeholder="Buscar eventos..."
                 value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="pl-10 pr-4 py-2 border placeholder:text-gray-300 border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500"
+                onChange={handleSearchChange}
+                className="pl-10 pr-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500 placeholder:text-gray-300"
               />
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
             </div>
@@ -59,7 +78,7 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl">
             <select
               value={rating}
-              onChange={(e) => setRating(e.target.value)}
+              onChange={handleRatingChange}
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">Rating</option>
@@ -72,7 +91,7 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
 
             <select
               value={publicationDate}
-              onChange={(e) => setPublicationDate(e.target.value)}
+              onChange={handlePublicationDateChange}
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">Fecha de publicación</option>
@@ -84,7 +103,7 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
 
             <select
               value={popularity}
-              onChange={(e) => setPopularity(e.target.value)}
+              onChange={handlePopularityChange}
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">Popularidad</option>
@@ -94,7 +113,7 @@ const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) =>
 
             <select
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              onChange={handleLocationChange}
               className="w-full px-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
             >
               <option value="all">Ubicación</option>
