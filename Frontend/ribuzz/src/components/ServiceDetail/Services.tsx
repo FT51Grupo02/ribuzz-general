@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Image from 'next/image';
 import { FC, useState } from 'react';
@@ -47,17 +47,18 @@ const Service: FC<ServiceProps> = ({
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedRating, setSelectedRating] = useState<number>(0);
     const [comment, setComment] = useState<string>('');
+    const [localReviews, setLocalReviews] = useState<Review[]>(reviews);
 
     const handleAddToCart = () => {
         if (stock > 0) {
             const serviceToAdd = {
                 name,
                 price,
-                image: images[0], 
+                image: images[0],
                 description,
                 stock,
-                categoryId: 0, 
-                id: Date.now(), 
+                categoryId: 0,
+                id: Date.now(),
             };
 
             addToCart(serviceToAdd);
@@ -84,7 +85,7 @@ const Service: FC<ServiceProps> = ({
                 comment: comment,
                 rating: selectedRating
             };
-            reviews.push(newReview);
+            setLocalReviews([...localReviews, newReview]);
             setComment('');
             setSelectedRating(0);
         } else {
@@ -96,7 +97,7 @@ const Service: FC<ServiceProps> = ({
         <div className="relative w-full h-full min-h-screen bg-black text-white">
             <div className="absolute inset-0">
                 <Image
-                    src="/0.png" 
+                    src="/0.png"
                     alt="Background Image"
                     layout="fill"
                     objectFit="cover"
@@ -152,7 +153,7 @@ const Service: FC<ServiceProps> = ({
                             <div className="flex flex-col">
                                 <div className="flex-grow">
                                     <ul className="space-y-6">
-                                        {reviews.map((review, idx) => (
+                                        {localReviews.map((review, idx) => (
                                             <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-cyan-700 to-cyan-500 p-6 rounded-lg hover:scale-105 transition duration-300">
                                                 <p className="text-lg"><strong>{review.username}:</strong></p>
                                                 <p className="text-lg mb-2">{review.comment}</p>
