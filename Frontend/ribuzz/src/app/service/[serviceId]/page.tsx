@@ -48,7 +48,17 @@ const ServicePage = async ({ params }: Props) => {
   return (
     <div>
       {/* Asegúrate de que el objeto 'service' tenga todas las propiedades necesarias */}
-      <Service {...service} />
+      <Service
+        name={service.name}
+        description={service.description}
+        images={service.images}
+        videos={service.videos || []}
+        providerInfo={service.providerInfo || { name: '', contact: '' }}
+        details={service.details || []}
+        reviews={service.reviews || []}
+        price={service.price}
+        stock={service.stock}
+      />
     </div>
   );
 };
