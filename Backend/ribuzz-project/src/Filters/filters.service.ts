@@ -36,7 +36,7 @@ export class FilterService {
         //Aplicación de los filtros establecidos 
 
         Object.entries(filter).forEach(([key, value]) => {
-          arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
+          arrayProduct.andWhere(`product.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
         })
 
         if (dto.categories) {
@@ -62,90 +62,95 @@ export class FilterService {
       }
   }
 
-  async searchServices(dto:FilterDto):Promise<Services[]> {
-    try{
+  async searchServices(dto: FilterDto): Promise<Services[]> {
+    try {
+        const arrayService = this.serviceRepository.createQueryBuilder('service');
+
+       
+        const filter = {
+            ...(dto.name && { name: dto.name }),
+            ...(dto.price && {price:dto.price}),
+            ...(dto.rating && { rating: dto.rating }),
+            ...(dto.publicationDate && { date: dto.publicationDate }),
+            ...(dto.location && { location: dto.location })
+        };
+
+        // Aplicar filtros
+        Object.entries(filter).forEach(([key, value]) => {
+            arrayService.andWhere(`service.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
+        });
+
+      
+        if (dto.categories) {
+            const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
+
+            arrayService.innerJoinAndSelect('event.categories', 'category')
+                      .andWhere('category.name IN (:...categories)', { categories: categoriesArray });
+        }
+
+
+        if (dto.orderPrice && (dto.orderPrice.toLowerCase() === 'asc' || dto.orderPrice.toLowerCase() === 'desc')) {
+            const order: 'ASC' | 'DESC' = dto.orderPrice.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+            arrayService.addOrderBy('service.price', order);
+        }
+
      
-    
-      const arrayService = await this.serviceRepository.createQueryBuilder('service') 
-      
-      const filter = {
+        if (dto.orderRating && (dto.orderRating.toLowerCase() === 'asc' || dto.orderRating.toLowerCase() === 'desc')) {
+            const order: 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+            arrayService.addOrderBy('service.rating', order);
+        }
 
-        ...(dto.name && {name:dto.name}),
-        ...(dto.price && {price:dto.price}),
-        ...(dto.rating && {rating:dto.rating}),
-        ...(dto.duration && {duration:dto.duration}),
-        ...(dto.location && {location:dto.location}),
+        return await arrayService.getMany();
+    } catch (error) {
+        console.error('Error al encontrar el evento:', error);
+        throw new InternalServerErrorException('Error al encontrar el evento: ' + error);
+    }
+}
+
+  async searchEvents(dto: FilterDto): Promise<Events[]> {
+    try {
+        const arrayEvent = this.eventRepository.createQueryBuilder('event');
+
+       
+        const filter = {
+            ...(dto.name && { name: dto.name }),
+            ...(dto.price && {price:dto.price}),
+            ...(dto.rating && { rating: dto.rating }),
+            ...(dto.publicationDate && { date: dto.publicationDate }),
+            ...(dto.location && { location: dto.location })
+        };
+
+        // Aplicar filtros
+        Object.entries(filter).forEach(([key, value]) => {
+            arrayEvent.andWhere(`event.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
+        });
+
+      
+        if (dto.categories) {
+            const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
+
+            arrayEvent.innerJoinAndSelect('event.categories', 'category')
+                      .andWhere('category.name IN (:...categories)', { categories: categoriesArray });
+        }
+
+
+        if (dto.orderPrice && (dto.orderPrice.toLowerCase() === 'asc' || dto.orderPrice.toLowerCase() === 'desc')) {
+            const order: 'ASC' | 'DESC' = dto.orderPrice.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+            arrayEvent.addOrderBy('event.price', order);
+        }
+
      
-      }
-      
-      //Aplicación de los filtros establecidos 
+        if (dto.orderRating && (dto.orderRating.toLowerCase() === 'asc' || dto.orderRating.toLowerCase() === 'desc')) {
+            const order: 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+            arrayEvent.addOrderBy('event.rating', order);
+        }
 
-      Object.entries(filter).forEach(([key, value]) => {
-        arrayService.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
-      })
-
-      if (dto.categories) {
-        const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
-
-        arrayService.innerJoinAndSelect('product.categories', 'category')
-                    .andWhere('category.name IN (:...categories)', { categories: categoriesArray });
-    }        
-
-      //Filtrado por orden ascedente de price ay rating
-
-      if(dto.orderPrice &&( dto.orderPrice.toLowerCase()==='asc'|| dto.orderPrice.toLowerCase()==='desc')){
-        const order : 'ASC' | 'DESC' = dto.orderPrice.toLowerCase() === 'asc'? 'ASC' : 'DESC'
-        arrayService.addOrderBy('service.price',order)
-      }
-
-      if(dto.orderRating &&( dto.orderRating.toLowerCase()==='asc'|| dto.orderRating.toLowerCase()==='desc')){
-        const order : 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc'? 'ASC' : 'DESC'
-        arrayService.addOrderBy('service.rating',order)
-      }
-      
-      return await arrayService.getMany()
-
+        return await arrayEvent.getMany();
+    } catch (error) {
+        console.error('Error al encontrar el evento:', error);
+        throw new InternalServerErrorException('Error al encontrar el evento: ' + error);
     }
-    catch(error){
-      throw new InternalServerErrorException("Error al encontrar el servicio"+ error) 
-    }
-  }
+}
 
-  async searchEvents(dto:FilterDto):Promise<Events[]>{
-    try{
-      const arrayEvent = await this.eventRepository.createQueryBuilder('event')
-
-      const filter = {
-        ...(dto.name && {name:dto.name}),
-        ...(dto.rating && {rate:dto.rating}),
-        ...(dto.categories && {categories: dto.categories}),
-        ...(dto.publicationDate && {date: dto.publicationDate}),
-        ...(dto.location &&{location:dto.location})
-      }
-
-      Object.entries(filter).forEach(([key, value])=>{
-          if(key==='location'|| key==='categorie'){
-              arrayEvent.andWhere(`event ${key} LIKE: ${key}`,{[`${key}`]:`%${value}%`})
-          }
-          else{
-              arrayEvent.andWhere(`event ${key} =: ${key}`,{[`${key}`]:`%${value}%`})
-          }
-      })
-
-      if(dto.orderPrice &&( dto.orderPrice.toLowerCase()==='asc'|| dto.orderPrice.toLowerCase()==='desc')){
-        const order : 'ASC' | 'DESC' = dto.orderPrice.toLowerCase() === 'asc'? 'ASC' : 'DESC'
-        arrayEvent.addOrderBy('service.price',order)
-      }
-
-      if(dto.orderRating &&( dto.orderRating.toLowerCase()==='asc'|| dto.orderRating.toLowerCase()==='desc')){
-        const order : 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc'? 'ASC' : 'DESC'
-        arrayEvent.addOrderBy('service.rating',order)
-      }
-        return await arrayEvent.getMany()
-    }
-    catch(error){
-      throw new InternalServerErrorException("Error al encontrar el evento"+ error)
-    }    
-  }
   
 }
