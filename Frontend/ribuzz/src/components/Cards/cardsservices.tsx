@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Card from './card';
@@ -47,7 +49,7 @@ const CardServices: React.FC<CardServicesProps> = ({ services }) => {
             {service ? (
               <Card
                 name={service.name}
-                price={service.price.toString()}
+                price={service.price}
                 image={service.images[0]} 
                 rating={service.rating}
                 description={service.description}

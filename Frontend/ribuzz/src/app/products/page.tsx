@@ -20,17 +20,15 @@ const Products: React.FC = () => {
     popularity: 'all',
   });
   const productsPerPage = 4;
-  const totalPages = Math.ceil(products.length / productsPerPage);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
         const { search, rating, category, price, popularity } = filters;
 
-        // Enviar todos los parámetros correctos para la búsqueda
-        const response = await axios.get(`http://localhost:3000/search/products`, {
+        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/products`, {
           params: {
-            name: search ? search : undefined, // Asegúrate de usar 'name' aquí para la búsqueda
+            name: search || undefined,
             rating: rating !== 'all' ? rating : undefined,
             categorie: category !== 'all' ? category : undefined,
             orderPrice: price === 'highest' ? 'desc' : price === 'lowest' ? 'asc' : undefined,
@@ -49,16 +47,20 @@ const Products: React.FC = () => {
   }, [currentPage, filters]);
 
   useEffect(() => {
+    const filtered = products.filter((product) =>
+      product.name.toLowerCase().includes(filters.search.toLowerCase())
+    );
+
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
-    setFilteredProducts(products.slice(startIndex, endIndex));
-  }, [products, currentPage]);
+    setFilteredProducts(filtered.slice(startIndex, endIndex));
+  }, [products, filters, currentPage]);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
-  const handleFiltersChange = (newFilters: any) => {
+  const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
     setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
   };
 
@@ -81,7 +83,7 @@ const Products: React.FC = () => {
         <CardProducts products={filteredProducts} />
         <PaginatorProducts
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={Math.ceil(products.length / productsPerPage)}
           onPageChange={handlePageChange}
         />
       </div>
