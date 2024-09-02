@@ -6,7 +6,7 @@ import Card from './card';
 import { Product } from '@/components/Cards/types'; 
 
 interface CardProductsProps {
-  products?: Product[]; // Haciendo que sea opcional
+  products?: Product[]; 
 }
 
 const CardProducts: React.FC<CardProductsProps> = ({ products = [] }) => {

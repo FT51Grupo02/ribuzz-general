@@ -6,7 +6,7 @@ import Card from './card';
 import { Service } from '@/components/Cards/types';
 
 interface CardServicesProps {
-  services: Service[];
+  services?: Service[];
 }
 
 const CardServices: React.FC<CardServicesProps> = ({ services }) => {

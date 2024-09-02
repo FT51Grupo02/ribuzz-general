@@ -30,7 +30,7 @@ const Products: React.FC = () => {
           params: {
             name: search || undefined,
             rating: rating !== 'all' ? rating : undefined,
-            categorie: category !== 'all' ? category : undefined,
+            categories: category !== 'all' ? category : undefined,
             orderPrice: price === 'highest' ? 'desc' : price === 'lowest' ? 'asc' : undefined,
             populate: popularity === 'mostPopular' ? 'alta' : popularity === 'leastPopular' ? 'baja' : undefined,
             page: currentPage,
