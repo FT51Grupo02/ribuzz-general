@@ -10,7 +10,7 @@ const decodeBase64Url = (str: string) => {
     return atob(str);
 };
 
-const parseJwt = (token: string) => {
+export const parseJwt = (token: string) => {
     try {
         const parts = token.split('.');
         if (parts.length !== 3) {

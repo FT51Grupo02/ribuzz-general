@@ -29,7 +29,7 @@ export const StripeProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     initializeStripe();
   }, []);
 
-  console.log('StripeProvider rendering with stripe:', stripe);
+  
 
   if (loading) {
     return <Loader />;
