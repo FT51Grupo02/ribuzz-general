@@ -67,7 +67,7 @@ const HomeContainer: React.FC = () => {
         </h2>
         <p className="text-center text-lg md:text-2xl mt-4 mb-8" style={{ color: '#DADDE8' }}>
           Tu tarea es contar la historia detrás de tu sonrisa,<br />
-          RiBuzz <span style={{ color: '#00e1d4' }}>conecta y crea para ti</span>
+          RiBuzz <span style={{ color: '#00e1d4' }}>conecta y crea para tí</span>
         </p>
       </section>
       <div className="my-10">
@@ -84,7 +84,7 @@ const HomeContainer: React.FC = () => {
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center mb-20">
           <div className="w-36 h-36 flex items-center justify-center border-4 border-white rounded-full">
-            <FaHome className="text-8xl text-gray-100" />
+            <FaHome className="text-8xl text-gray-100 " />
           </div>
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center">
@@ -111,11 +111,7 @@ const HomeContainer: React.FC = () => {
             <FaArrowRight className="text-white text-4xl" />
           </div>
           {/* Imagen */}
-          <img
-            src="/5.png"
-            alt="Imagen descriptiva"
-            className="my-10 w-44 flex items-center justify-center border-4 border-transparent rounded-full z-20 ml-4"
-          />
+          <img src="/5.png" alt="Imagen descriptiva" className="my-10 w-44 flex items-center justify-center border-4 border-transparent rounded-full z-20 ml-4"/>
         </div>
         <div className="bg-transparent p-6 rounded-lg flex flex-col items-center pt-16">
           <div className="w-36 h-36 flex items-center justify-center border-4 border-white rounded-full">
@@ -139,25 +135,46 @@ const HomeContainer: React.FC = () => {
       {/* Tercera Sección */}
       <section className="flex flex-col items-center justify-center bg-transparent py-2 px-4 md:px-10 lg:px-16">
         <div className="flex flex-row items-center justify-center space-x-10 mb-4 mt-10">
-          <BsBuildings className="text-4xl md:text-8xl lg:text-9xl text-white" />
-          <GiSandsOfTime className="text-4xl md:text-8xl lg:text-9xl text-white" />
-          <GiReceiveMoney className="text-4xl md:text-8xl lg:text-9xl text-white" />
+        <BsBuildings className="text-4xl md:text-8xl lg:text-9xl text-white" />
+        <GiSandsOfTime className="text-4xl md:text-8xl lg:text-9xl text-white" />
+        <GiReceiveMoney className="text-4xl md:text-8xl lg:text-9xl text-white" />
         </div>
         <p className="text-center text-sm md:text-base lg:text-3xl font-light text-[#DADDE8]">
-          Empresa - <span className="text-[#00e1d4]">Valoración</span> - Inversores
+        Empresa - <span className='text-[#00e1d4] font-semibold'>Ahorrar</span> tiempo y costes
         </p>
-      </section>
-      {/* Cuarta Sección */}
-      <section className="flex flex-col justify-center items-center h-36 mb-16">
-        <h2 className="text-center text-2xl md:text-4xl font-extralight mb-5" style={{ fontFamily: 'Moonhouse, sans-serif', color: '#DADDE8' }}>
-          Regístrate
+        <p className="text-center text-sm md:text-base lg:text-3xl font-light text-[#DADDE8]">
+        Soluciones - <span className='text-pink-500 font-semibold'>Confiables y de calidad</span>
+        </p>
+  </section>
+
+      <section className="text-center bg-transparent py-12 mb-6">
+        {/* Título */}
+        <h2 className="text-5xl font-light text-[#DADDE8] mb-12 mt-10" style={{ fontFamily: 'Moonhouse, sans-serif' }}>
+          Modelo de <span style={{ color: '#00e1d4' }}>Comisión</span> B2B
         </h2>
-        <p className="text-center text-lg md:text-2xl mt-4 mb-8" style={{ color: '#DADDE8' }}>
-          Inicia tu viaje para descubrir, conectar, y aprender con RiBuzz.<br />
-          Accede a oportunidades para transformar tus ideas en negocios exitosos.
+
+        {/* Contenido con flechas e imagen */}
+        <div className="flex flex-col md:flex-row items-center justify-center space-x-6 mb-12 ">
+          <div className="flex items-center">
+            <p className="text-[#DADDE8] font-light text-2xl text-pink-500">Emprendimiento</p>
+            <FaArrowRight className="text-4xl text-[#DADDE8] ml-4" />
+          </div>
+          <img src="/5.png" alt="Marca" className="w-40 flex items-center justify-center border-4 border-transparent rounded-full z-20 "/>
+          <div className="flex items-center">
+            <FaArrowRight className="text-4xl text-[#DADDE8] mr-4" />
+            <p className="text-[#DADDE8] font-light text-2xl text-pink-500">Cliente final</p>
+          </div>
+        </div>
+
+        {/* Párrafo */}
+        <p className="text-[#DADDE8] font-light text-2xl">
+          Modelo Transacción B2C -&gt; Eventos, mentorías, asesorías
+          <br />
+          Suscripción -&gt; Acceso especial y anticipado a eventos y oportunidades
         </p>
-        <NewsletterSection />
       </section>
+
+      <NewsletterSection />
     </div>
   );
 };

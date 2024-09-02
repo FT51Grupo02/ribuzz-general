@@ -8,7 +8,6 @@ interface Props {
   };
 }
 
-// Define la función para obtener el servicio desde la API
 const fetchService = async (serviceId: string): Promise<ServiceType | null> => {
   try {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/services/${serviceId}`, {
@@ -22,12 +21,6 @@ const fetchService = async (serviceId: string): Promise<ServiceType | null> => {
     }
 
     const service: ServiceType = await response.json();
-
-    // Asegúrate de que 'stock' esté presente en el servicio
-    if (service && typeof service.stock === 'undefined') {
-      service.stock = 0; // O cualquier valor predeterminado apropiado
-    }
-
     return service;
   } catch (error) {
     console.error('Error fetching service:', error);
@@ -35,7 +28,6 @@ const fetchService = async (serviceId: string): Promise<ServiceType | null> => {
   }
 };
 
-// Define el componente de página de servicio
 const ServicePage = async ({ params }: Props) => {
   const { serviceId } = params;
   const service = await fetchService(serviceId);
@@ -45,20 +37,12 @@ const ServicePage = async ({ params }: Props) => {
     return null;
   }
 
+  // Destructura el objeto de servicio para pasar solo las propiedades necesarias
+  const { id, name, price, images, rating, description } = service;
+
   return (
     <div>
-      {/* Asegúrate de que el objeto 'service' tenga todas las propiedades necesarias */}
-      <Service
-        name={service.name}
-        description={service.description}
-        images={service.images}
-        videos={service.videos || []}
-        providerInfo={service.providerInfo || { name: '', contact: '' }}
-        details={service.details || []}
-        reviews={service.reviews || []}
-        price={service.price}
-        stock={service.stock}
-      />
+      <Service id={id} name={name} price={price} images={images} rating={rating} description={description} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import Image from 'next/image';
 import { FC, useState } from 'react';
@@ -47,25 +47,20 @@ const Service: FC<ServiceProps> = ({
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [selectedRating, setSelectedRating] = useState<number>(0);
     const [comment, setComment] = useState<string>('');
-    const [localReviews, setLocalReviews] = useState<Review[]>(reviews);
 
     const handleAddToCart = () => {
-        if (stock > 0) {
-            const serviceToAdd = {
-                name,
-                price,
-                image: images[0],
-                description,
-                stock,
-                categoryId: 0,
-                id: Date.now(),
-            };
+        const serviceToAdd = {
+            name,
+            price,
+            image: images[0], 
+            description,
+            stock,
+            categoryId: 0, 
+            id: Date.now(), 
+        };
 
-            addToCart(serviceToAdd);
-            router.push('/cart');
-        } else {
-            alert('Este servicio está fuera de stock');
-        }
+        addToCart(serviceToAdd);
+        router.push('/cart');
     };
 
     const openModal = (image: string) => {
@@ -85,11 +80,9 @@ const Service: FC<ServiceProps> = ({
                 comment: comment,
                 rating: selectedRating
             };
-            setLocalReviews([...localReviews, newReview]);
+            reviews.push(newReview);
             setComment('');
             setSelectedRating(0);
-        } else {
-            alert('Por favor, selecciona una calificación y escribe un comentario.');
         }
     };
 
@@ -97,7 +90,7 @@ const Service: FC<ServiceProps> = ({
         <div className="relative w-full h-full min-h-screen bg-black text-white">
             <div className="absolute inset-0">
                 <Image
-                    src="/0.png"
+                    src="/0.png" 
                     alt="Background Image"
                     layout="fill"
                     objectFit="cover"
@@ -111,12 +104,15 @@ const Service: FC<ServiceProps> = ({
                         <h1 className="text-4xl font-bold mb-8 text-cyan-400">{name}</h1>
                         <p className="mb-8 text-lg leading-relaxed">{description}</p>
                         <div className="mb-8">
+                            {/* Contenedor cuadrado para video y fotos */}
                             <div className="relative w-full h-auto min-h-[400px] sm:min-h-[600px] lg:min-h-[600px]">
+                                {/* Video en la parte superior */}
                                 {videos.length > 0 && (
                                     <video controls className="absolute inset-0 w-full h-1/2 object-cover rounded-lg">
                                         <source src={videos[0]} type="video/mp4" />
                                     </video>
                                 )}
+                                {/* Imágenes en la parte inferior */}
                                 <div className="absolute bottom-0 left-0 right-0 h-1/2 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 md:grid-cols-4 gap-4 p-2">
                                     {images.length > 0 && images.map((img, idx) => (
                                         <div key={idx} className="relative w-full h-full mt-2 hover:scale-105 transition duration-300">
@@ -126,7 +122,7 @@ const Service: FC<ServiceProps> = ({
                                                 layout="fill"
                                                 objectFit="cover"
                                                 className="rounded-lg cursor-pointer"
-                                                onClick={() => openModal(img)}
+                                                onClick={() => openModal(img)} // Abre el modal al hacer clic
                                             />
                                         </div>
                                     ))}
@@ -153,7 +149,7 @@ const Service: FC<ServiceProps> = ({
                             <div className="flex flex-col">
                                 <div className="flex-grow">
                                     <ul className="space-y-6">
-                                        {localReviews.map((review, idx) => (
+                                        {reviews.map((review, idx) => (
                                             <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-cyan-700 to-cyan-500 p-6 rounded-lg hover:scale-105 transition duration-300">
                                                 <p className="text-lg"><strong>{review.username}:</strong></p>
                                                 <p className="text-lg mb-2">{review.comment}</p>
@@ -168,7 +164,7 @@ const Service: FC<ServiceProps> = ({
                                     </p>
                                     <button
                                         type="button"
-                                        onClick={handleAddToCart}
+                                        onClick={handleAddToCart} 
                                         className="w-full sm:w-2/3 lg:w-1/2 p-3 text-white font-semibold rounded-xl bg-gradient-to-r from-cyan-500 to-cyan-700 shadow-md hover:shadow-lg transition-shadow text-sm md:text-base"
                                     >
                                         <span className="inline-block transition duration-300 hover:scale-110">
@@ -181,9 +177,10 @@ const Service: FC<ServiceProps> = ({
                     </div>
                 </div>
 
+                {/* Sección de comentarios */}
                 <div className="">
                     <div className="flex flex-col sm:flex-row items-start max-sm:items-center justify-between mb-4">
-                        <h2 className="text-2xl sm:text-3xl font-semibold text-cyan-400 text-center sm:text-left">Déjanos tu opinión:</h2>
+                        <h2 className="text-2xl sm:text-3xl font-semibold text-cyan-400 text-center sm:text-left">Dejanos tu opinión:</h2>
                         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:items-center">
                             <StarRating rating={selectedRating} onChange={setSelectedRating} />
                         </div>
@@ -210,9 +207,9 @@ const Service: FC<ServiceProps> = ({
             {isModalOpen && (
                 <div 
                     className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-                    onClick={closeModal}
+                    onClick={closeModal} // Cierra el modal al hacer clic fuera del contenido
                 >
-                    <div className="relative max-w-3xl mx-auto" onClick={(e) => e.stopPropagation()}>
+                    <div className="relative max-w-3xl mx-auto" onClick={(e) => e.stopPropagation()}> {/* Detiene la propagación del evento */}
                         <button
                             type="button"
                             onClick={closeModal}
