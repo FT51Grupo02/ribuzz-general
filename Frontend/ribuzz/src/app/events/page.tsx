@@ -1,28 +1,41 @@
-'use client'
+"use client";
 
 import React, { useState, useEffect } from "react";
-import CardEvents from "@/components/Cards/cardevents";
+import CardEvents from "@/components/Cards/CardEvents";
 import SearchBarEvents from "@/components/SearchBar/SearchBarEvents";
 import PaginatorEvents from "@/components/Paginator/PaginatorEvents";
 import Image from "next/image";
+import axios from 'axios';
+import { Event } from '@/components/Cards/types';
 
 const Events: React.FC = () => {
-    const [events, setEvents] = useState<any[]>([]);
+    const [events, setEvents] = useState<Event[]>([]);
+    const [filteredEvents, setFilteredEvents] = useState<Event[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const totalPages = 3; 
+    const [filters, setFilters] = useState({
+        search: '',
+        rating: 'all',
+        publicationDate: 'all',
+        popularity: 'all',
+        location: 'all',
+    });
+    const eventsPerPage = 4;
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/events?page=${currentPage}`);
-                const data = await response.json();
-                console.log("Eventos obtenidos:", data); 
-                if (Array.isArray(data)) {
-                    setEvents(data);
-                } else {
-                    console.error("Los datos no son un arreglo:", data);
-                    setEvents([]);
-                }
+                const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/search/events`, {
+                    params: {
+                        name: filters.search || undefined,
+                        rating: filters.rating !== 'all' ? filters.rating : undefined,
+                        publicationDate: filters.publicationDate !== 'all' ? filters.publicationDate : undefined,
+                        popularity: filters.popularity !== 'all' ? filters.popularity : undefined,
+                        location: filters.location !== 'all' ? filters.location : undefined,
+                        page: currentPage,
+                    },
+                });
+
+                setEvents(response.data || []);
             } catch (error) {
                 console.error("Error al obtener los eventos:", error);
                 setEvents([]);
@@ -30,10 +43,20 @@ const Events: React.FC = () => {
         };
 
         fetchEvents();
-    }, [currentPage]);
+    }, [currentPage, filters]);
+
+    useEffect(() => {
+        const startIndex = (currentPage - 1) * eventsPerPage;
+        const endIndex = startIndex + eventsPerPage;
+        setFilteredEvents(events.slice(startIndex, endIndex));
+    }, [events, currentPage]);
 
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
+    };
+
+    const handleFiltersChange = (newFilters: Partial<typeof filters>) => {
+        setFilters(prevFilters => ({ ...prevFilters, ...newFilters }));
     };
 
     return (
@@ -59,13 +82,13 @@ const Events: React.FC = () => {
                 Los mejores <span style={{ color: '#19BDDA' }}>Eventos</span> para Emprendedores
             </h2>
 
-            <SearchBarEvents />
+            <SearchBarEvents onFiltersChange={handleFiltersChange} />
 
-            <CardEvents events={events} currentPage={currentPage} />
+            <CardEvents events={filteredEvents} />
 
             <PaginatorEvents
                 currentPage={currentPage}
-                totalPages={totalPages}
+                totalPages={Math.ceil(events.length / eventsPerPage)}
                 onPageChange={handlePageChange}
             />
         </div>

@@ -1,7 +1,8 @@
-'use client'
+"use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FiSearch } from "react-icons/fi";
+import debounce from "lodash/debounce";
 
 interface SearchBarServicesProps {
   onSearch: (filters: {
@@ -19,6 +20,21 @@ const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
   const [publicationDate, setPublicationDate] = useState<string>("all");
   const [popularity, setPopularity] = useState<string>("all");
   const [location, setLocation] = useState<string>("all");
+
+  // Debounced search function
+  const debouncedSearch = debounce(() => {
+    onSearch({
+      search,
+      rating,
+      publicationDate,
+      popularity,
+      location,
+    });
+  }, 300);
+
+  useEffect(() => {
+    debouncedSearch();
+  }, [search, rating, publicationDate, popularity, location]);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
@@ -40,10 +56,6 @@ const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
     setLocation(event.target.value);
   };
 
-  const handleSearch = () => {
-    onSearch({ search, rating, publicationDate, popularity, location });
-  };
-
   return (
     <div className="flex flex-col items-center p-4">
       <div className="flex flex-col gap-4 max-w-5xl w-full">
@@ -58,17 +70,6 @@ const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
                 className="pl-10 pr-4 py-2 border border-cyan-700 bg-black bg-opacity-80 text-white rounded-lg w-full overflow-hidden text-ellipsis whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-cyan-500 placeholder:text-gray-300"
               />
               <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-300" />
-            </div>
-
-            <div className="flex items-center">
-              <button
-                onClick={handleSearch}
-                className="px-4 py-1.5 text-lg md:text-xl font-semibold rounded-lg bg-gradient-to-r from-cyan-500 to-cyan-700 text-gray-50 hover:filter hover:bg-white transition duration-300"
-              >
-                <span className="transition duration-300 hover:scale-110 inline-block text-lg">
-                  Buscar
-                </span>
-              </button>
             </div>
           </div>
         </div>

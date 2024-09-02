@@ -14,7 +14,6 @@ const Page1 = () => {
   return (
     <div className="relative w-full flex flex-col items-center justify-start overflow-hidden">
       <div className="relative w-full flex flex-col md:flex-row md:py-32 sm:py-10">
-        {/* Video background with a fallback image */}
         <div className="absolute inset-0">
           <video
             autoPlay
@@ -26,10 +25,8 @@ const Page1 = () => {
             poster="/1.png"
           >
             <source src="/background.mp4" type="video/mp4" />
-            {/* Add WebM format for better quality in supported browsers */}
             <source src="/background3.webm" type="video/webm" />
-            {/* Fallback content for browsers that do not support the video element */}
-            Your browser does not support the video tag.
+            Tu navegador no soporta el video.
           </video>
         </div>
 

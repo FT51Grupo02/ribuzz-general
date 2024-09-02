@@ -10,7 +10,7 @@ interface Props {
 
 const fetchEvent = async (eventId: string): Promise<EventType | null> => {
   try {
-    const response = await fetch(`http://localhost:3000/events/${eventId}`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/events/${eventId}`, {
       cache: 'no-store',
       method: 'GET',
     });
