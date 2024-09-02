@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { FiSearch } from "react-icons/fi";
 import debounce from "lodash/debounce";
 
@@ -21,19 +21,28 @@ const SearchBarServices: React.FC<SearchBarServicesProps> = ({ onSearch }) => {
   const [popularity, setPopularity] = useState<string>("all");
   const [location, setLocation] = useState<string>("all");
 
-  const debouncedSearch = debounce(() => {
-    onSearch({
-      search,
-      rating,
-      publicationDate,
-      popularity,
-      location,
-    });
-  }, 300);
+  // Memorizar la función de debounce para evitar recrearla en cada render
+  const debouncedSearch = useCallback(
+    debounce(() => {
+      onSearch({
+        search,
+        rating,
+        publicationDate,
+        popularity,
+        location,
+      });
+    }, 300),
+    [search, rating, publicationDate, popularity, location] // Dependencias de useCallback
+  );
 
   useEffect(() => {
-    debouncedSearch();
-  }, [search, rating, publicationDate, popularity, location]);
+    debouncedSearch(); // Ejecutar la función de búsqueda con debounce
+
+    // Limpiar el debounce al desmontar el componente
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]); // Asegurarse de que el useEffect depende de debouncedSearch
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
