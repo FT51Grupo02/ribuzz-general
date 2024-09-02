@@ -37,8 +37,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<IUser | null>(null);
 
     useEffect(() => {
+        // Obtener el token del local storage al iniciar
+        const storedToken = localStorage.getItem('authToken');
+        if (storedToken) {
+            setToken(storedToken);
+        }
+    }, []);
+
+    useEffect(() => {
         if (token) {
-            console.log('Guardando token en localStorage:', token);
+            
             localStorage.setItem('authToken', token);
 
             //  temporizador para cerrar sesión después de 1 hora
@@ -61,11 +69,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             if (token) {
-                console.log('Token recibido:', token);
+               
                 try {
                     const authenticatedUser = await getAuthenticatedUser(token);
                     if (authenticatedUser) { // Verifica si authenticatedUser no es null
-                        console.log('Información del usuario autenticado:', authenticatedUser);
+                       
     
                         // Guarda la información del usuario en el estado y en el localStorage
                         setUser(authenticatedUser);
@@ -87,7 +95,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const loginEntrepeneurE = async (userData: ILoginPropsEntrep): Promise<boolean> => {
         try {
             const sessionData = await authLoginE(userData);
-            console.log('Datos de sesión del login:', sessionData);
+           
             setToken(sessionData.token);
             setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
             return true;
@@ -100,7 +108,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const loginUserC = async (userData: ILoginPropsUSer): Promise<boolean> => {
         try {
             const sessionData = await authLoginU(userData);
-            console.log('Datos de sesión del login:', sessionData);
+           
             setToken(sessionData.token);
             setUser(sessionData.user);  // Asegúrate de establecer el usuario aquí
             return true;
