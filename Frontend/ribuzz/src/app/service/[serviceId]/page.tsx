@@ -23,10 +23,9 @@ const fetchService = async (serviceId: string): Promise<ServiceType | null> => {
 
     const service: ServiceType = await response.json();
 
-    // Verifica si 'stock' está presente y maneja el caso si no lo está
+    // Asegúrate de que 'stock' esté presente en el servicio
     if (service && typeof service.stock === 'undefined') {
-      console.warn('Stock is missing from the service data');
-      service.stock = 0; // O cualquier valor por defecto apropiado
+      service.stock = 0; // O cualquier valor predeterminado apropiado
     }
 
     return service;
