@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 //import { NestFactory } from '@nestjs/core';
-import * as dotenv from 'dotenv';
 //import { AppModule } from './app.module';
+import * as dotenv from 'dotenv';
 import 'reflect-metadata';
 import express from 'express';
 import cors from 'cors';
@@ -40,4 +40,4 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
   await app.listen(port);
 }
-bootstrap();
+bootstrap()
