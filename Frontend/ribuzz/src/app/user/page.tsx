@@ -8,9 +8,6 @@ const Settings = () => {
   return (
     <SideBar>
       <UserSettings />
-      <Link href="/user/orders">
-        Ver Órdenes
-      </Link>
     </SideBar>
   );
 };
