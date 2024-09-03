@@ -1,23 +1,25 @@
 /* eslint-disable prettier/prettier */
-import { NestFactory } from '@nestjs/core';
+//import { NestFactory } from '@nestjs/core';
 import * as dotenv from 'dotenv';
-import { AppModule } from './app.module';
+//import { AppModule } from './app.module';
 import 'reflect-metadata';
-import cors, { CorsOptions } from 'cors';
+import express from 'express';
+import cors from 'cors';
+
 
 dotenv.config();
 
 
 async function bootstrap() {
   
-  const app = await NestFactory.create(AppModule);
+  const app = express()
 
   const allowedOrigins = [
     'https://ribuzz.vercel.app',
     'http://localhost:3001'
   ];
   
-  const corsOptions: CorsOptions = {
+  const corsOptions = {
     origin: (origin, callback) => {
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
@@ -33,10 +35,9 @@ async function bootstrap() {
   
 
   app.use(cors(corsOptions));
-  app.enableCors(corsOptions);
+
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
-  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
