@@ -174,8 +174,8 @@ const RegisterUser = () => {
                     Registrarse
                   </span>
                 </button>
-                <p>O registrate con:</p>
-                <GoogleLoginButton />
+               {/*  <p>O registrate con:</p>
+                <GoogleLoginButton /> */}
               </Form>
             )}
           </Formik>
