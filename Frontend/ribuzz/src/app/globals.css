@@ -1,17 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
-
-*body {
-    font-family: 'Poppins', sans-serif;
-}
 
 @font-face {
     font-family: 'Moonhouse';
     src: url('/fonts/moonhouse.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins-regular.woff2') format('woff2'),
+         url('/fonts/poppins-regular.woff') format('woff'),
+         url('/fonts/poppins-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins-bold.woff2') format('woff2'),
+         url('/fonts/poppins-bold.woff') format('woff'),
+         url('/fonts/poppins-bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
 }
 
 .cursor-pointer-custom {
