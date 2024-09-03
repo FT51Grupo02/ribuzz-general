@@ -75,9 +75,9 @@ export class ProductsService {
     }
 
     
-    async updateProduct(id: string, categoryNames: string[], product: Partial<Products>): Promise<Products> {
+    async updateProduct(id: string, categories: string[], product: Partial<Products>): Promise<Products> {
         try {
-            const categories = [];
+            const categoryNames = [];
     
             // Validar si el objeto product es válido
             if (!product) {
@@ -90,12 +90,12 @@ export class ProductsService {
             }
     
             // Buscar y validar las categorías por nombre
-            for (const name of categoryNames) {
+            for (const name of categories) {
                 const category = await this.categoryRepository.findOneBy({ name });
                 if (!category) {
                     throw new BadRequestException("Por favor ingrese una categoria existente");
                 } else {
-                    categories.push(category);
+                    categoryNames.push(category);
                 }
             }
     
@@ -107,7 +107,8 @@ export class ProductsService {
             // Buscar el producto actualizado junto con sus relaciones
             const updatedProduct = await this.productRepository.findOne({
                 where: { id },
-                relations: ['details', 'categories'] 
+                relations: ['categorie'] 
+                //relations: ['details', 'categories'] 
             });
     
             if (!updatedProduct) {
@@ -115,7 +116,7 @@ export class ProductsService {
             }
     
             // Asignar las categorías al producto
-            updatedProduct.categories = categories;
+            updatedProduct.categories = categoryNames;
     
             // Asignar orderDetails si están presentes
             if (orderDetails) {

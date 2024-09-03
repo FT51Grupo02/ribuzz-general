@@ -1,22 +1,38 @@
+/* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
 import 'reflect-metadata';
-import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import cors, { CorsOptions } from 'cors';
+
+dotenv.config();
+
 
 async function bootstrap() {
-  require('dotenv').config();
   
   const app = await NestFactory.create(AppModule);
 
+  const allowedOrigins = [
+    'https://ribuzz.vercel.app',
+    'http://localhost:3001'
+  ];
+  
   const corsOptions: CorsOptions = {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3001', 
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
+    origin: (origin, callback) => {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
     optionsSuccessStatus: 204,
   };
+  
 
+  app.use(cors(corsOptions));
   app.enableCors(corsOptions);
 
   const port = process.env.PORT || 3000;
