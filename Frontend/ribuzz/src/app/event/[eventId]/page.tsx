@@ -1,6 +1,8 @@
+'use client'
+
 import { notFound } from 'next/navigation';
 import Event from '@/components/EventDetail/Events'; 
-import { Event as EventType } from '@/components/Cards/types';
+import { Event as EventType, Review } from '@/components/Cards/types';
 
 interface Props {
   params: {
@@ -20,7 +22,16 @@ const fetchEvent = async (eventId: string): Promise<EventType | null> => {
       return null;
     }
 
-    const event: EventType = await response.json();
+    const data = await response.json();
+
+    const event: EventType = {
+      ...data,
+      reviews: typeof data.reviews === 'string' ? JSON.parse(data.reviews) : data.reviews,
+      date: data.date || '',
+      time: data.time || '',
+      stock: data.stock || 0,
+    };
+
     return event;
   } catch (error) {
     console.error('Error fetching event:', error);

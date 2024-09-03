@@ -1,3 +1,5 @@
+'use client'
+
 import Image from 'next/image';
 import { FC, useState } from 'react';
 import { useCart } from '../Context/CartContext';
@@ -10,7 +12,7 @@ export interface Review {
     rating: number;
 }
 
-export interface SellerInfo {
+export interface ProviderInfo {
     name: string;
     contact: string;
 }
@@ -20,10 +22,11 @@ export interface ServiceProps {
     description: string;
     images: string[];
     videos?: string[];
-    providerInfo?: SellerInfo;
+    providerInfo?: ProviderInfo;
     details?: string[];
     reviews?: Review[];
     price: number;
+    stock: number;  // Propiedad agregada
 }
 
 const Service: FC<ServiceProps> = ({
@@ -35,6 +38,7 @@ const Service: FC<ServiceProps> = ({
     details = [],
     reviews = [],
     price,
+    stock,  // Propiedad agregada
 }) => {
     const { addToCart } = useCart();
     const router = useRouter();
@@ -50,8 +54,10 @@ const Service: FC<ServiceProps> = ({
             price,
             image: images[0], 
             description,
-            categoryId: 0, 
-            id: Date.now(), 
+            categoryId: 0,  // Placeholder, cambiar si es necesario
+            id: Date.now(),  // Placeholder, cambiar si es necesario
+            stock,  // Propiedad agregada
+            quantity: 1  // Añadida con valor predeterminado
         };
 
         addToCart(serviceToAdd);
@@ -145,7 +151,7 @@ const Service: FC<ServiceProps> = ({
                                             <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-cyan-700 to-cyan-500 p-6 rounded-lg hover:scale-105 transition duration-300">
                                                 <p className="text-lg"><strong>{review.username}:</strong></p>
                                                 <p className="text-lg mb-2">{review.comment}</p>
-                                                <StarRating rating={review.rating} />
+                                                <StarRating rating={review.rating} onChange={() => {}} /> {/* Placeholder para onChange */}
                                             </li>
                                         ))}
                                     </ul>
@@ -194,28 +200,25 @@ const Service: FC<ServiceProps> = ({
                     </button>
                 </div>
             </div>
-            
-            {isModalOpen && (
-                <div 
-                    className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-                    onClick={closeModal}
-                >
-                    <div className="relative max-w-3xl mx-auto" onClick={(e) => e.stopPropagation()}>
-                        <button
-                            type="button"
-                            onClick={closeModal}
-                            className="absolute top-4 right-4 text-white text-3xl font-bold"
-                        >
-                            &times;
-                        </button>
+
+            {isModalOpen && selectedImage && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
+                    <div className="relative w-full max-w-3xl">
                         <Image
-                            src={selectedImage!}
+                            src={selectedImage}
                             alt="Selected Image"
-                            layout="intrinsic"
+                            layout="responsive"
                             width={1200}
                             height={800}
                             className="rounded-lg"
                         />
+                        <button
+                            type="button"
+                            onClick={closeModal}
+                            className="absolute top-2 right-2 bg-black text-white p-2 rounded-full shadow-lg"
+                        >
+                            &times;
+                        </button>
                     </div>
                 </div>
             )}

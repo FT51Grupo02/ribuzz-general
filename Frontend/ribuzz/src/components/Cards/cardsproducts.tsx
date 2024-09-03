@@ -18,7 +18,7 @@ const CardProducts: React.FC<CardProductsProps> = ({ products = [] }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  const handleCardClick = (productId: string) => {
+  const handleCardClick = (productId: number) => {
     router.push(`/product/${productId}`);
   };
 

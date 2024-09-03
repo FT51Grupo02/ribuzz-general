@@ -47,6 +47,7 @@ const Product: FC<ProductProps> = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedRating, setSelectedRating] = useState<number>(0);
   const [comment, setComment] = useState<string>('');
+  const [currentReviews, setCurrentReviews] = useState<Review[]>(reviews);
 
   const handleAddToCart = () => {
     const productToAdd = {
@@ -57,6 +58,7 @@ const Product: FC<ProductProps> = ({
       stock,
       categoryId: 0, 
       id: Date.now(),
+      quantity: 1 
     };
 
     addToCart(productToAdd);
@@ -65,17 +67,16 @@ const Product: FC<ProductProps> = ({
 
   const handleAddComment = () => {
     if (selectedRating && comment) {
-        const newReview: Review = {
-            username: 'Anónimo',
-            comment: comment,
-            rating: selectedRating
-        };
-        reviews.push(newReview);
-        setComment('');
-        setSelectedRating(0);
+      const newReview: Review = {
+        username: 'Anónimo',
+        comment: comment,
+        rating: selectedRating
+      };
+      setCurrentReviews([...currentReviews, newReview]);
+      setComment('');
+      setSelectedRating(0);
     }
-};
-
+  };
 
   const openModal = (image: string) => {
     setSelectedImage(image);
@@ -105,15 +106,12 @@ const Product: FC<ProductProps> = ({
             <h1 className="text-3xl lg:text-4xl font-bold mb-6 lg:mb-8 text-pink-500">{name}</h1>
             <p className="mb-6 lg:mb-8 text-base lg:text-lg leading-relaxed">{description}</p>
             <div className="mb-6 lg:mb-8">
-
               <div className="relative w-full h-auto min-h-[400px] sm:min-h-[600px] lg:min-h-[600px]">
-
                 {videos.length > 0 && (
                   <video controls className="absolute inset-0 w-full h-1/2 object-cover rounded-lg">
                     <source src={videos[0]} type="video/mp4" />
                   </video>
                 )}
-
                 <div className="absolute bottom-0 left-0 right-0 h-1/2 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-2 p-2">
                   {images.length > 0 && images.map((img, idx) => (
                     <div key={idx} className="relative w-full h-full mt-2 hover:scale-105 transition duration-300">
@@ -123,7 +121,7 @@ const Product: FC<ProductProps> = ({
                         layout="fill"
                         objectFit="cover"
                         className="rounded-lg cursor-pointer"
-                        onClick={() => openModal(img)} // Abre el modal al hacer clic
+                        onClick={() => openModal(img)}
                       />
                     </div>
                   ))}
@@ -148,13 +146,12 @@ const Product: FC<ProductProps> = ({
             <div className="mb-6 lg:mb-8">
               <h2 className="text-2xl lg:text-3xl font-semibold mb-4 lg:mb-6 text-pink-400">Reseñas:</h2>
               <div className="flex flex-col">
-                
                 <div className="flex-grow">
                   <ul className="space-y-4 lg:space-y-6">
-                    {reviews.map((review, idx) => (
+                    {currentReviews.map((review, idx) => (
                       <li key={idx} className="bg-opacity-80 bg-gradient-to-r from-[#cc1184] to-[#a80054] p-4 lg:p-6 rounded-lg hover:scale-105 transition duration-300">
                         <p className="text-base lg:text-lg"><strong>{review.username}:</strong> {review.comment}</p>
-                        <StarRating rating={review.rating} />
+                        <StarRating rating={review.rating} onChange={() => {}} /> {/* Provide a dummy onChange handler */}
                       </li>
                     ))}
                   </ul>
@@ -183,7 +180,7 @@ const Product: FC<ProductProps> = ({
 
         <div className="">
           <div className="flex flex-col sm:flex-row items-start max-sm:items-center justify-between mb-4">
-            <h2 className="text-2xl sm:text-3xl font-semibold text-pink-500 text-center sm:text-left">Dejanos tu opinión:</h2>
+            <h2 className="text-2xl sm:text-3xl font-semibold text-pink-500 text-center sm:text-left">Déjanos tu opinión:</h2>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 max-sm:items-center">
               <StarRating rating={selectedRating} onChange={setSelectedRating} />
             </div>
@@ -198,36 +195,26 @@ const Product: FC<ProductProps> = ({
           <button
             type="button"
             onClick={handleAddComment}
-            className="p-2 bg-gradient-to-r from-pink-700 to-pink-500 text-white shadow-md w-full duration-800 ease-in-out transform rounded-lg"
+            className="p-2 bg-gradient-to-r from-[#cc1184] to-[#a80054] text-white rounded-lg hover:bg-gradient-to-l transition duration-300"
           >
-            <span className="inline-block text-white hover:scale-110 transition duration-300">
-              Enviar mensaje
-            </span>
+            Enviar comentario
           </button>
         </div>
       </div>
 
-      {isModalOpen && (
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-          onClick={closeModal} // Cierra el modal al hacer clic fuera del contenido
+      {isModalOpen && selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50"
+          onClick={closeModal}
         >
-          <div className="relative max-w-3xl mx-auto" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              onClick={closeModal}
-              className="absolute top-4 right-4 text-white text-3xl font-bold"
-            >
-              &times;
-            </button>
-            <Image
-              src={selectedImage!}
-              alt="Product Image"
-              width={800}
-              height={600}
-              className="rounded-lg"
-            />
-          </div>
+          <Image
+            src={selectedImage}
+            alt="Selected Image"
+            layout="intrinsic"
+            width={800}
+            height={600}
+            className="rounded-lg"
+          />
         </div>
       )}
     </div>
