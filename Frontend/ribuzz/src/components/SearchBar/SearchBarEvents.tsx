@@ -17,7 +17,8 @@ interface SearchBarEventsProps {
 const SearchBarEvents: React.FC<SearchBarEventsProps> = ({ onFiltersChange }) => {
   const [search, setSearch] = useState<string>("");
   const [rating, setRating] = useState<string>("all");
-  const [publicationDate, setPublicationDate] = useState<string>("all");
+  const [publicationDate, setPublicationDate] = useState<string>("all");git ls-files --modified
+
   const [popularity, setPopularity] = useState<string>("all");
   const [location, setLocation] = useState<string>("all");
 
