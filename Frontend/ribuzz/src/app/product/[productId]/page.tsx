@@ -1,5 +1,7 @@
+'use client'
+
 import { notFound } from 'next/navigation';
-import Product from '@/components/ProductDetail/Products';
+import Product from '@/components/ProductDetail/Products'; 
 import { Product as ProductType } from '@/components/Cards/types';
 
 interface Props {

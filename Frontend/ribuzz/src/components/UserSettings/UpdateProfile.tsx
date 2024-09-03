@@ -113,12 +113,7 @@ const UpdateProfile: React.FC = () => {
                             />
                             <button
                                 type="button"
-                                onClick={() => {
-                                    const inputElement = document.querySelector('input[type="file"]');
-                                    if (inputElement instanceof HTMLInputElement) {
-                                        inputElement.click();
-                                    }
-                                }}
+                                onClick={() => (document.querySelector('input[type="file"]') as HTMLInputElement)?.click()}
                                 className="absolute -bottom-2 right-0 bg-black text-white p-2 rounded-full opacity-50 hover:opacity-100 transition-opacity"
                                 title="Cambiar imagen"
                             >
