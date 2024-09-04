@@ -1,38 +1,39 @@
-/* eslint-disable prettier/prettier */
-import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./Dto/auth.dto";
-import { AuthGuard } from "@nestjs/passport";
-
+import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
+import { ConfigService } from "@nestjs/config";
 
 @Controller('auth')
-export class AuthController{
-    constructor(private readonly authService: AuthService) {}
+export class AuthController {
+    constructor(private readonly authService: AuthService, private configService: ConfigService) {}
 
     @Post('/signIn/clients')
-    async signInClient(@Body() credentials:AuthDto){
-        const{email,password}=credentials
-        return this.authService.signInClient(email,password)
+    async signInClient(@Body() credentials: AuthDto) {
+        const { email, password } = credentials;
+        return this.authService.signInClient(email, password);
     }
 
     @Post('/signIn/entrepreneur')
-    async signInEntrepreneur(@Body() credentials:AuthDto){
-        const{email,password}=credentials
-        return this.authService.signInEntrepreneur(email,password)
+    async signInEntrepreneur(@Body() credentials: AuthDto) {
+        const { email, password } = credentials;
+        return this.authService.signInEntrepreneur(email, password);
     }
 
-    @Get('google')
-    @UseGuards(AuthGuard('google'))
-    async googleAuth(@Req()req){
-        
-    }
+    @UseGuards(GoogleAuthGuard)
+    @Get('google/login')
+    googleLogin() {}
 
+    @UseGuards(GoogleAuthGuard)
     @Get('google/callback')
-    @UseGuards(AuthGuard('google'))
-    async googleAuthRedirect(@Req() req){
-        const user = req.user;
-        const token = await this.authService.generateToken(user);
-        return this.authService.googleLogin(req)
+    async googleCallback(@Req() req, @Res() res) {
+        const result = await this.authService.handleGoogleUser(req.user);
+
+    if (result instanceof Error) {
+        return res.redirect(`http://localhost:3000/error?message=${encodeURIComponent(result.message)}`);
     }
 
+    const { accessToken, rol } = result;
+    res.redirect(`http://localhost:3000?token=${accessToken}&role=${rol}`);
+}
 }
