@@ -1,11 +1,13 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UsuarioService } from "src/usuario/usuario.service";
 import * as bcrypt from "bcrypt";
+import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
 
 @Injectable()
 export class AuthService {
+    private readonly logger = new Logger(AuthService.name);
     constructor(
         private userService: UsuarioService,
         private jwtService: JwtService,
@@ -13,6 +15,8 @@ export class AuthService {
 
     async signInClient(email: string, password: string) {
         try {
+
+            if(password === '') throw new UnauthorizedException('Please Provide The Password')
 
             const find_user = await this.userService.findUserEmail(email);
             if (!find_user) {
@@ -51,6 +55,8 @@ export class AuthService {
     async signInEntrepreneur(email: string, password: string) {
         try {
 
+            if(password === '') throw new UnauthorizedException('Please Provide The Password')
+
             const find_user = await this.userService.findUserEmail(email);
             if (!find_user) {
                 throw new BadRequestException("Credenciales no validas");
@@ -87,60 +93,70 @@ export class AuthService {
 
     // AuthGoogle
 
-    async generateToken(user: any) {
+    async validateGoogleUser(googleUser: Partial<CreateUserDto>) {
         try {
-            const payload = {
-                email: user.email,
-                name: user.firstName,
-                photo: user.picture,
-            };
-
-            return await this.jwtService.signAsync(payload, {
-                secret: process.env.JWT_SECRET || 'default_secret',
-                expiresIn: '60m',
-            });
-        } catch (error) {
-            throw new InternalServerErrorException(`Error al generar el token: ${(error as Error).message}`);
-        }
-    }
-
-    async googleLogin(req) {
-        try {
-            // Busca el usuario por email
-            const user = await this.userService.findUserEmail(req.user.email);
+            this.logger.debug(`Attempting to validate Google user: ${googleUser.email}`);
     
-            if (!user) {
-                // Crea un nuevo objeto de usuario con las propiedades necesarias
-                const newUser = {
-                    email: req.user.email,
-                    name: req.user.name,
-                    photo: req.user.photo,
-                    rol: 'cliente', // Asigna un rol predeterminado
-                    password: '', // Contraseña vacía por defecto
-                    date: new Date(),
-                    events: [], // Inicializa eventos si es necesario
-                    orders: [] // Inicializa pedidos si es necesario
-                };
-    
-                // Guarda el nuevo usuario en la base de datos
-                await this.userService.createUser(newUser);
-    
-                // Redirige al formulario de registro para completar la información
-                return { redirectTo: `/complete-registration?email=${encodeURIComponent(req.user.email)}` };
+            // Validar que el email esté presente
+            if (!googleUser.email) {
+                throw new BadRequestException('No email provided in Google user profile');
             }
     
-            // Genera un token para el usuario existente
-            const token = await this.generateToken(user);
+            let user;
+            try {
+                user = await this.userService.findUserEmail(googleUser.email);
+                this.logger.debug(`Existing user found for email: ${googleUser.email}`);
+            } catch (error) {
+                if (error instanceof NotFoundException) {
+                    this.logger.debug(`No existing user found. Attempting to create new user for: ${googleUser.email}`);
+    
+                    const newUser: Partial<CreateUserDto> = {
+                        email: googleUser.email,
+                        name: googleUser.name || 'Default Name', // Asignar nombre predeterminado si no está presente
+                        password: '', // Considera manejar el password de manera adecuada según tus necesidades
+                        rol: googleUser.rol || 'cliente', // Rol predeterminado si no se provee
+                    };
+    
+                    user = await this.userService.createUser(newUser);
+                    this.logger.debug(`New user created successfully: ${user.email}`);
+                } else {
+                    throw new InternalServerErrorException('Error al buscar el usuario en la base de datos');
+                }
+            }
+    
+            return user;
+        } catch (error) {
+            this.logger.error('Error in validateGoogleUser');
+            if (error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error al autenticar usuario con Google');
+        }
+    }
+
+    async handleGoogleAuth(user: any) {
+        try {
+            this.logger.debug(`Handling Google auth for user: ${user.email}`);
+            
+            const usePayload = {
+                id: user.id,
+                correo: user.email,
+                rol: user.rol,
+            };
+    
+            const token = await this.jwtService.sign(usePayload);
     
             return {
-                message: 'User Info from Google',
-                user: req.user,
-                token: token,
+                message: "Ingreso éxitoso",
+                token,
+                rol: user.rol
             };
         } catch (error) {
-            throw new InternalServerErrorException(`Error during Google login: ${(error as Error).message}`);
+            this.logger.error('Error in handleGoogleAuth');
+            throw new InternalServerErrorException('Error al procesar autenticación de Google');
         }
     }
     
+        
 
 }
