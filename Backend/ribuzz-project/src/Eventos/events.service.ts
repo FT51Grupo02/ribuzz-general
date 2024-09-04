@@ -1,13 +1,15 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Products } from "../Entidades/products.entity";
 import { Events } from "src/Entidades/events.entity";
+import { Categories } from "src/Entidades/categories.entity";
 
 @Injectable()
 export class EventService {
     constructor(
-        @InjectRepository(Events) private eventRepository: Repository<Events>
+        @InjectRepository(Events) private eventRepository: Repository<Events>,
+        @InjectRepository(Categories) private categoryRepository: Repository<Events>
     ) {}
 
     async getEvent(page: number, limit: number): Promise<Events[]> {
@@ -16,6 +18,7 @@ export class EventService {
             return await this.eventRepository.find({
                 skip,
                 take: limit,
+                relations: ['categories']
                // relations: ['details', 'categories'] 
             });
         } catch (error) {
@@ -27,6 +30,7 @@ export class EventService {
         try {
             const product = await this.eventRepository.findOne({
                 where: { id },
+                relations:['categories']
                // relations: ['details', 'categories'] 
             });
             if (!product) {
@@ -41,8 +45,21 @@ export class EventService {
         }
     }
 
-    async createEvent(product: Events): Promise<Events> {
+    async createEvent(categoryName:string[] ,product: Events): Promise<Events> {
         try {
+
+            const categories =[]
+
+            if(!categoryName || categoryName.length===0 || !Array.isArray(categoryName)){
+                throw new BadRequestException("Por favor ingrese la(s) categoria(s)")
+            }
+
+            for(const name of categoryName){
+                const category = await this.categoryRepository.findOne({where:{name}})
+                if(!category){throw new BadRequestException()}
+                else{categories.push(category)}
+            }
+
             const newProduct = this.eventRepository.create(product);
             return await this.eventRepository.save(newProduct);
         } catch (error) {

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 // Renombrar el segundo ClientGuard a EntrepreneurGuard
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
 import { RoleValidatorService } from "./role.guard";
