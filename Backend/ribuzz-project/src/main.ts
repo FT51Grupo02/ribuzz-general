@@ -1,43 +1,34 @@
 /* eslint-disable prettier/prettier */
-//import { NestFactory } from '@nestjs/core';
-//import { AppModule } from './app.module';
-import * as dotenv from 'dotenv';
+import { NestFactory } from '@nestjs/core';
+import { AppModule } from './app.module';
+import 'dotenv/config';
 import 'reflect-metadata';
-import express from 'express';
-import cors from 'cors';
-
-
-dotenv.config();
-
 
 async function bootstrap() {
-  
-  const app = express()
 
-  const allowedOrigins = [
+  require('dotenv').config();
+
+  const app = await NestFactory.create(AppModule);
+
+  const whitelist = [
+    'http://localhost:3001',
     'https://ribuzz.vercel.app',
-    'http://localhost:3001'
+    process.env.CORS_ORIGIN,
   ];
-  
-  const corsOptions = {
+
+  app.enableCors({
     origin: (origin, callback) => {
-      if (allowedOrigins.includes(origin) || !origin) {
+      if (!origin || whitelist.indexOf(origin) !== -1) {
         callback(null, true);
       } else {
         callback(new Error('Not allowed by CORS'));
       }
     },
-    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true,
-    optionsSuccessStatus: 204,
-  };
-  
-
-  app.use(cors(corsOptions));
-
+  });
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
-bootstrap()
+
+bootstrap();

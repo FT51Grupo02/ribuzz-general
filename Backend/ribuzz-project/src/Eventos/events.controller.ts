@@ -4,8 +4,8 @@ import { EventService } from "./events.service";
 //import { Products } from "src/Entidades/products.entity";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 //import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
-import { Products } from "src/Entidades/products.entity";
-import { AdminGuard } from "src/Guardianes/admin.guard";
+//import { Products } from "src/Entidades/products.entity";
+//import { AdminGuard } from "src/Guardianes/admin.guard";
 //import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 
 import { Events } from "src/Entidades/events.entity";
@@ -23,7 +23,7 @@ export class EventController {
         return this.eventService.getEvent(page, limit);
     }
 
-    @Get(':id')
+    @Get('/:id')
     async getEventById(@Param('id') id: string) {
         return this.eventService.getEventById(id);
     }
@@ -36,14 +36,14 @@ export class EventController {
     }
 
     // @UseGuards(AdminGuard)
-    // @Put(':id')
+    // @Put('/:id')
     // async updateEvent(@Param('id') id: string, @Body() event: Events) {
     //     return this.eventService.updateevent(id, event);
     // }
 
     
     // @UseGuards(AdminGuard)
-    @Delete(':id')
+    @Delete('/:id')
     async deleteEvent(@Param('id') id: string) {
         return this.eventService.deleteEvent(id);
     }

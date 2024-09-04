@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Delete, Body, Param, Query } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
 import { ServicesService } from "./services.service";
-//import { Services } from "src/Entidades/services.entity";
+import { Services } from "src/Entidades/services.entity";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 
 @Controller('services')
@@ -24,15 +24,18 @@ export class ServicesController {
     
     @Post()
     async createService(@Body() serviceDto: any) {
-        const{categories, ...serviceDato}=serviceDto
-        return this.servicesService.createService(serviceDato,categories);
+        const {categories, ...serviceData} = serviceDto
+        return this.servicesService.createService(categories,serviceData);
     }
 
     
-    /*@Put(':id')
-    async updateService(@Param('id') id: string, @Body() service: Services) {
-      //  return this.servicesService.updateService(id, service);
-    }*/
+    @Put('/:id')
+    async updateService(
+        @Param('id') id: string,
+    @Body() updateServiceDto: { categories: string[], service: Partial<Services> }) {
+        return await this.servicesService.updateService(id, updateServiceDto.categories, updateServiceDto.service);
+    }
+
 
     
     @Delete(':id')

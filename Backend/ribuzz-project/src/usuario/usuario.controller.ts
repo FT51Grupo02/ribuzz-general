@@ -27,6 +27,7 @@ export class UsuarioController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(id);
+    
   }
 
   //@UseGuards(EntrepreneurGuard)

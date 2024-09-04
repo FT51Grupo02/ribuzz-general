@@ -164,6 +164,7 @@ export class FilterService {
             arrayEvent.addOrderBy('event.rating', order);
         }
 
+        
         return await arrayEvent.getMany();
     } catch (error) {
         console.error('Error al encontrar el evento:', error);
