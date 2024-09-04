@@ -4,10 +4,11 @@ import { JwtService } from "@nestjs/jwt";
 import { UsuarioService } from "src/usuario/usuario.service";
 import * as bcrypt from "bcrypt";
 import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
+import {GoogleUserResponseDto} from 'src/Auth/Dto/handleGoogleUser.dto'
+
 
 @Injectable()
 export class AuthService {
-    private readonly logger = new Logger(AuthService.name);
     constructor(
         private userService: UsuarioService,
         private jwtService: JwtService,
@@ -93,70 +94,27 @@ export class AuthService {
 
     // AuthGoogle
 
-    async validateGoogleUser(googleUser: Partial<CreateUserDto>) {
+    async handleGoogleUser(googleUser: Partial<GoogleUserResponseDto>): Promise<GoogleUserResponseDto | Error> {
         try {
-            this.logger.debug(`Attempting to validate Google user: ${googleUser.email}`);
-    
-            // Validar que el email esté presente
-            if (!googleUser.email) {
-                throw new BadRequestException('No email provided in Google user profile');
+            const user = await this.userService.findUserEmail(googleUser.email);
+            if (!user) {
+                throw new NotFoundException('Usuario no encontrado. Por favor, regístrate.');
             }
     
-            let user;
-            try {
-                user = await this.userService.findUserEmail(googleUser.email);
-                this.logger.debug(`Existing user found for email: ${googleUser.email}`);
-            } catch (error) {
-                if (error instanceof NotFoundException) {
-                    this.logger.debug(`No existing user found. Attempting to create new user for: ${googleUser.email}`);
-    
-                    const newUser: Partial<CreateUserDto> = {
-                        email: googleUser.email,
-                        name: googleUser.name || 'Default Name', // Asignar nombre predeterminado si no está presente
-                        password: '', // Considera manejar el password de manera adecuada según tus necesidades
-                        rol: googleUser.rol || 'cliente', // Rol predeterminado si no se provee
-                    };
-    
-                    user = await this.userService.createUser(newUser);
-                    this.logger.debug(`New user created successfully: ${user.email}`);
-                } else {
-                    throw new InternalServerErrorException('Error al buscar el usuario en la base de datos');
-                }
-            }
-    
-            return user;
-        } catch (error) {
-            this.logger.error('Error in validateGoogleUser');
-            if (error instanceof BadRequestException) {
-                throw error;
-            }
-            throw new InternalServerErrorException('Error al autenticar usuario con Google');
-        }
-    }
-
-    async handleGoogleAuth(user: any) {
-        try {
-            this.logger.debug(`Handling Google auth for user: ${user.email}`);
-            
-            const usePayload = {
-                id: user.id,
-                correo: user.email,
-                rol: user.rol,
-            };
-    
-            const token = await this.jwtService.sign(usePayload);
+            const tokenPayload = { id: user.id, correo: user.email, rol: user.rol };
+            const accessToken = await this.jwtService.sign(tokenPayload);
     
             return {
-                message: "Ingreso éxitoso",
-                token,
-                rol: user.rol
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                photo: user.photo,
+                rol: user.rol,
+                accessToken,  // Asegúrate de incluirlo en la respuesta
             };
         } catch (error) {
-            this.logger.error('Error in handleGoogleAuth');
-            throw new InternalServerErrorException('Error al procesar autenticación de Google');
+            throw new InternalServerErrorException(`Error al manejar el usuario de Google: ${(error as Error).message}`);
         }
     }
-    
-        
 
 }

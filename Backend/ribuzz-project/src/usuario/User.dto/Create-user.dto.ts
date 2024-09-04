@@ -25,7 +25,8 @@ export class CreateUserDto {
     rol?: string;
 
     @IsString()
-    photo?: string; 
+    photo?: string;
+
 
 }
 
