@@ -1,11 +1,9 @@
-/* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import 'dotenv/config';
 import 'reflect-metadata';
 
 async function bootstrap() {
-
   require('dotenv').config();
 
   const app = await NestFactory.create(AppModule);

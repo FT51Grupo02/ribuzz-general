@@ -22,7 +22,7 @@ export class UsuarioService {
         async createUser(user: Partial<Users>) {
             try {
                 const repeatUser = await this.userRepository.find({
-                      where:[{name:user.name},{email:user.email},{password:user.password}]
+                    where:[{name:user.name},{email:user.email},{password:user.password}]
                 })
 
                 if(repeatUser.length>0) {throw new BadRequestException("usuraio ya se encuentra registrado")}
@@ -33,17 +33,18 @@ export class UsuarioService {
                 if(user.rol !== "cliente" && user.rol !== "admin" && user.rol !== "emprendedor"){
                     throw new BadRequestException("Rol no valido para registro de usuario")
                 }
-                const newUser = await this.userRepository.save(user);
-                const { password, rol, ...userPassword } = newUser;
-               
-                 const info = await transporter.sendMail({
-                 from: '"RiBuzz team👻" <pfgrupo2ft51@gmail.com>', 
-                  to: newUser.email, 
-                  subject: "Welcome!", 
-                  text: "welcome to RiBuzz",
-                  html: `<h1>bienvenido ${newUser.name}!!</h1>`, 
-                 });
+                const newUser = this.userRepository.create(user);
+                const savedUser  = await this.userRepository.save(newUser);
+        
+                const info = await transporter.sendMail({
+                from: '"RiBuzz team👻" <pfgrupo2ft51@gmail.com>', 
+                to: newUser.email, 
+                subject: "Welcome!", 
+                text: "welcome to RiBuzz",
+                html: `<h1>bienvenido ${newUser.name}!!</h1>`, 
+                });
 
+                const { password, rol, ...userPassword } = savedUser;
                 return userPassword;
 
             } catch (error) {
@@ -104,7 +105,6 @@ export class UsuarioService {
                 upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10);
             }
     
-           
             if (updateUsuarioDto.name) {
                 upDateUser.name = updateUsuarioDto.name;
             }

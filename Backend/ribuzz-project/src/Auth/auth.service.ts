@@ -1,8 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UsuarioService } from "src/usuario/usuario.service";
 import * as bcrypt from "bcrypt";
+import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
+import {GoogleUserResponseDto} from 'src/Auth/Dto/handleGoogleUser.dto'
+
 
 @Injectable()
 export class AuthService {
@@ -13,6 +16,8 @@ export class AuthService {
 
     async signInClient(email: string, password: string) {
         try {
+
+            if(password === '') throw new UnauthorizedException('Please Provide The Password')
 
             const find_user = await this.userService.findUserEmail(email);
             if (!find_user) {
@@ -51,6 +56,8 @@ export class AuthService {
     async signInEntrepreneur(email: string, password: string) {
         try {
 
+            if(password === '') throw new UnauthorizedException('Please Provide The Password')
+
             const find_user = await this.userService.findUserEmail(email);
             if (!find_user) {
                 throw new BadRequestException("Credenciales no validas");
@@ -87,60 +94,27 @@ export class AuthService {
 
     // AuthGoogle
 
-    async generateToken(user: any) {
+    async handleGoogleUser(googleUser: Partial<GoogleUserResponseDto>): Promise<GoogleUserResponseDto | Error> {
         try {
-            const payload = {
-                email: user.email,
-                name: user.firstName,
-                photo: user.picture,
-            };
-
-            return await this.jwtService.signAsync(payload, {
-                secret: process.env.JWT_SECRET || 'default_secret',
-                expiresIn: '60m',
-            });
-        } catch (error) {
-            throw new InternalServerErrorException(`Error al generar el token: ${(error as Error).message}`);
-        }
-    }
-
-    async googleLogin(req) {
-        try {
-            // Busca el usuario por email
-            const user = await this.userService.findUserEmail(req.user.email);
-    
+            const user = await this.userService.findUserEmail(googleUser.email);
             if (!user) {
-                // Crea un nuevo objeto de usuario con las propiedades necesarias
-                const newUser = {
-                    email: req.user.email,
-                    name: req.user.name,
-                    photo: req.user.photo,
-                    rol: 'cliente', // Asigna un rol predeterminado
-                    password: '', // Contraseña vacía por defecto
-                    date: new Date(),
-                    events: [], // Inicializa eventos si es necesario
-                    orders: [] // Inicializa pedidos si es necesario
-                };
-    
-                // Guarda el nuevo usuario en la base de datos
-                await this.userService.createUser(newUser);
-    
-                // Redirige al formulario de registro para completar la información
-                return { redirectTo: `/complete-registration?email=${encodeURIComponent(req.user.email)}` };
+                throw new NotFoundException('Usuario no encontrado. Por favor, regístrate.');
             }
     
-            // Genera un token para el usuario existente
-            const token = await this.generateToken(user);
+            const tokenPayload = { id: user.id, correo: user.email, rol: user.rol };
+            const accessToken = await this.jwtService.sign(tokenPayload);
     
             return {
-                message: 'User Info from Google',
-                user: req.user,
-                token: token,
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                photo: user.photo,
+                rol: user.rol,
+                accessToken,  // Asegúrate de incluirlo en la respuesta
             };
         } catch (error) {
-            throw new InternalServerErrorException(`Error during Google login: ${(error as Error).message}`);
+            throw new InternalServerErrorException(`Error al manejar el usuario de Google: ${(error as Error).message}`);
         }
     }
-    
 
 }
