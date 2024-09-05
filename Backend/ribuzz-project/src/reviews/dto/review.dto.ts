@@ -11,6 +11,10 @@ export class CreateReviewDto {
     @IsUUID()
     productsId: string;
 
+    @IsNotEmpty()
+    @IsUUID()
+    eventId: string;
+
     @IsString()
     username: string;
   

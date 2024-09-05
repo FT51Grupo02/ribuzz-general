@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany, JoinTable, JoinColumn, OneToMany } from "typeorm";
 import { Users } from "./user.entity";
 import { Categories } from "./categories.entity";
 import { Details } from "./details.entity";
+import { Review } from "./reviews";
 
 @Entity({
     name: "services"
@@ -56,16 +57,13 @@ export class Services {
         contact: string;
     };
 
-    @Column("simple-json", { nullable: true })
-    reviews?: {
-        username: string;
-        comment: string;
-        rating: number;
-    }[];
 
     @Column("simple-array", { nullable: true })
     details: string[];
 
+    @OneToMany(()=> Review,(review) => review.serviceId)
+    // @JoinColumn({name: 'reviews_id'})
+    reviews :Review[]
 
     @ManyToOne(() => Users, user => user.id)
     @JoinTable()
