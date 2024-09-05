@@ -1,4 +1,5 @@
-import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, IsUUID, Min, IsUrl } from 'class-validator';
+/* eslint-disable prettier/prettier */
+import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, Min, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class SellerInfoDto {

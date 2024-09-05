@@ -1,15 +1,16 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException, InternalServerErrorException, BadRequestException } from "@nestjs/common";
+import { Injectable, NotFoundException, InternalServerErrorException,BadRequestException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Events } from "src/Entidades/events.entity";
-import { Categories } from "src/Entidades/categories.entity";
+import { UpdateEventDto } from "./dto/update-event.dto";
+
 
 @Injectable()
 export class EventService {
     constructor(
-        @InjectRepository(Events) private eventRepository: Repository<Events>,
-        @InjectRepository(Categories) private categoryRepository: Repository<Events>
+        @InjectRepository(Events) private eventRepository: Repository<Events>
+       
     ) {}
 
     async getEvent(page: number, limit: number): Promise<Events[]> {
@@ -18,7 +19,6 @@ export class EventService {
             return await this.eventRepository.find({
                 skip,
                 take: limit,
-                relations: ['categories']
                // relations: ['details', 'categories'] 
             });
         } catch (error) {
@@ -30,7 +30,6 @@ export class EventService {
         try {
             const product = await this.eventRepository.findOne({
                 where: { id },
-                relations:['categories']
                // relations: ['details', 'categories'] 
             });
             if (!product) {
@@ -45,62 +44,26 @@ export class EventService {
         }
     }
 
-    async createEvent(categoryName:string[] ,product: Events): Promise<Events> {
+    async createEvent(event: Events): Promise<Events> {
         try {
-
-            const categories =[]
-
-            if(!categoryName || categoryName.length===0 || !Array.isArray(categoryName)){
-                throw new BadRequestException("Por favor ingrese la(s) categoria(s)")
-            }
-
-            for(const name of categoryName){
-                const category = await this.categoryRepository.findOne({where:{name}})
-                if(!category){throw new BadRequestException()}
-                else{categories.push(category)}
-            }
-
-            const newProduct = this.eventRepository.create(product);
+            const newProduct = this.eventRepository.create(event);
             return await this.eventRepository.save(newProduct);
         } catch (error) {
             throw new InternalServerErrorException('Error al crear el evento'+error);
         }
     }
 
-    // async updateEvent(id: string, event: Partial<Events>): Promise<Events> {
-    //     try {
-            
-          ///  const { details, categories, ...otherProperties } = event;
-           // await this.eventRepository.update(id, otherProperties);
+    async upDateEvent(id: string, event: UpdateEventDto){
+        
+        const eventSend = await this.eventRepository.findOneBy({id})
+        if(!eventSend){throw new BadRequestException("El evento no existe")}
+        
+       const upDateEvent  = {...eventSend,...event}
+
+       await this.eventRepository.save(upDateEvent)
+       return upDateEvent 
+    }   
     
-            
-            // const updatedEvent = await this.eventRepository.findOne({
-            //     where: { id },
-            //     relations: ['details', 'categories'] 
-            // });
-    
-            // if (!updatedEvent) {
-            //     throw new NotFoundException(`evento con id ${id} no encontrado`);
-            // }
-    
-           // if (details) {
-            //     updatedProduct.details = details;
-            // }
-    
-            // if (categories) {
-            //     updatedProduct.categories = categories;
-            // }
-    
-            // await this.eventRepository.save(updatedProduct);
-            // return updatedProduct;
-    //     } catch (error) {
-    //         console.error('Error al actualizar el producto:', error); 
-    //         if (error instanceof NotFoundException) {
-    //             throw error;
-    //         }
-    //         throw new InternalServerErrorException('Error al actualizar el Evento');
-    //     }
-    // }
     
 
     async deleteEvent(id: string): Promise<void> {
