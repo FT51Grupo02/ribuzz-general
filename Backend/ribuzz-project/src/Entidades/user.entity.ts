@@ -2,6 +2,7 @@
 import { Column, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Events } from "./events.entity";
 import {Orders} from "./orders.entity"
+import { Review } from "./reviews";
 
 @Entity({
     name:"users"
@@ -37,5 +38,9 @@ export class Users{
     @OneToMany(()=> Orders,(order) => order.user)
     @JoinColumn({name: 'ordersid'})
     orders :Orders[];
+
+    @OneToMany(()=> Review,(users) => users.userId)
+    // @JoinColumn({name: 'reviews_id'})
+    reviews :Review[]
 
 }

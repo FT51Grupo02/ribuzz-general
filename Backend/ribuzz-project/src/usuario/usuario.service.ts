@@ -53,6 +53,8 @@ export class UsuarioService {
         }
     
 
+    
+
     async findAll(page: number, limit: number) {
         try {
             let users = await this.userRepository.find();
