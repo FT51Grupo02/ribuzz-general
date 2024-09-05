@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Delete, Body, Param, Query } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
 import { EventService } from "./events.service";
 //import { Products } from "src/Entidades/products.entity";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
@@ -36,10 +36,10 @@ export class EventController {
     }
 
     // @UseGuards(AdminGuard)
-    // @Put('/:id')
-    // async updateEvent(@Param('id') id: string, @Body() event: Events) {
-    //     return this.eventService.updateevent(id, event);
-    // }
+     @Put('/:id')
+    async upDateEvent(@Param('id') id: string, @Body() event: any) {
+        return this.eventService.upDateEvent(id, event);
+     }
 
     
     // @UseGuards(AdminGuard)
