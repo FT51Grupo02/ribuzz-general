@@ -8,36 +8,31 @@ import { AdminGuard } from 'src/Guardianes/admin.guard';*/
 export class ReviewsController {
   constructor(private readonly reviewsService:ReviewsService) {}
 
-  @Post()
-  createUser(@Body() review:CreateReviewDto) {
+  @Post('products')
+  createReviewproduct(@Body() review:CreateReviewDto) {
     return this.reviewsService.AddProductReview(review);
+  }
+  @Post('event')
+  createReviewEvent(@Body() review) {
+    return this.reviewsService.AddEventReview(review);
+  }
+  @Post('service')
+  createReviewService(@Body() review) {
+    return this.reviewsService.AddServiceReview(review);
   }
 
 
-//   @Get()
-//   findAll(@Query(`page`) page:number, @Query(`limit`) limit:number) {
-//     if (page && limit){
-//       return this.ReviewsService.findAll(page,limit );  
-//     }
-//     return this.ReviewsService.findAll(1, 3);
-//   }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.reviewsService.findOne(id);
+  }
 
-//   @Get(':id')
-//   findOne(@Param('id') id: string) {
-//     return this.ReviewsService.findOne(id);
-//   }
-
-//   //@UseGuards(EntrepreneurGuard)
-//   @Put(':id')
-//   update(@Param('id') id: string, @Body() updateUsuarioDto) {
-//     return this.ReviewsService.update(id, updateUsuarioDto);
-//   }
-  
-//   //@UseGuards(AdminGuard)
-//   @Delete(':id')
-//   deleteUser(@Param(`id`) id:string){
-//     return this.ReviewsService.deleteUser(id);
-//   }
+ 
+  //@UseGuards(AdminGuard)
+  @Delete(':id')
+  deleteReview(@Param(`id`) id:string){
+    return this.reviewsService.deleteReview(id);
+  }
 
  }
   
