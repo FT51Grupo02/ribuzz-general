@@ -9,7 +9,7 @@ export class ClientGuard implements CanActivate{
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
         const token = this.extractToken(request);
-        this.roleValidationService.validateTokenRol(token, "cliente");
+        this.roleValidationService.validateTokenRol(token, 'cliente');
         return true;
     }
 

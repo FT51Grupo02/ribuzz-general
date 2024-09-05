@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import 'dotenv/config';
@@ -10,6 +11,7 @@ async function bootstrap() {
 
   const whitelist = [
     'http://localhost:3001',
+    'http://localhost:3005',
     'https://ribuzz.vercel.app',
     process.env.CORS_ORIGIN,
   ];

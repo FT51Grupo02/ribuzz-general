@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { PickType } from "@nestjs/mapped-types/dist";
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsIn } from "class-validator";
 
 
 export class CreateUserDto {
@@ -22,6 +22,7 @@ export class CreateUserDto {
     
     @IsNotEmpty()
     @IsString()
+    @IsIn(['cliente', 'emprendedor'])
     rol?: string;
 
     @IsString()

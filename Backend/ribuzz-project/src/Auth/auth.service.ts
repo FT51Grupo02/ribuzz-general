@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable, InternalServerErrorException, Logger, NotFoundException, UnauthorizedException } from "@nestjs/common";
+import { BadRequestException, Injectable, InternalServerErrorException, NotFoundException, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { UsuarioService } from "src/usuario/usuario.service";
 import * as bcrypt from "bcrypt";
-import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
+//import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
 import {GoogleUserResponseDto} from 'src/Auth/Dto/handleGoogleUser.dto'
 
 
@@ -17,7 +17,7 @@ export class AuthService {
     async signInClient(email: string, password: string) {
         try {
 
-            if(password === '') throw new UnauthorizedException('Please Provide The Password')
+            if(password === '') throw new UnauthorizedException('Por favor ingrese la contraseña')
 
             const find_user = await this.userService.findUserEmail(email);
             if (!find_user) {
@@ -30,7 +30,7 @@ export class AuthService {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
             
-            if(find_user.rol !== "cliente"){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            if(find_user.rol !== 'cliente'){throw new BadRequestException("El rol no esta asignado con el usuario")}
 
             const usePayload = {
                 id: find_user.id,
