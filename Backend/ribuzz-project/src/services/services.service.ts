@@ -11,7 +11,7 @@ export class ServicesService {
         @InjectRepository(Services) 
         private servicesRepository: Repository<Services>,
         @InjectRepository(Categories)
-        private categoriesRepository: Repository<Categories>,
+        private categoryRepository: Repository<Categories>,
     ) {}
 
     async getServices(page: number, limit: number): Promise<Services[]> {
@@ -45,70 +45,83 @@ export class ServicesService {
         }
     }
 
-    async createService(categoryName:string[],service: Partial<Services[]>): Promise<Services> {
+    async createService(categoryName: string[], service: Partial<Services>): Promise<Services> {
         try {
-
-            const categories = []
-
-            if(categoryName.length===0 || !categoryName ){
-                throw new BadRequestException("Por favor ingrese la(s) categoria(s)")
+          if (!Array.isArray(categoryName) || categoryName.length === 0 || !categoryName) {
+            throw new BadRequestException("Por favor ingrese la(s) categoria(s)");
+          }
+      
+          const categories = [];
+          
+          for (const name of categoryName) {
+            const category = await this.categoryRepository.findOneBy({ name });
+            if (!category) {
+              throw new NotFoundException("La(s) categoria(s) no se encontraron");
             }
-            
-            for(const name of categoryName){
-                const category = await this.categoriesRepository.findOneBy({name})
-                if(!category){throw new NotFoundException("La(s) categoria(s) no se encontrarón")}
-                else{categories.push(category)}
-            }
-
-            const newService = this.servicesRepository.create({
-                ...service,
-                categories
-            });
-            return await this.servicesRepository.save(newService);
-
+            categories.push(category);
+          }
+      
+          const newService = this.servicesRepository.create({
+            ...service,
+            categories // Asegúrate de que 'categories' se asigne correctamente.
+          });
+      
+          return await this.servicesRepository.save(newService);
+      
         } catch (error) {
-            throw new InternalServerErrorException('Error al crear el servicio: ' + error);
+          throw new InternalServerErrorException('Error al crear el servicio: ' + error);
+        }
+      }
+      
+
+    async updateService (id: string, categories:string[], service:Partial<Services>){
+        try{
+            
+            if(!Array.isArray(categories)){throw new BadRequestException('El parámetro categories debe ser un array de nombres de categorías.');}
+            
+            if(!service || !Object.keys(service).length){throw new BadRequestException('El objeto service no puede estar vacío')}
+            
+            if(categories.length===0){
+                throw new BadRequestException("Esta casilla no puede quedar vacía, por favor elijan categoría(s)");
+            }
+
+            const categorieName = []
+            for(const name of categories){
+                const category = await this.categoryRepository.findOne({where:{name}})
+                if(!category){throw new NotFoundException("Por favor introduzca categoria(s) existente")}
+                else{categorieName.push(category)}
+            }
+
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const{details, ...otherProperties} = service
+
+            await this.servicesRepository.update(id, otherProperties);
+
+            const updatedService = await this.servicesRepository.findOne({
+                where:{id},
+                relations: ['categories']
+            });
+
+            if (!updatedService) {
+                throw new NotFoundException(`Servicio con id ${id} no encontrado`);
+            }
+
+            updatedService.categories = categorieName
+
+            if (details) {
+                updatedService.details = details;
+            }
+
+            await this.servicesRepository.save(updatedService);
+    
+            return updatedService;
+
+        }
+        catch(error){
+            throw new InternalServerErrorException(`Error al modificar los datos ${error}`)
         }
     }
 
-    // async updateService(id: string, service: Partial<Services>): Promise<Services> {
-    //     try {
-    //         // Actualiza las propiedades simples
-    //         const { provider, categories, ...otherProperties } = service;
-    //         await this.servicesRepository.update(id, otherProperties);
-
-    //         // Recupera el servicio actualizado
-    //         const updatedService = await this.servicesRepository.findOne({
-    //             where: { id },
-    //             relations: ['provider', 'categories']
-    //         });
-
-    //         if (!updatedService) {
-    //             throw new NotFoundException(`Servicio con id ${id} no encontrado`);
-    //         }
-
-    //         // Actualiza la relación provider si fue proporcionada
-    //         if (provider) {
-    //             updatedService.provider = provider;
-    //         }
-
-    //         // Actualiza la relación categories si fue proporcionada
-    //         if (categories) {
-    //             updatedService.categories = categories;
-    //         }
-
-    //         // Guarda el servicio con las relaciones actualizadas
-    //         await this.servicesRepository.save(updatedService);
-
-    //         return updatedService;
-    //     } catch (error) {
-    //         console.error('Error al actualizar el servicio:', error); // Imprimir el error en la consola
-    //         if (error instanceof NotFoundException) {
-    //             throw error;
-    //         }
-    //         throw new InternalServerErrorException('Error al actualizar el servicio');
-    //     }
-    // }
 
     async deleteService(id: string): Promise<void> {
         try {

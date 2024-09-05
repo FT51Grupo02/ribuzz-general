@@ -23,6 +23,11 @@ export class CreateUserDto {
     @IsNotEmpty()
     @IsString()
     rol?: string;
+
+    @IsString()
+    photo?: string;
+
+
 }
 
 export class LoginUserDto extends PickType(CreateUserDto,[

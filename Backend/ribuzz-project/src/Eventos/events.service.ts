@@ -1,13 +1,16 @@
-import { Injectable, NotFoundException, InternalServerErrorException } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Injectable, NotFoundException, InternalServerErrorException,BadRequestException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Products } from "../Entidades/products.entity";
 import { Events } from "src/Entidades/events.entity";
+import { UpdateEventDto } from "./dto/update-event.dto";
+
 
 @Injectable()
 export class EventService {
     constructor(
         @InjectRepository(Events) private eventRepository: Repository<Events>
+       
     ) {}
 
     async getEvent(page: number, limit: number): Promise<Events[]> {
@@ -41,49 +44,26 @@ export class EventService {
         }
     }
 
-    async createEvent(product: Events): Promise<Events> {
+    async createEvent(event: Events): Promise<Events> {
         try {
-            const newProduct = this.eventRepository.create(product);
+            const newProduct = this.eventRepository.create(event);
             return await this.eventRepository.save(newProduct);
         } catch (error) {
             throw new InternalServerErrorException('Error al crear el evento'+error);
         }
     }
 
-    // async updateEvent(id: string, event: Partial<Events>): Promise<Events> {
-    //     try {
-            
-          ///  const { details, categories, ...otherProperties } = event;
-           // await this.eventRepository.update(id, otherProperties);
+    async upDateEvent(id: string, event: UpdateEventDto){
+        
+        const eventSend = await this.eventRepository.findOneBy({id})
+        if(!eventSend){throw new BadRequestException("El evento no existe")}
+        
+       const upDateEvent  = {...eventSend,...event}
+
+       await this.eventRepository.save(upDateEvent)
+       return upDateEvent 
+    }   
     
-            
-            // const updatedEvent = await this.eventRepository.findOne({
-            //     where: { id },
-            //     relations: ['details', 'categories'] 
-            // });
-    
-            // if (!updatedEvent) {
-            //     throw new NotFoundException(`evento con id ${id} no encontrado`);
-            // }
-    
-           // if (details) {
-            //     updatedProduct.details = details;
-            // }
-    
-            // if (categories) {
-            //     updatedProduct.categories = categories;
-            // }
-    
-            // await this.eventRepository.save(updatedProduct);
-            // return updatedProduct;
-    //     } catch (error) {
-    //         console.error('Error al actualizar el producto:', error); 
-    //         if (error instanceof NotFoundException) {
-    //             throw error;
-    //         }
-    //         throw new InternalServerErrorException('Error al actualizar el Evento');
-    //     }
-    // }
     
 
     async deleteEvent(id: string): Promise<void> {

@@ -30,7 +30,10 @@ export class ProductsService {
         try {
             const product = await this.productRepository.findOne({
                 where: { id },
+
                  relations:{reviews:true}
+            
+                // relations: ['details', 'categories'] 
             });
             if (!product) {
                 throw new NotFoundException(`Producto con id ${id} no encontrado`);
@@ -74,14 +77,16 @@ export class ProductsService {
         }
     }
 
-    
     async updateProduct(id: string, categories: string[], product: Partial<Products>): Promise<Products> {
         try {
-            const categoryNames = [];
+            // Validar si categories es un array
+            if (!Array.isArray(categories)) {
+                throw new BadRequestException('El parámetro categories debe ser un array de nombres de categorías.');
+            }
     
             // Validar si el objeto product es válido
-            if (!product) {
-                throw new BadRequestException('Los datos del producto son necesarios');
+            if (!product || !Object.keys(product).length) {
+                throw new BadRequestException('El objeto product no puede estar vacío');
             }
     
             // Validar stock antes de intentar actualizar
@@ -89,11 +94,17 @@ export class ProductsService {
                 throw new BadRequestException('El stock no puede ser negativo');
             }
     
+            // Validar si categories no está vacío
+            if (categories.length === 0) {
+                throw new BadRequestException("Esta casilla no puede quedar vacía, por favor elijan categoría(s)");
+            }
+    
+            const categoryNames = [];
             // Buscar y validar las categorías por nombre
             for (const name of categories) {
-                const category = await this.categoryRepository.findOneBy({ name });
+                const category = await this.categoryRepository.findOne({ where: { name } });
                 if (!category) {
-                    throw new BadRequestException("Por favor ingrese una categoria existente");
+                    throw new BadRequestException("Por favor ingrese una categoría existente");
                 } else {
                     categoryNames.push(category);
                 }
@@ -107,8 +118,7 @@ export class ProductsService {
             // Buscar el producto actualizado junto con sus relaciones
             const updatedProduct = await this.productRepository.findOne({
                 where: { id },
-                relations: ['categorie'] 
-                //relations: ['details', 'categories'] 
+                relations: ['categories']
             });
     
             if (!updatedProduct) {
@@ -137,7 +147,6 @@ export class ProductsService {
         }
     }
     
-
     async deleteProduct(id: string): Promise<void> {
         try {
             const result = await this.productRepository.delete(id);
