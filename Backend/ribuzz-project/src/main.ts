@@ -13,6 +13,8 @@ async function bootstrap() {
     'http://localhost:3001',
     'http://localhost:3005',
     'https://ribuzz.vercel.app',
+    'http://localhost:4000',
+
     process.env.CORS_ORIGIN,
   ];
 
