@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { registerAs } from '@nestjs/config';
 import { JwtModuleOptions, JwtSignOptions } from '@nestjs/jwt';
 

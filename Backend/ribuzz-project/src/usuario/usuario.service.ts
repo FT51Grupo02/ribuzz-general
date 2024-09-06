@@ -86,21 +86,19 @@ export class UsuarioService {
 
     async update(id: string, updateUsuarioDto: UpdateUserDto) {
         try {
-            const existingUser = await this.userRepository.findOneBy({ id });
+            const existingUser = await this.userRepository.findOne({where:{ id }});
     
             if (!existingUser) {
                 throw new NotFoundException("Usuario no encontrado.");
             }
     
             
-            if ('rol' in updateUsuarioDto || 'date' in updateUsuarioDto) {
-                throw new BadRequestException("Los campos 'rol' y 'date' no son modificables.");
+            if ( 'date' in updateUsuarioDto) {
+                throw new BadRequestException("El campo 'date' no son modificables.");
             }
     
-            
             const upDateUser: Partial<UpdateUserDto> = { ...existingUser };
     
-            
             if (updateUsuarioDto.password) {
                 upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10);
             }
@@ -111,6 +109,10 @@ export class UsuarioService {
     
             if (updateUsuarioDto.email) {
                 upDateUser.email = updateUsuarioDto.email;
+            }
+
+            if(updateUsuarioDto.rol){
+                upDateUser.rol = updateUsuarioDto.rol;
             }
     
             
@@ -138,9 +140,11 @@ export class UsuarioService {
         }
     }
 
-    async findUserEmail(email: string): Promise<Users> {
+    async findUserEmail(email: string) {
         try {
+            
             const findEmail = await this.userRepository.findOne({ where: { email } });
+
             if (!findEmail) {
                 throw new NotFoundException(`Usuario con email ${email} no encontrado.`);
             }
@@ -149,4 +153,6 @@ export class UsuarioService {
             throw new InternalServerErrorException('Error al buscar el usuario por email');
         }
     }
+
+    
 }
