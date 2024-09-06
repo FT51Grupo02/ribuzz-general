@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Get,Body, Post, Controller, Delete, BadRequestException, UseGuards } from "@nestjs/common";
 import { CategoriesService } from "./categories.services";
-import { AdminGuard } from "src/Guardianes/admin.guard";
+//import { AdminGuard } from "src/Guardianes/admin.guard";
 
 
 @Controller("categories")
