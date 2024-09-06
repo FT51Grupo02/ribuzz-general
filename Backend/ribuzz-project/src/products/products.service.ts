@@ -30,7 +30,9 @@ export class ProductsService {
         try {
             const product = await this.productRepository.findOne({
                 where: { id },
-                relations : ['categories']
+
+                 relations:{reviews:true}
+            
                 // relations: ['details', 'categories'] 
             });
             if (!product) {

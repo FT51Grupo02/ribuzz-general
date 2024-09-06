@@ -54,6 +54,8 @@ export class UsuarioService {
         }
     
 
+    
+
     async findAll(page: number, limit: number) {
         try {
             let users = await this.userRepository.find();
@@ -71,7 +73,7 @@ export class UsuarioService {
         try {
             const usuario = await this.userRepository.findOne({
                 where: { id },
-                relations:{orders:true}
+                relations:["orders","reviews"]
             });
             if (!usuario) {
                 throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);

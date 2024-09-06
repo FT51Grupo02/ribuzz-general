@@ -32,7 +32,4 @@ export class giveAdminService {
         }
     }
 
-    async suspendUser(){
-        
-    }
 }

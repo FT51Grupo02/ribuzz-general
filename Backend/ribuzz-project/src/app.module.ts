@@ -17,6 +17,8 @@ import { EventModule } from './Eventos/events.module';
 import { StripeModule } from './stripe/stripe.module';
 import { FilterModule } from './Filters/filters.module';
 import { authAdminModule } from './Asig_Admin/asigAdmin.module';
+import { ReviewsModule } from './reviews/reviews.module';
+
 
 @Module({
   imports: [
@@ -45,7 +47,8 @@ import { authAdminModule } from './Asig_Admin/asigAdmin.module';
     EventModule,
     StripeModule,
     FilterModule,
-    authAdminModule
+    authAdminModule,
+    ReviewsModule
   ],
   controllers: [AppController],
   providers: [AppService],

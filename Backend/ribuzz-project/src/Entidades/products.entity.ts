@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, ManyToOne, JoinTable, JoinColumn, OneToMany } from 'typeorm';
 import { Details } from './details.entity';
 import { Categories } from './categories.entity';
 import { Users } from './user.entity';
+import { Review } from './reviews';
+
 
 @Entity({
     name: "products"
@@ -55,12 +57,12 @@ export class Products {
         contact: string;
     };
 
-    @Column("simple-json", { nullable: true })
-    reviews?: {
-        username: string;
-        comment: string;
-        rating: number;
-    }[];
+    // @Column("simple-json", { nullable: true })
+    // reviews?: {
+    //     username: string;
+    //     comment: string;
+    //     rating: number;
+    // }[];
     
     @Column("simple-array", { nullable: true })
     details: string[];
@@ -74,4 +76,8 @@ export class Products {
     @ManyToMany(() => Categories, (category) => category.products, { cascade: true })
     @JoinTable({name: 'products_categories'})
     categories: Categories[];
+
+    @OneToMany(()=> Review,(users) => users.productId)
+    // @JoinColumn({name: 'reviews_id'})
+    reviews :Review[]
 }

@@ -30,6 +30,7 @@ export class EventService {
         try {
             const product = await this.eventRepository.findOne({
                 where: { id },
+                relations:{reviews:true}
                // relations: ['details', 'categories'] 
             });
             if (!product) {
