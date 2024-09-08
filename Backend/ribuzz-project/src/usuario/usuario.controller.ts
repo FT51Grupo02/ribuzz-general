@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Param, Delete, Put, Query} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query, UseGuards} from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
-import { ApiTags } from '@nestjs/swagger';
-/*import { EntrepreneurGuard } from 'src/Guardianes/entrepreneur.guard';
-import { AdminGuard } from 'src/Guardianes/admin.guard';*/
+import { ApiBearerAuth, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { AdminGuard } from 'src/Guardianes/admin.guard';
+
 
 @ApiTags('Users')
 @Controller('users')
@@ -18,6 +18,8 @@ export class UsuarioController {
 
   
   @Get()
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth()
   findAll(@Query(`page`) page:number, @Query(`limit`) limit:number) {
     if (page && limit){
       return this.usuarioService.findAll(page,limit );  
@@ -26,6 +28,7 @@ export class UsuarioController {
   }
 
   @Get(':id')
+  @ApiSecurity('Bearer')
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(id);
     

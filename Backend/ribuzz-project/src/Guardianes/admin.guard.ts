@@ -1,22 +1,9 @@
-/* eslint-disable prettier/prettier */
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import { RoleValidatorService } from "./role.guard";
-
+import { Injectable } from "@nestjs/common";
+import { BaseRoleGuard } from "./base-role.guard";
 
 @Injectable()
-export class AdminGuard implements CanActivate {
-    constructor(private roleValidationService: RoleValidatorService) {}
-
-    canActivate(context: ExecutionContext): boolean {
-        const request = context.switchToHttp().getRequest();
-        const token = this.extractToken(request);
-        this.roleValidationService.validateTokenRol(token, "admin");
-        return true;
-    }
-
-    private extractToken(request: any): string {
-        const authorizate = request.headers.authorization;
-        if (!authorizate) { throw new UnauthorizedException("No tiene permisos para esta transacción"); }
-        return request.headers.authorization.split(' ')[1];
+export class AdminGuard extends BaseRoleGuard {
+    protected getExpectedRoles(): string[] {
+        return ['admin'];
     }
 }
