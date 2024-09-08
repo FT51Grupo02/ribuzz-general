@@ -30,8 +30,8 @@ export class AuthService {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
             
-            if(find_user.rol !== 'cliente'){throw new BadRequestException("El rol no esta asignado con el usuario")}
-
+            if(find_user.rol !== 'admin' && find_user.rol !== 'cliente'){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            
             const usePayload = {
                 id: find_user.id,
                 correo: find_user.email,
@@ -69,7 +69,7 @@ export class AuthService {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
             
-            if(find_user.rol !== "emprendedor"){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            if(find_user.rol !== 'emprendedor' && find_user.rol !== 'admin'){throw new BadRequestException("El rol no esta asignado con el usuario")}
 
             const usePayload = {
                 id: find_user.id,
