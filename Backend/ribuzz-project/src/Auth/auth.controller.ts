@@ -1,10 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./Dto/auth.dto";
 import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
 import { ConfigService } from "@nestjs/config";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService, private configService: ConfigService) {}

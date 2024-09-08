@@ -6,9 +6,10 @@ import { FilterService } from './filters.service';
 import { Products } from 'src/Entidades/products.entity';
 import { Services } from 'src/Entidades/services.entity';
 import { Events } from 'src/Entidades/events.entity';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Products, Services, Events])],
+  imports: [TypeOrmModule.forFeature([Products, Services, Events]), SharedModule],
   controllers: [FilterController],
   providers: [FilterService],
   //exports:[FilterService]

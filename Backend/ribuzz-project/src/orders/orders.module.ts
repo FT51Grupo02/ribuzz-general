@@ -9,6 +9,7 @@ import { Products } from "../Entidades/products.entity";
 import { Users } from "../Entidades/user.entity";
 import { OrderController } from "./order.controller";
 import { OrderService } from "./orders.service";
+import { SharedModule } from "src/shared/shared.module";
 
  @Module({
    imports:[
@@ -17,8 +18,8 @@ import { OrderService } from "./orders.service";
     TypeOrmModule.forFeature([Users]),
     TypeOrmModule.forFeature([Products]),
     TypeOrmModule.forFeature([Services]),
-    TypeOrmModule.forFeature([Events])
-
+    TypeOrmModule.forFeature([Events]),
+    SharedModule
 ] ,
     providers: [OrderService],
     controllers: [OrderController],

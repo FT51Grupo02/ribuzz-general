@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { BadRequestException, Injectable, InternalServerErrorException } from "@nestjs/common";
 //import { Users } from "src/Entidades/user.entity";
 import { UsuarioService } from "src/usuario/usuario.service";

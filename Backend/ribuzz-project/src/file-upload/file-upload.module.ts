@@ -6,9 +6,10 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Products } from '../Entidades/products.entity';
 import { FileUploadRepository } from './file-upload.repository';
 import { Users } from 'src/Entidades/user.entity';
+import { SharedModule } from 'src/shared/shared.module';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Products,Users])],
+  imports:[TypeOrmModule.forFeature([Products,Users]), SharedModule],
   controllers: [FileUploudController],
   providers: [FileUploudService,FileUploadRepository ,ClaudinaryConfig],
 })
