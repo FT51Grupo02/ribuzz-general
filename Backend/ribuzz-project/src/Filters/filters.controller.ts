@@ -1,11 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { Controller, Get, Query } from "@nestjs/common";
 import { FilterService } from "./filters.service";
 import { Products } from "src/Entidades/products.entity";
 import { FilterDto } from "./Dto/filters.dto";
 import { Services } from "src/Entidades/services.entity";
 import { Events } from "src/Entidades/events.entity";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Search')
 @Controller('search')
 export class FilterController {
   constructor(private readonly filterService: FilterService) {}

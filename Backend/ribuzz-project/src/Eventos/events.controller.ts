@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
 import { EventService } from "./events.service";
 //import { Products } from "src/Entidades/products.entity";
@@ -7,9 +6,10 @@ import { EventService } from "./events.service";
 //import { Products } from "src/Entidades/products.entity";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 //import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
-
 import { Events } from "src/Entidades/events.entity";
+import { ApiTags } from "@nestjs/swagger";
 
+@ApiTags('Events')
 @Controller('events')
 export class EventController {
     constructor(private readonly eventService: EventService) {}
@@ -36,10 +36,10 @@ export class EventController {
     }
 
     // @UseGuards(AdminGuard)
-     @Put('/:id')
+    @Put('/:id')
     async upDateEvent(@Param('id') id: string, @Body() event: any) {
         return this.eventService.upDateEvent(id, event);
-     }
+    }
 
     
     // @UseGuards(AdminGuard)

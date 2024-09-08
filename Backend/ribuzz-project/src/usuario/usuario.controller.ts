@@ -1,11 +1,12 @@
-/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Body, Param, Delete, Put, Query} from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 /*import { EntrepreneurGuard } from 'src/Guardianes/entrepreneur.guard';
 import { AdminGuard } from 'src/Guardianes/admin.guard';*/
 
+@ApiTags('Users')
 @Controller('users')
 export class UsuarioController {
   constructor(private readonly usuarioService: UsuarioService) {}

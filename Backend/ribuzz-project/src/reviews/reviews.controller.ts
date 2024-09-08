@@ -1,9 +1,12 @@
 import { Controller, Get, Post, Body, Param, Delete, Put, Query} from '@nestjs/common';
 import { CreateReviewDto } from './dto/review.dto';
 import { ReviewsService } from './reviews.service';
+import { ApiTags } from '@nestjs/swagger';
 /*import { EntrepreneurGuard } from 'src/Guardianes/entrepreneur.guard';
 import { AdminGuard } from 'src/Guardianes/admin.guard';*/
 
+
+@ApiTags('Reviews')
 @Controller('reviews')
 export class ReviewsController {
   constructor(private readonly reviewsService:ReviewsService) {}

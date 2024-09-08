@@ -1,9 +1,9 @@
-/* eslint-disable prettier/prettier */
 import { Get,Body, Post, Controller, Delete, BadRequestException, UseGuards } from "@nestjs/common";
 import { CategoriesService } from "./categories.services";
+import { ApiTags } from "@nestjs/swagger";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 
-
+@ApiTags('Categories')
 @Controller("categories")
 export class CategoriesControl{
     constructor(private categoriesServive: CategoriesService) {}

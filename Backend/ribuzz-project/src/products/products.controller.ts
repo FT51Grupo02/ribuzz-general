@@ -1,9 +1,10 @@
-/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { Products } from "src/Entidades/products.entity";
+import { ApiTags } from "@nestjs/swagger";
 
 
+@ApiTags('Products')
 @Controller('products')
 export class ProductsController {
     constructor(private readonly productsService: ProductsService) {}
@@ -22,7 +23,7 @@ export class ProductsController {
         return this.productsService.getProductById(id);
     }
 
-  
+
     @Post()
     async createProduct(@Body() productDto: any) {
         const { categories, ...productData } = productDto;
@@ -39,7 +40,6 @@ export class ProductsController {
         }
 
 
-   
     @Delete('/:id')
     async deleteProduct(@Param('id') id: string) {
         return this.productsService.deleteProduct(id);

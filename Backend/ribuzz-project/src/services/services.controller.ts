@@ -1,9 +1,11 @@
-/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
 import { ServicesService } from "./services.service";
 import { Services } from "src/Entidades/services.entity";
+import { ApiTags } from "@nestjs/swagger";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 
+
+@ApiTags('Services')
 @Controller('services')
 export class ServicesController {
     constructor(private readonly servicesService: ServicesService) {}
