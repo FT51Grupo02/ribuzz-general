@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Put, Delete, Body, Param, Query } from "@nestjs/common";
+import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { Products } from "src/Entidades/products.entity";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { AdminGuard } from "src/Guardianes/admin.guard";
+import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 
 
 @ApiTags('Products')
@@ -25,12 +27,18 @@ export class ProductsController {
 
 
     @Post()
+    @UseGuards(AdminGuard)
+    @UseGuards(EntrepreneurGuard)
+    @ApiBearerAuth()
     async createProduct(@Body() productDto: any) {
         const { categories, ...productData } = productDto;
         return this.productsService.createProduct(categories, productData);
     }
     
     @Put('/:id')
+    @UseGuards(AdminGuard)
+    @UseGuards(EntrepreneurGuard)
+    @ApiBearerAuth()
         async updateProduct(
         @Param('id') id: string,
         @Body() updateProductDto: { categories: string[], product: Partial<Products> }) 
@@ -41,6 +49,9 @@ export class ProductsController {
 
 
     @Delete('/:id')
+    @UseGuards(AdminGuard)
+    @UseGuards(EntrepreneurGuard)
+    @ApiBearerAuth()
     async deleteProduct(@Param('id') id: string) {
         return this.productsService.deleteProduct(id);
     }

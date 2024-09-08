@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Body, Param, Query, Put, UseGuards } from "@nestjs/common";
 import { ServicesService } from "./services.service";
 import { Services } from "src/Entidades/services.entity";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { AdminGuard } from "src/Guardianes/admin.guard";
+import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 
 
@@ -25,6 +27,9 @@ export class ServicesController {
 
     
     @Post()
+    @UseGuards(AdminGuard)
+    @UseGuards(EntrepreneurGuard)
+    @ApiBearerAuth()
     async createService(@Body() serviceDto: any) {
         const {categories, ...serviceData} = serviceDto
         return this.servicesService.createService(categories,serviceData);
@@ -32,6 +37,9 @@ export class ServicesController {
 
     
     @Put('/:id')
+    @UseGuards(AdminGuard)
+    @UseGuards(EntrepreneurGuard)
+    @ApiBearerAuth()
     async updateService(
         @Param('id') id: string,
     @Body() updateServiceDto: { categories: string[], service: Partial<Services> }) {
@@ -41,6 +49,9 @@ export class ServicesController {
 
     
     @Delete(':id')
+    @UseGuards(AdminGuard)
+    @UseGuards(EntrepreneurGuard)
+    @ApiBearerAuth()
     async deleteService(@Param('id') id: string) {
         return this.servicesService.deleteService(id);
     }
