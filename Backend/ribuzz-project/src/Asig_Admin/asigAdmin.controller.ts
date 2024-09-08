@@ -9,7 +9,7 @@ export class giveAdminController {
     constructor(private authAdminService:giveAdminService){}
     
     @Put('/admin')
-    async asingAdmin(@Body('email') email:string){
-        return await this.authAdminService.asingAdmin(email)
+    async asingAdmin(@Body('email') email:string, @Body('rol') rol:string){
+        return await this.authAdminService.asingAdmin(email,rol)
     }
 }
