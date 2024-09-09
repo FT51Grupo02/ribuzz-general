@@ -4,6 +4,8 @@ import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminGuard } from 'src/Guardianes/admin.guard';
+import { EntrepreneurGuard } from 'src/Guardianes/entrepreneur.guard';
+import { ClientGuard } from 'src/Guardianes/client.guard';
 
 
 @ApiTags('Users')
@@ -38,6 +40,8 @@ export class UsuarioController {
   
   @Put(':id')
   @UseGuards(AdminGuard)
+  @UseGuards(EntrepreneurGuard)
+  @UseGuards(ClientGuard)
   @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUserDto) {
     return this.usuarioService.update(id, updateUsuarioDto);
