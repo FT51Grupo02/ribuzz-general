@@ -104,7 +104,7 @@ async AddOrder(userId: string, product:any,service:any,events:any){
                 }
                 totals += Number(events.price);
     
-                //await this.serviceRepository.update({ id: element.id}, );
+                await this.eventsRepository.update({ id: element.id}, {stock: events.stock - 1 });
                 console.log(events.price);
                 console.log(events);
                 return events
