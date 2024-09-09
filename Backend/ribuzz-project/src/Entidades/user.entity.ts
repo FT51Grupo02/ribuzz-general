@@ -40,7 +40,6 @@ export class Users{
     orders :Orders[];
 
     @OneToMany(()=> Review,(users) => users.userId)
-    // @JoinColumn({name: 'reviews_id'})
     reviews :Review[]
 
 }
