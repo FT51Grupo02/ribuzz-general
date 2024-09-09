@@ -54,15 +54,15 @@ export class ReviewsService {
     }
 
     // Crear la nueva reseña
-    const review = new Review();
-    review.rating = rating;
-    review.comment = comment;
-    review.username = user.name
-    review.productId = product;  
-    review.userId = user;    
+    const Newreview = new Review();
+    Newreview.rating = rating;
+    Newreview.comment = comment;
+    Newreview.username = user.name
+    Newreview.productId = product;  
+    Newreview.userId = user;    
      
     
-    return this.reviewRepository.save(review);
+    return this.reviewRepository.save(Newreview);
 }
 
 

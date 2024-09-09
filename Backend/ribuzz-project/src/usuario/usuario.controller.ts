@@ -31,7 +31,7 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  @UseGuards(AdminGuard)
+  //@UseGuards(AdminGuard)
   @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(id);
