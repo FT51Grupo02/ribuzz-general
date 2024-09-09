@@ -33,10 +33,10 @@ export class AuthController {
         const result = await this.authService.handleGoogleUser(req.user);
 
     if (result instanceof Error) {
-        return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
+        return res.redirect(`${process.env.GOOGLE_RETURN}/?message=${encodeURIComponent(result.message)}`);
     }
 
     const { accessToken, rol } = result;
-    res.redirect(`${process.env.GOOGLE_RETURN}?token=${accessToken}&role=${rol}`);
+    res.redirect(`${process.env.GOOGLE_RETURN}/?token=${accessToken}&role=${rol}`);
 }
 }
