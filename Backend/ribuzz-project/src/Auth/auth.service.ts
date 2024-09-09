@@ -35,6 +35,7 @@ export class AuthService {
 
             const usePayload = {
                 id: find_user.id,
+                name: find_user.name || 'Anonimo',
                 correo: find_user.email,
                 rol: find_user.rol,
             };
@@ -43,6 +44,7 @@ export class AuthService {
 
             return {
                 message: "Ingreso éxitoso",
+                name: find_user.name || 'Anonimo',
                 id: find_user.id,
                 token
             };
@@ -77,6 +79,7 @@ export class AuthService {
 
             const usePayload = {
                 id: find_user.id,
+                name: find_user.name || 'Anonimo',
                 correo: find_user.email,
                 rol: find_user.rol,
             };
@@ -86,6 +89,7 @@ export class AuthService {
             return {
                 message: "Ingreso éxitoso",
                 id: find_user.id,
+                name: find_user.name || 'Anonimo',
                 token,
             };
         } catch (error) {

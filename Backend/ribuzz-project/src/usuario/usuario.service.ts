@@ -112,11 +112,6 @@ export class UsuarioService {
             if (updateUsuarioDto.email) {
                 upDateUser.email = updateUsuarioDto.email;
             }
-
-            if(updateUsuarioDto.rol){
-                upDateUser.rol = updateUsuarioDto.rol;
-            }
-    
             
             await this.userRepository.save(upDateUser);
     
