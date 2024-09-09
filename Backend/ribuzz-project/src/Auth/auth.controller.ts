@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./Dto/auth.dto";
@@ -32,10 +33,10 @@ export class AuthController {
         const result = await this.authService.handleGoogleUser(req.user);
 
     if (result instanceof Error) {
-        return res.redirect(`http://localhost:3000/error?message=${encodeURIComponent(result.message)}`);
+        return res.redirect(`https://ribuzz-backend-ftn4.onrender.com?message=${encodeURIComponent(result.message)}`);
     }
 
     const { accessToken, rol } = result;
-    res.redirect(`http://localhost:3000?token=${accessToken}&role=${rol}`);
+    res.redirect(`https://ribuzz-backend-ftn4.onrender.com?token=${accessToken}&role=${rol}`);
 }
 }

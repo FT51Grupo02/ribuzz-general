@@ -4,37 +4,37 @@ import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
 export class FilterDto{
     @IsOptional()
     @IsString()
-    name:string;
+    name?:string;
     
     @IsOptional()
     @IsString()
-    categories:string;
+    categories?:string;
 
     @IsOptional()
     @IsNumber()
-    price:number
+    price?:number
 
     @IsOptional()
     @IsNumber()
-    rating:number
+    rating?:number
 
     @IsOptional()
     @IsDate()
-    publicationDate:Date
+    publicationDate?:Date
 
     @IsOptional()
-    populate:string
+    populate?:string
 
     @IsOptional()
-    location:string
+    location?:string
 
     @IsOptional()
     @IsString()
-    duration:string;
+    duration?:string;
 
     @IsOptional()
-    orderPrice: "ASC"| "DESC" ;
+    orderPrice?: "ASC"| "DESC" ;
 
     @IsOptional()
-    orderRating: "ASC"| "DESC";
+    orderRating?: "ASC"| "DESC";
 }

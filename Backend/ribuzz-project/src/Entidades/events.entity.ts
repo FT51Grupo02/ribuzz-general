@@ -3,9 +3,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { Details } from "./details.entity";
 import { Review } from "./reviews";
-
 //import { Details } from "./details.entity";
-//import { Categories } from "./categories.entity";
+import { Categories } from "./categories.entity";
 import { Users } from "./user.entity";
 
 @Entity({
@@ -76,6 +75,9 @@ export class Events {
     @OneToMany(()=> Review,(review) => review.eventId)
     // @JoinColumn({name: 'reviews_id'})
     reviews :Review[]
+
+    @ManyToMany(()=> Categories,(category)=>category.events)
+    categories: Categories[]
 
     @ManyToMany(() => Users, user => user.id)
     @JoinTable()

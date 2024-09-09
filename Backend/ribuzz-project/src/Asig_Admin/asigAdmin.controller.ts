@@ -1,6 +1,7 @@
-import { Controller, Put, Body } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Controller, Put, Query } from "@nestjs/common";
 import { giveAdminService } from "./asigAdmin.service";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiTags, ApiQuery } from "@nestjs/swagger";
 //import { asignAdminDto } from "./Dto/asignAdmin.dto";
 
 @ApiTags('Admin-Auth')
@@ -9,7 +10,9 @@ export class giveAdminController {
     constructor(private authAdminService:giveAdminService){}
     
     @Put('/admin')
-    async asingAdmin(@Body('email') email:string, @Body('rol') rol:string){
+    @ApiQuery({name:'email', required:true})
+    @ApiQuery({name:'rol', required:false})
+    async asingAdmin(@Query('email') email:string, @Query('rol') rol?:string){
         return await this.authAdminService.asingAdmin(email,rol)
     }
 }

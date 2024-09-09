@@ -21,7 +21,7 @@ export class CategoriesService {
         const findCategory = await this.categoriesRepository.findOne({
             where:{name},
             relations: {
-                products:true
+                products:true,
             }
         })
 

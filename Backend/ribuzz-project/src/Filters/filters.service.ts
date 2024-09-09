@@ -34,15 +34,17 @@ export class FilterService {
           ...(dto.rating && { rating: dto.rating }),
         };
     
+        if(Object.keys(textFilters).length>0){
+          Object.entries(textFilters).forEach(([key, value]) => {
+            arrayProduct.andWhere(`product.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
+          });
+        }
         
-        Object.entries(textFilters).forEach(([key, value]) => {
-          arrayProduct.andWhere(`product.${key} ILIKE :${key}`, { [`${key}`]: `%${value}%` });
-        });
-    
-  
-        Object.entries(numberFilters).forEach(([key, value]) => {
-          arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
-        });
+        if(Object.keys(numberFilters).length>0){
+          Object.entries(numberFilters).forEach(([key, value]) => {
+            arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
+          });
+        }
 
         if (dto.categories) {
           const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];

@@ -1,4 +1,5 @@
-import { Get,Body, Post, Controller, Delete, BadRequestException, UseGuards } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Get, Post, Controller, Delete, BadRequestException, UseGuards,Query } from "@nestjs/common";
 import { CategoriesService } from "./categories.services";
 import { ApiTags } from "@nestjs/swagger";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
@@ -20,8 +21,8 @@ export class CategoriesControl{
         }
     }
 
-    @Get('/:id')
-    async findCategory(@Body('nombre') nombre:string){
+    @Get('/:name')
+    async findCategory(@Query('nombre') nombre:string){
         try{
             return this.categoriesServive.findCategory(nombre)
         }
@@ -32,7 +33,7 @@ export class CategoriesControl{
     
     // @UseGuards(AdminGuard)
     @Post('/add')
-    async imputCategory(@Body('nombre') nombre: string){
+    async imputCategory(@Query('nombre') nombre: string){
         try{
             return this.categoriesServive.imputCategory(nombre)
         }
@@ -42,7 +43,7 @@ export class CategoriesControl{
     }
     // @UseGuards(AdminGuard)
     @Delete()
-    async deleteCategory(@Body("nombre") nombre:string){
+    async deleteCategory(@Query("nombre") nombre:string){
           try{
             await this.categoriesServive.deleteCategory(nombre)
             return {message:`La categoria ${nombre} ha sido eliminada éxitosamene`}

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Query } from "@nestjs/common";
 import { FilterService } from "./filters.service";
 import { Products } from "src/Entidades/products.entity";
