@@ -1,7 +1,12 @@
 /* eslint-disable prettier/prettier */
-import { IsString } from "class-validator";
+import { IsEmail, IsOptional, IsString } from "class-validator";
 
 export class asignAdminDto {
+
+    @IsEmail()
+    email:string;
+
     @IsString()
+    @IsOptional()
     rol?:string
 }

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { RoleValidatorService } from 'src/Guardianes/role-validator.service';
