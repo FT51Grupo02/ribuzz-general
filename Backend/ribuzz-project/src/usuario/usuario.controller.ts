@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Param, Delete, Put, Query, UseGuards} from
 import { UsuarioService } from './usuario.service';
 import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
-import { ApiBearerAuth, ApiSecurity, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AdminGuard } from 'src/Guardianes/admin.guard';
 
 
@@ -28,20 +28,25 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  @ApiSecurity('Bearer')
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(id);
     
   }
 
-  //@UseGuards(EntrepreneurGuard)
+  
   @Put(':id')
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUserDto) {
     return this.usuarioService.update(id, updateUsuarioDto);
   }
   
-  //@UseGuards(AdminGuard)
+  
   @Delete(':id')
+  @UseGuards(AdminGuard)
+  @ApiBearerAuth()
   deleteUser(@Param(`id`) id:string){
     return this.usuarioService.deleteUser(id);
   }
