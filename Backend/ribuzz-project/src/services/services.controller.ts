@@ -27,7 +27,7 @@ export class ServicesController {
 
     
     @Post()
-    @UseGuards(AdminGuard, EntrepreneurGuard)
+    //@UseGuards(AdminGuard, EntrepreneurGuard)
     @ApiBearerAuth()
     async createService(@Body() serviceDto: any) {
         const {categories, ...serviceData} = serviceDto

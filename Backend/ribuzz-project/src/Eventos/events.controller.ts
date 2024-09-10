@@ -1,19 +1,16 @@
-import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
+/* eslint-disable prettier/prettier */
+import { Controller, Get, Post, Delete, Body, Param, Query, Put, UseGuards } from "@nestjs/common";
 import { EventService } from "./events.service";
-//import { Products } from "src/Entidades/products.entity";
-//import { AdminGuard } from "src/Guardianes/admin.guard";
-//import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
-//import { Products } from "src/Entidades/products.entity";
-//import { AdminGuard } from "src/Guardianes/admin.guard";
-//import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 import { Events } from "src/Entidades/events.entity";
-import { ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
+import { CreateEventDto } from "./dto/event.dto";
+import { AdminGuard } from "src/Guardianes/admin.guard";
+import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 
 @ApiTags('Events')
 @Controller('events')
 export class EventController {
     constructor(private readonly eventService: EventService) {}
-
     
     @Get()
     async getEvent(
@@ -29,8 +26,10 @@ export class EventController {
     }
 
 
-    //@UseGuards(AdminGuard, EntrepreneurGuard)
     @Post()
+    //@UseGuards(AdminGuard, EntrepreneurGuard)
+    @ApiBearerAuth()
+    @ApiBody({type: CreateEventDto})
     async createEvent(@Body() event: Events) {
         return this.eventService.createEvent(event);
     }

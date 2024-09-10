@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, IsUUID, Min, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 class SellerInfoDto {
   @IsString()
@@ -36,19 +37,33 @@ class CategoryDto {
 }
 
 export class CreateServiceDto {
+
   [x: string]: any;
+  @ApiProperty({
+    description:'Describa el servicio brevemente',
+    example:'El servicio consta de ofrecer asesoramiento para realizar paginas web'
+  })
   @IsString()
   description: string;
 
+  @ApiProperty({
+    description:'Poner el precio con dos cifras despues del punto',
+    example: 90.33
+  })
   @IsNumber()
   @Min(0)
   price: number;
 
+  @ApiProperty({
+    description:'Por favor poner numeros sin puntos ni comas',
+    example:125
+  })
   @IsNumber()
   @Min(0)
   stock: number;
 
-  @IsOptional()
+
+  @ApiProperty({})
   @IsArray()
   @IsUrl({}, { each: true })
   images?: string[];
