@@ -1,9 +1,11 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { Products } from "src/Entidades/products.entity";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 import { AdminGuard } from "src/Guardianes/admin.guard";
 import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+import { CreateProductDto } from "./Dto/products.dto";
 
 
 @ApiTags('Products')
@@ -26,9 +28,9 @@ export class ProductsController {
 
 
     @Post()
-    @UseGuards(AdminGuard)
-    @UseGuards(EntrepreneurGuard)
+    //@UseGuards(AdminGuard, EntrepreneurGuard)
     @ApiBearerAuth()
+    @ApiBody({ type: CreateProductDto })
     async createProduct(@Body() productDto: any) {
         const { categories, ...productData } = productDto;
         return this.productsService.createProduct(categories, productData);

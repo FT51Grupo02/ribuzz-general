@@ -1,6 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, IsUUID, Min, IsUrl } from 'class-validator';
+import { IsString, IsNumber, IsArray, IsOptional, ValidateNested, Min, IsUrl } from 'class-validator';
 import { Type } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 
 class SellerInfoDto {
   @IsString()
@@ -36,22 +37,51 @@ class CategoryDto {
 }
 
 export class CreateProductDto {
-  [x: string]: any;
+
+  @ApiProperty({
+    description: 'Nombre del producto',
+    example: 'Bicicleta Rural XT',
+})
   @IsString()
-  description: string;
+  name: string;
 
-  @IsNumber()
-  @Min(0)
-  price: number;
-
-  @IsNumber()
-  @Min(0)
-  stock: number;
-
+  @ApiProperty({
+    description: 'Imágenes del producto',
+        example: [
+            'https://images.pexels.com/photos/1648566/pexels-photo-1648566.jpeg?auto=compress&cs=tinysrgb&w=600',
+            'https://images.pexels.com/photos/2629277/pexels-photo-2629277.jpeg?auto=compress&cs=tinysrgb&w=600',
+        ],
+        type: [String]
+  })
   @IsOptional()
   @IsArray()
   @IsUrl({}, { each: true })
   images?: string[];
+
+
+  @ApiProperty({
+    description: 'Descripción del producto',
+    example:'Es un producto extraordinario'
+  })
+  @IsString()
+  description: string;
+
+  @ApiProperty({
+    description:'Introduzca un numero terminado con dos decimas despues del punto',
+    example: 190.90
+  })
+  @IsNumber()
+  @Min(0)
+  price: number;
+
+  @ApiProperty({
+    description:'Introduzca un numero sin puntos ni cifras extras',
+    example: 15
+  })
+  @IsNumber()
+  @Min(0)
+  stock: number;
+
 
   @IsOptional()
   @IsArray()
@@ -74,10 +104,11 @@ export class CreateProductDto {
   @Type(() => ReviewDto)
   reviews?: ReviewDto[];
 
+  @IsOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => DetailDto)
-  details: DetailDto[];
+  details?: DetailDto[];
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -86,7 +117,7 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto extends CreateProductDto {
-    @IsOptional()
-    @IsUUID()
-    id?: string;
-  }
+  @IsOptional()
+  @IsString()
+  id?: string;
+}
