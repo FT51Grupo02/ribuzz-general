@@ -34,7 +34,11 @@ async function bootstrap() {
     .setTitle('Ribuzz-Backend')
     .setDescription('Creacion de rutas y solicitudes en el backend para el manejo de la pagina Web Ribuzz')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'Bearer',
+      bearerFormat: 'JWT',
+    })
     .addTag('Ribuzz')
     .build()
   const document = SwaggerModule.createDocument(app, config);

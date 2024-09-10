@@ -52,9 +52,6 @@ export class UsuarioService {
                 else{throw new InternalServerErrorException(`Error al crear el usuario: ${(error as Error).message}`)}
             }
         }
-    
-
-    
 
     async findAll(page: number, limit: number) {
         try {
@@ -79,7 +76,6 @@ export class UsuarioService {
                 throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);
             }
             const { password, rol, ...userPassword } = usuario;
-            console.log(userPassword)
             return userPassword;
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener el usuario');
@@ -90,33 +86,31 @@ export class UsuarioService {
         try {
             const existingUser = await this.userRepository.findOne({where:{ id }});
     
-            if (!existingUser) {
-                throw new NotFoundException("Usuario no encontrado.");
-            }
+            if (!existingUser) {throw new NotFoundException("Usuario no encontrado.");}
     
             
-            if ( 'date' in updateUsuarioDto) {
-                throw new BadRequestException("El campo 'date' no son modificables.");
+            if ( 'date' in updateUsuarioDto) {throw new BadRequestException("El campo 'date' no son modificables.");}
+            
+            if (updateUsuarioDto.rol) {
+                existingUser.rol = updateUsuarioDto.rol;
             }
     
-            const upDateUser: Partial<UpdateUserDto> = { ...existingUser };
-    
             if (updateUsuarioDto.password) {
-                upDateUser.password = await bcrypt.hash(updateUsuarioDto.password, 10);
+                existingUser.password = await bcrypt.hash(updateUsuarioDto.password, 10);
             }
     
             if (updateUsuarioDto.name) {
-                upDateUser.name = updateUsuarioDto.name;
+                existingUser.name = updateUsuarioDto.name;
             }
     
             if (updateUsuarioDto.email) {
-                upDateUser.email = updateUsuarioDto.email;
+                existingUser.email = updateUsuarioDto.email;
             }
             
-            await this.userRepository.save(upDateUser);
+            await this.userRepository.save(existingUser);
     
             
-            const { password, ...userWithoutPassword } = upDateUser;
+            const { password, ...userWithoutPassword } = existingUser;
             return userWithoutPassword;
     
         } catch (error) {
