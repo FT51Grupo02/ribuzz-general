@@ -1,23 +1,29 @@
+/* eslint-disable prettier/prettier */
 import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from "@nestjs/common";
-import { RoleValidatorService } from "./role-validator.service";
+import { JwtService } from "@nestjs/jwt";
 
 @Injectable()
 export abstract class BaseRoleGuard implements CanActivate {
-    constructor(private roleValidationService: RoleValidatorService) {}
+  constructor(private readonly jwtService: JwtService) {}
 
-    canActivate(context: ExecutionContext): boolean {
-        const request = context.switchToHttp().getRequest();
-        const token = this.extractToken(request);
-        const expectedRoles = this.getExpectedRoles();
-        this.roleValidationService.validateTokenRol(token, expectedRoles);
-        return true;
+  // Aquí el método debe ser declarado como abstracto
+  protected abstract getExpectedRoles(): string[];
+
+  canActivate(context: ExecutionContext): boolean {
+    const request = context.switchToHttp().getRequest();
+    const token = request.headers.authorization?.split(' ')[1];
+    if (!token) {
+      throw new UnauthorizedException('Token no proporcionado');
     }
 
-    protected abstract getExpectedRoles(): string[];
+    try {
+      const decodedToken = this.jwtService.verify(token);
+      const userRole = decodedToken.rol;
+      const expectedRoles = this.getExpectedRoles();
 
-    private extractToken(request: any): string {
-        const authorizate = request.headers.authorization;
-        if (!authorizate) { throw new UnauthorizedException("No tiene permisos para esta transacción"); }
-        return request.headers.authorization.split(' ')[1];
+      return expectedRoles.includes(userRole);
+    } catch (error) {
+      throw new UnauthorizedException('Token inválido'+error);
     }
+  }
 }

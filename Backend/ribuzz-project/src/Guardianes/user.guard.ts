@@ -3,8 +3,8 @@ import { Injectable } from "@nestjs/common";
 import { BaseRoleGuard } from "./base-role.guard";
 
 @Injectable()
-export class ClientGuard extends BaseRoleGuard {
+export class UserGuard extends BaseRoleGuard {
     protected getExpectedRoles(): string[] {
-        return ['cliente'];
+        return ['usuario'];
     }
 }

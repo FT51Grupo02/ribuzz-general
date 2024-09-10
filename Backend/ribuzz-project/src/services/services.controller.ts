@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Delete, Body, Param, Query, Put, UseGuards } from "@nestjs/common";
 import { ServicesService } from "./services.service";
 import { Services } from "src/Entidades/services.entity";
@@ -26,8 +27,7 @@ export class ServicesController {
 
     
     @Post()
-    @UseGuards(AdminGuard)
-    @UseGuards(EntrepreneurGuard)
+    @UseGuards(AdminGuard, EntrepreneurGuard)
     @ApiBearerAuth()
     async createService(@Body() serviceDto: any) {
         const {categories, ...serviceData} = serviceDto
