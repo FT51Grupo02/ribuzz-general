@@ -7,9 +7,11 @@ import { Products } from '../Entidades/products.entity';
 import { FileUploadRepository } from './file-upload.repository';
 import { Users } from 'src/Entidades/user.entity';
 import { SharedModule } from 'src/shared/shared.module';
+import { Events } from 'src/Entidades/events.entity';
+import { Services } from 'src/Entidades/services.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([Products,Users]), SharedModule],
+  imports:[TypeOrmModule.forFeature([Products,Users,Events,Services]), SharedModule],
   controllers: [FileUploudController],
   providers: [FileUploudService,FileUploadRepository ,ClaudinaryConfig],
 })
