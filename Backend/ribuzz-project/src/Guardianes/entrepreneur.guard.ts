@@ -1,9 +1,9 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from "@nestjs/common";
-import { BaseRoleGuard } from "./base-role.guard";
+import { AuthGuard } from "./base-role.guard";
 
 @Injectable()
-export class EntrepreneurGuard extends BaseRoleGuard {
+export class EntrepreneurGuard extends AuthGuard {
   protected getExpectedRoles(): string[] {
     return ['emprendedor'];
   }

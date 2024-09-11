@@ -6,6 +6,7 @@ import 'dotenv/config';
 import 'reflect-metadata';
 
 async function bootstrap() {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   require('dotenv').config();
 
   const app = await NestFactory.create(AppModule);
@@ -34,11 +35,7 @@ async function bootstrap() {
     .setTitle('Ribuzz-Backend')
     .setDescription('Creacion de rutas y solicitudes en el backend para el manejo de la pagina Web Ribuzz')
     .setVersion('1.0')
-    .addBearerAuth({
-      type: 'http',
-      scheme: 'Bearer',
-      bearerFormat: 'JWT',
-    })
+    .addBearerAuth()
     .addTag('Ribuzz')
     .build()
   const document = SwaggerModule.createDocument(app, config);

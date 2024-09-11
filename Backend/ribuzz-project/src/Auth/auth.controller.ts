@@ -30,18 +30,22 @@ export class AuthController {
     @UseGuards(GoogleAuthGuard)
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
-    const result = await this.authService.handleGoogleUser(req.user);
+    try {
+        const result = await this.authService.handleGoogleUser(req.user);
 
-    if (result instanceof Error) {
-        console.log(result);
-        return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
-        
+        if (result instanceof Error) {
+            console.log(result);
+            return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
+        }
+
+        const { accessToken, rol } = result;
+        res.redirect(`${process.env.GOOGLE_RETURN}/oauth?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
+    } catch (err) {
+        const errorMessage = (err as Error).message || 'Unknown error';
+        res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(errorMessage)}`);
     }
-
-    const { accessToken, rol } = result;
-
-    // Redirige al frontend con el token y el rol en la URL
-    res.redirect(`${process.env.GOOGLE_RETURN}?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
 }
+
+
 
 }

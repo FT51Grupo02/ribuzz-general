@@ -133,9 +133,7 @@ export class UsuarioService {
 
     async findUserEmail(email: string) {
         try {
-            
-            const findEmail = await this.userRepository.findOne({ where: { email } });
-
+            const findEmail = await this.userRepository.findOne({where:{email}});
             if (!findEmail) {
                 throw new NotFoundException(`Usuario con email ${email} no encontrado.`);
             }

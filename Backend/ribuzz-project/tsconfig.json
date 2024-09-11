@@ -18,5 +18,12 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": false
-  }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/Guardianes/*.ts"
+  ],
+  "exclude":[
+    "node_modules"
+  ]
 }

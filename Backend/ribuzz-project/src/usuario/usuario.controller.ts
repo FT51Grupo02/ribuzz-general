@@ -1,13 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Param, Delete, Put, Query, UseGuards} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put, Query, UseGuards } from '@nestjs/common';
 import { UsuarioService } from './usuario.service';
 import { CreateUserDto } from './User.dto/Create-user.dto';
 import { UpdateUserDto } from './User.dto/update-user.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AdminGuard } from 'src/Guardianes/admin.guard';
-import { EntrepreneurGuard } from 'src/Guardianes/entrepreneur.guard';
-import { ClientGuard } from 'src/Guardianes/client.guard';
-import { UserGuard } from 'src/Guardianes/user.guard';
+
+
 
 @ApiTags('Users')
 @Controller('users')
@@ -19,39 +17,33 @@ export class UsuarioController {
     return this.usuarioService.createUser(user);
   }
 
-  
   @Get()
-  @UseGuards(AdminGuard)
+  //@UseGuards(AdminGuard)
   @ApiBearerAuth()
-  findAll(@Query(`page`) page:number, @Query(`limit`) limit:number) {
-    if (page && limit){
-      return this.usuarioService.findAll(page,limit );  
+  findAll(@Query(`page`) page: number, @Query(`limit`) limit: number) {
+    if (page && limit) {
+      return this.usuarioService.findAll(page, limit);
     }
     return this.usuarioService.findAll(1, 3);
   }
 
   @Get(':id')
-  //@UseGuards(AdminGuard)
+  //@UseGuards(rolesGuard(['admin', 'emprendedor', 'cliente', 'usuario'])) // Permitir todos los roles
   @ApiBearerAuth()
   findOne(@Param('id') id: string) {
     return this.usuarioService.findOne(id);
-    
   }
 
-  
   @Put(':id')
-  //@UseGuards(AdminGuard,EntrepreneurGuard,ClientGuard,UserGuard)
   @ApiBearerAuth()
-  update(@Body('id') id: string, @Query() updateUsuarioDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUserDto) {
     return this.usuarioService.update(id, updateUsuarioDto);
   }
-  
-  
+
   @Delete(':id')
-  @UseGuards(AdminGuard)
+  //@UseGuards(AdminGuard)
   @ApiBearerAuth()
-  deleteUser(@Param(`id`) id:string){
+  deleteUser(@Param('id') id: string) {
     return this.usuarioService.deleteUser(id);
   }
-
 }
