@@ -107,6 +107,10 @@ export class UsuarioService {
                 existingUser.email = updateUsuarioDto.email;
             }
             
+            if (updateUsuarioDto.photo) {
+                existingUser.photo = updateUsuarioDto.photo;
+            }
+            
             await this.userRepository.save(existingUser);
     
             

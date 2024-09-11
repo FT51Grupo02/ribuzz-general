@@ -76,7 +76,7 @@ export class FileUploudService {
 
     const user = await this.usuarioRepository.findOneBy({id:userId})
     if(!user){
-        throw new NotFoundException("product no encontradosss");  
+        throw new NotFoundException("user no encontrado");  
     }
     const uploadedImage = await this.filesRepository.uploadImage(file)
     console.log(uploadedImage);
