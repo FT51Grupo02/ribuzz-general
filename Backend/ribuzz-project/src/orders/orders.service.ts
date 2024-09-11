@@ -60,50 +60,23 @@ async AddOrder(userId: string, product:any,service:any,events:any){
     
     const newOrder = await this.orderRepository.save(order);
     
-    const productCountMap = product.reduce((acc, item) => {
-        if (acc[item.id]) {
-            acc[item.id] += item.quantity || 1;  // Aumentar la cantidad si ya existe, por defecto 1
-        } else {
-            acc[item.id] = item.quantity || 1;   // Agregar el producto con cantidad
-        }
-        return acc;
-    }, {});
     const productsArray = await Promise.all(
-        Object.keys(productCountMap).map(async (productId) => {
-            try {
-                const product = await this.productsRepository.findOneBy({ id:productId });
-    
-                if (!product) {
-                    return null;  
+        service.map(async (element) => {
+            console.log(element);
+            const product = await this.productsRepository.findOneBy({id:element.id});
+        
+                if(!product){
+                    return "product no encontrado"
                 }
+                totals += Number(product.price);
     
-                const requestedQuantity = productCountMap[productId];
-    
-                
-                if (product.stock < requestedQuantity) {
-                    return null;  
-                }
-    
-              
-                totals += Number(product.price) * requestedQuantity;
-    
-               
-                await this.productsRepository.update(
-                    { id: productId},
-                    { stock: product.stock - requestedQuantity }
-                );
-    
-                console.log(`Producto: ${product.name}, Precio: ${product.price}, Cantidad: ${requestedQuantity}`);
+                //await this.serviceRepository.update({ id: element.id}, );
+                console.log(product.price);
                 console.log(product);
-    
-                return product;  
-            } catch (error) {
-                console.error(`Error al procesar el producto con id ${productId}:`, error);
-                return null;  
-            }
+                return product
+                
         })
-    );
-    
+    )
     
     // const validProductsArray = productsArray.filter(product => product !== null);
 
