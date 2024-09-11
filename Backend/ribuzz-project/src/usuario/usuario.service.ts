@@ -90,7 +90,11 @@ export class UsuarioService {
     
             
             if ( 'date' in updateUsuarioDto) {throw new BadRequestException("El campo 'date' no son modificables.");}
-            
+           
+            if (updateUsuarioDto.photo) {
+                existingUser.photo = updateUsuarioDto.photo;
+            }
+
             if (updateUsuarioDto.rol) {
                 existingUser.rol = updateUsuarioDto.rol;
             }
