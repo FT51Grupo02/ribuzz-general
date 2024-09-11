@@ -1,18 +1,22 @@
 /* eslint-disable prettier/prettier */
-import { BadRequestException, Injectable } from "@nestjs/common";
-import { JwtService } from "@nestjs/jwt";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
+import { Reflector } from "@nestjs/core";
+import { Observable } from "rxjs";
 
 @Injectable()
 
-export class RoleValidatorService {
-    constructor(private jwtServive : JwtService){}
+export class RoleValidatorService implements CanActivate {
+    constructor(private readonly reflector: Reflector){}
+    canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+        
+        const request = context.switchToHttp().getRequest()
 
-    validateTokenRol(token: string, expectedRol: string): boolean {
-        const secret = process.env.JWT_SECRET;
-        const user = this.jwtServive.verify(token,{secret});
+        const user = request.user;
 
-        //validación del Rol
-        if(user.rol !== expectedRol){throw new BadRequestException(`El rol ${expectedRol} no esta autorizado para esta operación`);}
-        return true
+        if(user.rol === 'admin'){return user.rol === 'admin'}
+        else if ( user.rol === 'cliente'){return user.rol === 'cliente'}
+        else if ( user.rol === 'emprendedor'){return user.rol === 'emprendedor'}
+        else{return user.rol === 'usuario'}
+
     }
 }

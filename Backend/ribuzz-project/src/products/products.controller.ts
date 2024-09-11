@@ -1,10 +1,10 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Put, Delete, Body, Param, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Put, Delete, Body, Param, Query } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { Products } from "src/Entidades/products.entity";
 import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
-import { AdminGuard } from "src/Guardianes/admin.guard";
-import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+//import { AdminGuard } from "src/Guardianes/admin.guard";
+//import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 import { CreateProductDto } from "./Dto/products.dto";
 
 
@@ -37,8 +37,6 @@ export class ProductsController {
     }
     
     @Put('/:id')
-    @UseGuards(AdminGuard)
-    @UseGuards(EntrepreneurGuard)
     @ApiBearerAuth()
         async updateProduct(
         @Param('id') id: string,
@@ -50,8 +48,6 @@ export class ProductsController {
 
 
     @Delete('/:id')
-    @UseGuards(AdminGuard)
-    @UseGuards(EntrepreneurGuard)
     @ApiBearerAuth()
     async deleteProduct(@Param('id') id: string) {
         return this.productsService.deleteProduct(id);

@@ -1,10 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Delete, Body, Param, Query, Put, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Delete, Body, Param, Query, Put } from "@nestjs/common";
 import { ServicesService } from "./services.service";
 import { Services } from "src/Entidades/services.entity";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
-import { AdminGuard } from "src/Guardianes/admin.guard";
-import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
+//import { AdminGuard } from "src/Guardianes/admin.guard";
+//import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+import { CreateServiceDto } from "./Dto/service.dto";
 
 
 @ApiTags('Services')
@@ -29,6 +30,7 @@ export class ServicesController {
     @Post()
     //@UseGuards(AdminGuard, EntrepreneurGuard)
     @ApiBearerAuth()
+    @ApiBody({type: CreateServiceDto})
     async createService(@Body() serviceDto: any) {
         const {categories, ...serviceData} = serviceDto
         return this.servicesService.createService(categories,serviceData);
@@ -36,8 +38,6 @@ export class ServicesController {
 
     
     @Put('/:id')
-    @UseGuards(AdminGuard)
-    @UseGuards(EntrepreneurGuard)
     @ApiBearerAuth()
     async updateService(
         @Param('id') id: string,
@@ -48,8 +48,6 @@ export class ServicesController {
 
     
     @Delete(':id')
-    @UseGuards(AdminGuard)
-    @UseGuards(EntrepreneurGuard)
     @ApiBearerAuth()
     async deleteService(@Param('id') id: string) {
         return this.servicesService.deleteService(id);

@@ -12,7 +12,7 @@ export class GoogleUserResponseDto {
     name: string;
 
     @IsString()
-    photo: string;
+    photo?: string;
 
     @IsString()
     rol: string;

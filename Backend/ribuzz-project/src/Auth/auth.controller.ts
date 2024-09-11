@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./Dto/auth.dto";
-import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
+//import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
 import { ConfigService } from "@nestjs/config";
 import { ApiTags } from "@nestjs/swagger";
 
@@ -23,25 +24,29 @@ export class AuthController {
         return this.authService.signInEntrepreneur(email, password);
     }
 
-    @UseGuards(GoogleAuthGuard)
+    //@UseGuards(GoogleAuthGuard)
     @Get('google/login')
     googleLogin() {}
 
-    @UseGuards(GoogleAuthGuard)
+   //@UseGuards(GoogleAuthGuard)
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
-    const result = await this.authService.handleGoogleUser(req.user);
+    try {
+        const result = await this.authService.handleGoogleUser(req.user);
 
-    if (result instanceof Error) {
-        console.log(result);
-        return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
-        
+        if (result instanceof Error) {
+            console.log(result);
+            return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
+        }
+
+        const { accessToken, rol } = result;
+        res.redirect(`${process.env.GOOGLE_RETURN}/oauth?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
+    } catch (err) {
+        const errorMessage = (err as Error).message || 'Unknown error';
+        res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(errorMessage)}`);
     }
-
-    const { accessToken, rol } = result;
-
-    // Redirige al frontend con el token y el rol en la URL
-    res.redirect(`${process.env.GOOGLE_RETURN}?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
 }
+
+
 
 }

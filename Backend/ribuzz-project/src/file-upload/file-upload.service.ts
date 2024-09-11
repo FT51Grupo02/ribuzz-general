@@ -49,7 +49,7 @@ export class FileUploudService {
             images: [...service.images, uploadedImage.secure_url],
         });
 
-        return await this.productRepository.findOneBy({ id:serviceId })
+        return await this.serviceRepository.findOneBy({ id:serviceId })
     }
 
 
@@ -67,7 +67,7 @@ export class FileUploudService {
             images: [...event.images, uploadedImage.secure_url],
         });
 
-        return await this.productRepository.findOneBy({ id:eventId })
+        return await this.eventRepository.findOneBy({ id:eventId })
     }
 
 
