@@ -15,7 +15,7 @@ export class giveAdminController {
     constructor(private authAdminService:giveAdminService){}
     
     @Put('/admin')
-    @UseGuards(AdminGuard, ClientGuard, EntrepreneurGuard )
+    //@UseGuards(AdminGuard, ClientGuard, EntrepreneurGuard )
     @ApiBearerAuth()
     @ApiBody({type: asignAdminDto})
     async getAdmin(@Body('email') email:string){
