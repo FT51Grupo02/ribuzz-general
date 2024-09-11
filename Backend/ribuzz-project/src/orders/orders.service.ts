@@ -8,6 +8,7 @@ import { Products } from "../Entidades/products.entity";
 import { Users } from "../Entidades/user.entity";
 import { Services } from "src/Entidades/services.entity";
 import { Events } from "src/Entidades/events.entity";
+import { transporter } from "src/config/nodemailer";
 //import { CreateProductDto } from "src/products/Dto/products.dto";
 
 @Injectable()
@@ -104,7 +105,7 @@ async AddOrder(userId: string, product:any,service:any,events:any){
                 }
                 totals += Number(events.price);
     
-                //await this.serviceRepository.update({ id: element.id}, );
+                await this.eventsRepository.update({ id: element.id}, {stock: events.stock - 1 });
                 console.log(events.price);
                 console.log(events);
                 return events
@@ -122,6 +123,16 @@ async AddOrder(userId: string, product:any,service:any,events:any){
     console.log(orderdetail);
     
     await this.orderDetailRepository.save(orderdetail);
+    
+
+    const info = await transporter.sendMail({
+        from: '"RiBuzz team👻" <pfgrupo2ft51@gmail.com>', 
+        to: user.email, 
+        subject: "gracias por tu compra!", 
+        text: `esta fue tu compra`,
+        html: `<h1>gracias ${user.name}!!</h1>`, 
+        });
+
     
     return await this.orderRepository.find({ where:{ id: newOrder.id},
     relations:{
