@@ -6,6 +6,7 @@ import { Products } from '../Entidades/products.entity'
 import {FilterDto} from './Dto/filters.dto' 
 import { Services } from 'src/Entidades/services.entity';
 import { Events } from 'src/Entidades/events.entity';
+//import { query } from 'express';
 
 
 @Injectable()
@@ -19,6 +20,10 @@ export class FilterService {
     private readonly eventRepository: Repository<Events>
   ) {}
 
+  private formatDate(date: Date): string {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' } as const;
+    return new Intl.DateTimeFormat('es-LA', options).format(date).replace(/\//g, '/');
+  }
   async searchProducts(dto:FilterDto):Promise<Products[]> {
       try{
 
@@ -44,6 +49,11 @@ export class FilterService {
           Object.entries(numberFilters).forEach(([key, value]) => {
             arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
           });
+        }
+
+        if(dto.publicationDate){
+          const formattedDate = this.formatDate(dto.publicationDate);
+          arrayProduct.andWhere('product.fechaPublicacion >= :startDate', { publicationDate: formattedDate })
         }
 
         if (dto.categories) {

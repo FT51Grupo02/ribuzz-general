@@ -12,6 +12,11 @@ export class ProductsService {
         @InjectRepository(Categories) private categoryRepository: Repository<Categories>
     ) {}
 
+    private formatDate(date: Date): string {
+        const options = { year: 'numeric', month: '2-digit', day: '2-digit' } as const;
+        return new Intl.DateTimeFormat('es-LA', options).format(date).replace(/\//g, '/');
+    }
+
     async getProducts(page: number, limit: number): Promise<Products[]> {
         try {
             const skip = (page - 1) * limit;
@@ -60,6 +65,10 @@ export class ProductsService {
                 const category = await this.categoryRepository.findOneBy({name})
                 if(!category){throw new BadRequestException("La(s) categoria(s) no se encuentra(n) registrada(s)")}
                 else{ categories.push(category)}
+            }
+
+            if(product.publicateDate){
+                product.publicateDate = this.formatDate(new Date(product.publicateDate))
             }
 
             const new_product = await this.productRepository.create({

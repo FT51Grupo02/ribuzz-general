@@ -46,6 +46,12 @@ export class Products {
     description: string;
 
     @Column({
+        type:'varchar',
+        nullable:true
+    })
+    publicateDate:string
+
+    @Column({
         type: 'int',
         nullable: false
     })

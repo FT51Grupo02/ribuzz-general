@@ -26,6 +26,12 @@ export class Services {
     })
     price: number;
 
+    @Column({
+        type:Date,
+        nullable: true
+    })
+    publicationDate:Date;
+
     @Column("simple-array", { nullable: true })
     images: string[];
 
