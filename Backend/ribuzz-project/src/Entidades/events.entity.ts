@@ -41,6 +41,12 @@ export class Events {
     })
     publicationDate:Date;
 
+    @Column({
+        type:Date,
+        nullable: true
+    })
+    date:Date;
+
   
     @Column("varchar",{length:100, })
     location:string

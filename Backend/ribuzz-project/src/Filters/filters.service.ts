@@ -19,11 +19,8 @@ export class FilterService {
     @InjectRepository(Events)
     private readonly eventRepository: Repository<Events>
   ) {}
+  
 
-  private formatDate(date: Date): string {
-    const options = { year: 'numeric', month: '2-digit', day: '2-digit' } as const;
-    return new Intl.DateTimeFormat('es-LA', options).format(date).replace(/\//g, '/');
-  }
   async searchProducts(dto:FilterDto):Promise<Products[]> {
       try{
 
@@ -49,11 +46,6 @@ export class FilterService {
           Object.entries(numberFilters).forEach(([key, value]) => {
             arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
           });
-        }
-
-        if(dto.publicationDate){
-          const formattedDate = this.formatDate(dto.publicationDate);
-          arrayProduct.andWhere('product.fechaPublicacion >= :startDate', { publicationDate: formattedDate })
         }
 
         if (dto.categories) {
@@ -139,7 +131,7 @@ export class FilterService {
 
         const textFilters ={
           ...(dto.name && { name: dto.name }),
-          ...(dto.publicationDate && { date: dto.publicationDate }),
+          //...(dto.publicationDate && { publicationDate: dto.publicationDate }),
           ...(dto.location && { location: dto.location })
         }
 
@@ -156,13 +148,14 @@ export class FilterService {
         Object.entries(numberFilters).forEach(([key, value]) => {
           arrayEvent.andWhere(`event.${key} = :${key}`, { [`${key}`]: value });
       });
-      
-        if (dto.categories) {
-            const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
 
-            arrayEvent.innerJoinAndSelect('event.categories', 'category')
+      
+      if (dto.categories) {
+          const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
+
+          arrayEvent.innerJoinAndSelect('event.categories', 'category')
                       .andWhere('category.name IN (:...categories)', { categories: categoriesArray });
-        }
+      }
 
 
         if (dto.orderPrice && (dto.orderPrice.toLowerCase() === 'asc' || dto.orderPrice.toLowerCase() === 'desc')) {
@@ -175,9 +168,9 @@ export class FilterService {
             const order: 'ASC' | 'DESC' = dto.orderRating.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
             arrayEvent.addOrderBy('event.rating', order);
         }
-
-        
         return await arrayEvent.getMany();
+
+
     } catch (error) {
         console.error('Error al encontrar el evento:', error);
         throw new InternalServerErrorException('Error al encontrar el evento: ' + error);
