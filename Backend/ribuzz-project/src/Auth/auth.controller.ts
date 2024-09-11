@@ -30,13 +30,16 @@ export class AuthController {
     @UseGuards(GoogleAuthGuard)
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
-        const result = await this.authService.handleGoogleUser(req.user);
+    const result = await this.authService.handleGoogleUser(req.user);
 
     if (result instanceof Error) {
         return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
     }
 
     const { accessToken, rol } = result;
-    res.redirect(`${process.env.GOOGLE_RETURN}?token=${accessToken}&role=${rol}`);
+
+    // Redirige al frontend con el token y el rol en la URL
+    res.redirect(`${process.env.GOOGLE_RETURN}?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
 }
+
 }
