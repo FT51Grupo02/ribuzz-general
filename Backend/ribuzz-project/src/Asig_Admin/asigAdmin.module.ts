@@ -8,7 +8,7 @@ import { UsuarioService } from "src/usuario/usuario.service";
 import { SharedModule } from "src/shared/shared.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Users]), SharedModule],
+    imports: [TypeOrmModule.forFeature([Users]),SharedModule],
     controllers: [giveAdminController],
     providers: [giveAdminService, UsuarioService]
 })

@@ -2,9 +2,10 @@
 import { Controller, Get, Post, Delete, Body, Param, Query, Put, UseGuards } from "@nestjs/common";
 import { ServicesService } from "./services.service";
 import { Services } from "src/Entidades/services.entity";
-import { ApiBearerAuth, ApiTags } from "@nestjs/swagger";
+import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 import { AdminGuard } from "src/Guardianes/admin.guard";
 import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
+import { CreateServiceDto } from "./Dto/service.dto";
 
 
 @ApiTags('Services')
@@ -29,6 +30,7 @@ export class ServicesController {
     @Post()
     //@UseGuards(AdminGuard, EntrepreneurGuard)
     @ApiBearerAuth()
+    @ApiBody({type: CreateServiceDto})
     async createService(@Body() serviceDto: any) {
         const {categories, ...serviceData} = serviceDto
         return this.servicesService.createService(categories,serviceData);

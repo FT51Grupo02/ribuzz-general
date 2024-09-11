@@ -36,9 +36,15 @@ export class UsuarioController {
   }
 
   @Put(':id')
+<<<<<<< HEAD
   @UseGuards(rolesGuard(['admin', 'emprendedor', 'cliente'])) // Permitir admin, emprendedor y cliente
   @ApiBearerAuth()
   update(@Param('id') id: string, @Body() updateUsuarioDto: UpdateUserDto) {
+=======
+  //@UseGuards(AdminGuard,EntrepreneurGuard,ClientGuard,UserGuard)
+  @ApiBearerAuth()
+  update(@Body('id') id: string, @Query() updateUsuarioDto: UpdateUserDto) {
+>>>>>>> 9256bcbce87fdfe13928b4febc837bdf552af538
     return this.usuarioService.update(id, updateUsuarioDto);
   }
 
