@@ -35,8 +35,12 @@ export class Events {
     videos: string[];
 
 
-    @Column("varchar",{length:15, nullable: true  })
-    date:string
+    @Column({
+        type:Date,
+        nullable: true
+    })
+    publicationDate:Date;
+
   
     @Column("varchar",{length:100, })
     location:string
