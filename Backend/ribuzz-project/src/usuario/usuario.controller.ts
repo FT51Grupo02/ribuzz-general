@@ -40,7 +40,7 @@ export class UsuarioController {
 
   
   @Put(':id')
-  @UseGuards(AdminGuard,EntrepreneurGuard,ClientGuard,UserGuard)
+  //@UseGuards(AdminGuard,EntrepreneurGuard,ClientGuard,UserGuard)
   @ApiBearerAuth()
   update(@Body('id') id: string, @Query() updateUsuarioDto: UpdateUserDto) {
     return this.usuarioService.update(id, updateUsuarioDto);
