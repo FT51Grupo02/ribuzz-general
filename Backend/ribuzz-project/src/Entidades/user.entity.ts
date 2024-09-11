@@ -32,6 +32,9 @@ export class Users{
     })
     photo:string
 
+    @Column('jsonb',{nullable:true})
+    questions: Record<string,any>
+
     @ManyToMany(()=>Events)
     events: Events[]
 
