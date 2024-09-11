@@ -1,8 +1,9 @@
 /* eslint-disable prettier/prettier */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthDto } from "./Dto/auth.dto";
-import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
+//import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
 import { ConfigService } from "@nestjs/config";
 import { ApiTags } from "@nestjs/swagger";
 
@@ -23,11 +24,11 @@ export class AuthController {
         return this.authService.signInEntrepreneur(email, password);
     }
 
-    @UseGuards(GoogleAuthGuard)
+    //@UseGuards(GoogleAuthGuard)
     @Get('google/login')
     googleLogin() {}
 
-    @UseGuards(GoogleAuthGuard)
+   //@UseGuards(GoogleAuthGuard)
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
     try {

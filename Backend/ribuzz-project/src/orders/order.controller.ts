@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Body,Controller,Get,Post,Param } from "@nestjs/common";
 import { CreateOrderDto } from "./dto/order.dto";
 import { OrderService } from "./orders.service";
