@@ -30,6 +30,7 @@ export class AuthController {
     @UseGuards(GoogleAuthGuard)
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
+    try {
         const result = await this.authService.handleGoogleUser(req.user);
 
         if (result instanceof Error) {
@@ -37,11 +38,14 @@ export class AuthController {
             return res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(result.message)}`);
         }
 
-        // Aquí TypeScript sabe que result es de tipo GoogleUserResponseDto
         const { accessToken, rol } = result;
-
-        res.redirect(`${process.env.GOOGLE_RETURN}oauth?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
+        res.redirect(`${process.env.GOOGLE_RETURN}/oauth?token=${encodeURIComponent(accessToken)}&role=${encodeURIComponent(rol)}`);
+    } catch (err) {
+        const errorMessage = (err as Error).message || 'Unknown error';
+        res.redirect(`${process.env.GOOGLE_RETURN}?message=${encodeURIComponent(errorMessage)}`);
     }
+}
+
 
 
 }
