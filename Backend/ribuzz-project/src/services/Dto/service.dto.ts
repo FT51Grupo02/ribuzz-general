@@ -38,6 +38,12 @@ class CategoryDto {
 
 export class CreateServiceDto {
 
+  @ApiProperty({
+    description:'Poner el nombre del servicio'
+  })
+  @IsString()
+  name:string
+
   [x: string]: any;
   @ApiProperty({
     description:'Describa el servicio brevemente',
@@ -63,11 +69,21 @@ export class CreateServiceDto {
   stock: number;
 
 
-  @ApiProperty({})
+  @ApiProperty({
+    description:'Poner la URL de imagen',
+    example: [
+      "https://images.pexels.com/photos/3803863/pexels-photo-3803863.jpeg?auto=compress&cs=tinysrgb&w=600",
+      "https://images.pexels.com/photos/1181705/pexels-photo-1181705.jpeg?auto=compress&cs=tinysrgb&w=600"
+    ]
+  })
   @IsArray()
   @IsUrl({}, { each: true })
   images?: string[];
 
+  @ApiProperty({
+    description:'Poner la URL del video',
+    example:["/videos/service-demo.mp4"]
+  })
   @IsOptional()
   @IsArray()
   @IsUrl({}, { each: true })
@@ -94,6 +110,10 @@ export class CreateServiceDto {
   @Type(() => DetailDto)
   details: DetailDto[];
 
+  @ApiProperty({
+    description:'Poner las categorias disponibles en un arreglo',
+    example:['Hogar']
+  })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CategoryDto)

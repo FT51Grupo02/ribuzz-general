@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { FileTypeValidator,MaxFileSizeValidator,Controller,Put, Param,UseInterceptors ,UploadedFile,ParseFilePipe, UseGuards} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FileUploudService } from './file-upload.service';

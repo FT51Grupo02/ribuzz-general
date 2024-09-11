@@ -22,7 +22,7 @@ export class CreateUserDto {
     
     @IsNotEmpty()
     @IsString()
-    @IsIn(['cliente', 'emprendedor'])
+    @IsIn(['cliente', 'emprendedor', 'admin', 'usuario'])
     rol?: string;
 
     @IsString()
