@@ -37,6 +37,7 @@ export class AuthService {
                 id: find_user.id,
                 name: find_user.name || 'Anonimo',
                 correo: find_user.email,
+                photo:find_user.photo,
                 rol: find_user.rol,
             };
 
