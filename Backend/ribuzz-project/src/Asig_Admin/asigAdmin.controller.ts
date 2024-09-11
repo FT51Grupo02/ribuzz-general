@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Controller, Put, Query,Body, UseGuards } from "@nestjs/common";
+import { Controller, Post, Query,Body, UseGuards } from "@nestjs/common";
 import { giveAdminService } from "./asigAdmin.service";
 import { ApiTags, ApiQuery, ApiBearerAuth, ApiBody } from "@nestjs/swagger";
 import { AdminGuard } from "src/Guardianes/admin.guard";
@@ -14,7 +14,7 @@ import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
 export class giveAdminController {
     constructor(private authAdminService:giveAdminService){}
     
-    @Put('/admin')
+    @Post('/admin')
     //@UseGuards(AdminGuard, ClientGuard, EntrepreneurGuard )
     @ApiBearerAuth()
     @ApiBody({type: asignAdminDto})
