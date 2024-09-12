@@ -5,14 +5,30 @@ import { UsuarioService } from "src/usuario/usuario.service";
 import * as bcrypt from "bcrypt";
 //import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
 import {GoogleUserResponseDto} from 'src/Auth/Dto/handleGoogleUser.dto'
+import { InjectRepository } from "@nestjs/typeorm";
+import { Users } from "src/Entidades/user.entity";
+import { Repository } from "typeorm";
+import { OAuth2Client } from 'google-auth-library';
 
+@Injectable()
+// export class AuthService {
+//   private client: OAuth2Client
 
 @Injectable()
 export class AuthService {
+    private client:OAuth2Client;
+
     constructor(
         private userService: UsuarioService,
         private jwtService: JwtService,
-    ) {}
+        @InjectRepository(Users)
+        private readonly userRepository: Repository<Users>,
+        
+
+    ) {
+        this.client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+      }
+    
 
     async signInClient(email: string, password: string) {
         try {
@@ -104,28 +120,50 @@ export class AuthService {
     }
 
     // AuthGoogle
+    // import { Injectable } from '@nestjs/common';
+    // import { JwtService } from '@nestjs/jwt';
+    // import { OAuth2Client } from 'google-auth-library';
+    
+//     @Injectable()
+// export class AuthService {
+//   private client: OAuth2Client;
 
-    async handleGoogleUser(googleUser: Partial<GoogleUserResponseDto>): Promise<GoogleUserResponseDto | Error> {
-        try {
-            const user = await this.userService.findUserEmail(googleUser.email);
-            if (!user) {
-                throw new NotFoundException('Usuario no encontrado. Por favor, regístrate.');
-            }
+//   constructor(private jwtService: JwtService) {
+//     this.client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+//   }
+     
+  async validateGoogleToken(idToken: string): Promise<any> {
+    try {
+      const ticket = await this.client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      const payload = ticket.getPayload();
+
+      if (!payload || !payload.email || !payload.sub) {
+        throw new Error('La respuesta de Google no contiene la información esperada');
+      }
+
+      return { email: payload.email, name: payload.name, sub: payload.sub };
+    } catch (error) {
+      throw new Error(`Error al validar el token de Google: ${error}`);
+    }
+  }
+
+  async loginWithGoogle(user: any) {
+    // Busca o crea un usuario en la base de datos
     
-            const tokenPayload = { id: user.id, correo: user.email, rol: user.rol };
-            const accessToken = await this.jwtService.sign(tokenPayload);
-    
-            return {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                photo: user.photo,
-                rol: user.rol,
-                accessToken,  // Asegúrate de incluirlo en la respuesta
-            };
-        } catch (error) {
-            throw new InternalServerErrorException(`Error al manejar el usuario de Google: ${(error as Error).message}`);
-        }
+
+
+    const currentUser = await this.userService.findUserEmail(user.email);
+
+    if (!currentUser) {
+      throw new Error('El usuario no fue encontrado después de la creación');
     }
 
+    const payload = { email: currentUser.email, role: currentUser.rol };
+    const accessToken = this.jwtService.sign(payload);
+
+    return { accessToken, role: currentUser.rol };
+  }
 }
