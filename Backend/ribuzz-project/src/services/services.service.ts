@@ -20,7 +20,7 @@ export class ServicesService {
             return await this.servicesRepository.find({
                 skip,
                 take: limit,
-                relations: ['provider', 'categories' ]   
+                relations: ['provider' ]   
             });
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los servicios: ' + error);
