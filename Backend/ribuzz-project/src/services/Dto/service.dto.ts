@@ -9,6 +9,9 @@ class SellerInfoDto {
 
   @IsString()
   contact: string;
+
+  @IsString()
+  location: string;
 }
 
 class ReviewDto {

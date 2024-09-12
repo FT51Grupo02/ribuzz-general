@@ -61,6 +61,7 @@ export class Services {
     providerInfo?: {
         name: string;
         contact: string;
+        location:string
     };
 
 
