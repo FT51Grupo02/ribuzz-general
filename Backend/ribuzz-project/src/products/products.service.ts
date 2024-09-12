@@ -85,7 +85,7 @@ export class ProductsService {
             else {throw new InternalServerErrorException('Error al crear el producto: ' + error)}
         }
     }
-    async upDateEvent(id: string, prducts: Partial<Products>){
+    async upDateProduct(id: string, prducts: Partial<Products>){
         
         const newprduct = await this.productRepository.findOneBy({id})
         if(!newprduct){throw new BadRequestException("El producto no existe")}
