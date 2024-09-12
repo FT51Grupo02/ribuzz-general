@@ -41,7 +41,7 @@ export class AuthController {
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
     try {
-        const result = await this.authService.handleGoogleUser(req.user);
+        const result = await this.authService.validateGoogleToken(req.user);
 
         if (result instanceof Error) {
             console.log(result);
