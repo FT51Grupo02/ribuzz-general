@@ -60,7 +60,7 @@ export class UsuarioService {
             const end = start + +limit;
             users = users.slice(start, end);
 
-            return users.map(({ password, rol, ...user }) => user);
+            return users.map(({ password, ...user }) => user);
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los usuarios');
         }
@@ -111,6 +111,12 @@ export class UsuarioService {
                 existingUser.email = updateUsuarioDto.email;
             }
             
+            if (updateUsuarioDto.photo) {
+                existingUser.photo = updateUsuarioDto.photo;
+            }
+            if (updateUsuarioDto.questions) {
+                existingUser.questions = updateUsuarioDto.questions;
+            }
             await this.userRepository.save(existingUser);
     
             
@@ -123,7 +129,7 @@ export class UsuarioService {
     }
     
 
-    async deleteUser(id: string) {
+    async deleteUser(id:string) {
         try {
             const result = await this.userRepository.delete(id);
             if (result.affected === 0) {

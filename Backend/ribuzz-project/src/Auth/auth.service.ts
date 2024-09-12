@@ -5,14 +5,28 @@ import { UsuarioService } from "src/usuario/usuario.service";
 import * as bcrypt from "bcrypt";
 //import { CreateUserDto } from "src/usuario/User.dto/Create-user.dto";
 import {GoogleUserResponseDto} from 'src/Auth/Dto/handleGoogleUser.dto'
+import { InjectRepository } from "@nestjs/typeorm";
+import { Users } from "src/Entidades/user.entity";
+import { Repository } from "typeorm";
+import { OAuth2Client } from 'google-auth-library';
 
+@Injectable()
+// export class AuthService {
+//   private client: OAuth2Client
 
 @Injectable()
 export class AuthService {
+    
+
     constructor(
         private userService: UsuarioService,
         private jwtService: JwtService,
-    ) {}
+        @InjectRepository(Users)
+        private readonly userRepository: Repository<Users>,
+        
+
+    ){}
+    
 
     async signInClient(email: string, password: string) {
         try {
@@ -30,13 +44,14 @@ export class AuthService {
                 throw new BadRequestException("Correo y/o contraseña invalidas");
             }
             
-            if(find_user.rol !== 'admin' && find_user.rol !== 'cliente'){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            if(find_user.rol !== 'cliente'&&find_user.rol !== 'admin'){throw new BadRequestException("El rol no esta asignado con el usuario")}
             
 
             const usePayload = {
                 id: find_user.id,
                 name: find_user.name || 'Anonimo',
                 correo: find_user.email,
+                photo:find_user.photo,
                 rol: find_user.rol,
             };
 
@@ -74,13 +89,14 @@ export class AuthService {
             }
             
 
-            if(find_user.rol !== 'emprendedor' && find_user.rol !== 'admin'){throw new BadRequestException("El rol no esta asignado con el usuario")}
+            if(find_user.rol !== 'emprendedor'&&find_user.rol !== 'admin'){throw new BadRequestException("El rol no esta asignado con el usuario")}
 
 
             const usePayload = {
                 id: find_user.id,
                 name: find_user.name || 'Anonimo',
                 correo: find_user.email,
+                photo:find_user.photo,
                 rol: find_user.rol,
             };
 
@@ -101,29 +117,26 @@ export class AuthService {
         }
     }
 
-    // AuthGoogle
-
-    async handleGoogleUser(googleUser: Partial<GoogleUserResponseDto>): Promise<GoogleUserResponseDto | Error> {
-        try {
-            const user = await this.userService.findUserEmail(googleUser.email);
-            if (!user) {
-                throw new NotFoundException('Usuario no encontrado. Por favor, regístrate.');
-            }
-    
-            const tokenPayload = { id: user.id, correo: user.email, rol: user.rol };
-            const accessToken = await this.jwtService.sign(tokenPayload);
-    
-            return {
-                id: user.id,
-                email: user.email,
-                name: user.name,
-                photo: user.photo,
-                rol: user.rol,
-                accessToken,  // Asegúrate de incluirlo en la respuesta
-            };
-        } catch (error) {
-            throw new InternalServerErrorException(`Error al manejar el usuario de Google: ${(error as Error).message}`);
-        }
-    }
-
+    async handleGoogleUser(googleUser: Partial<GoogleUserResponseDto>): Promise<any> {
+      try {
+          const user = await this.userService.findUserEmail(googleUser.email);
+          if (!user) {
+              throw new NotFoundException('Usuario no encontrado. Por favor, regístrate.');
+          }
+  
+          const tokenPayload = { id: user.id, correo: user.email, rol: user.rol };
+          const accessToken = await this.jwtService.sign(tokenPayload);
+  
+          // Ajusta la respuesta para que coincida con signInClient
+          return {
+              message: "Ingreso exitoso",  // Agregar mensaje como en signInClient
+              name: user.name || 'Anonimo',
+              id: user.id,
+              token: accessToken,  // Cambiar el nombre de accessToken a token
+          };
+      } catch (error) {
+          throw new InternalServerErrorException(`Error al manejar el usuario de Google: ${(error as Error).message}`);
+      }
+  }
+  
 }

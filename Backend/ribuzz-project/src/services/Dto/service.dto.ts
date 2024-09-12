@@ -9,6 +9,9 @@ class SellerInfoDto {
 
   @IsString()
   contact: string;
+
+  @IsString()
+  location: string;
 }
 
 class ReviewDto {
@@ -117,7 +120,7 @@ export class CreateServiceDto {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => CategoryDto)
-  categories: CategoryDto[];
+  categories?: CategoryDto[];
 }
 
 export class UpdateServiceDto extends CreateServiceDto {

@@ -90,6 +90,7 @@ export class ProductsService {
             }
         }
     }
+
     
 
     async updateProduct(id: string, categories: string[], product: Partial<Products>): Promise<Products> {
