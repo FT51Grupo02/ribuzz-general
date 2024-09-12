@@ -7,4 +7,5 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
     email?: string;
     password?: string;
     rol?:string;
+    questions?:any
 }

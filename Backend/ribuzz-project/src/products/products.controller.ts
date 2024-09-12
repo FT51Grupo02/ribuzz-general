@@ -40,10 +40,10 @@ export class ProductsController {
     @ApiBearerAuth()
         async updateProduct(
         @Param('id') id: string,
-        @Body() updateProductDto: { categories: string[], product: Partial<Products> }) 
+        @Body() updateProductDto: { product: Partial<Products> }) 
         {
-            const { categories, product } = updateProductDto;
-            return await this.productsService.updateProduct(id, categories, product);
+            const { product } = updateProductDto;
+            return await this.productsService.upDateProduct(id, product);
         }
 
 
