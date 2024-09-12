@@ -29,7 +29,7 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         accessToken,  // Se pasa el accessToken como parte de los datos del usuario de Google
         };
 
-        const user = await this.authService.loginWithGoogle(accessToken);
+        const user = await this.authService.handleGoogleUser(googleUser);
 
         // Verificamos si el valor devuelto es una instancia de Error
         if (user instanceof Error) {

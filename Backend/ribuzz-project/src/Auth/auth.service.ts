@@ -16,7 +16,7 @@ import { OAuth2Client } from 'google-auth-library';
 
 @Injectable()
 export class AuthService {
-    private client:OAuth2Client;
+    
 
     constructor(
         private userService: UsuarioService,
@@ -25,9 +25,7 @@ export class AuthService {
         private readonly userRepository: Repository<Users>,
         
 
-    ) {
-        this.client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-      }
+    ){}
     
 
     async signInClient(email: string, password: string) {
@@ -119,53 +117,26 @@ export class AuthService {
         }
     }
 
-  
-    async validateGoogleToken(idToken: string): Promise<any> {
-        try {
-          const ticket = await this.client.verifyIdToken({
-            idToken,
-            audience: process.env.GOOGLE_CLIENT_ID,
-          });
-          const payload = ticket.getPayload();
-    
-          if (!payload || !payload.email || !payload.sub) {
-            throw new Error('La respuesta de Google no contiene la información esperada');
+    async handleGoogleUser(googleUser: Partial<GoogleUserResponseDto>): Promise<any> {
+      try {
+          const user = await this.userService.findUserEmail(googleUser.email);
+          if (!user) {
+              throw new NotFoundException('Usuario no encontrado. Por favor, regístrate.');
           }
-    
-          return { email: payload.email, name: payload.name, sub: payload.sub, picture: payload.picture };
-        } catch (error) {
-          throw new Error(`Error al validar el token de Google: ${error}`);
-        }
+  
+          const tokenPayload = { id: user.id, correo: user.email, rol: user.rol };
+          const accessToken = await this.jwtService.sign(tokenPayload);
+  
+          // Ajusta la respuesta para que coincida con signInClient
+          return {
+              message: "Ingreso exitoso",  // Agregar mensaje como en signInClient
+              name: user.name || 'Anonimo',
+              id: user.id,
+              token: accessToken,  // Cambiar el nombre de accessToken a token
+          };
+      } catch (error) {
+          throw new InternalServerErrorException(`Error al manejar el usuario de Google: ${(error as Error).message}`);
       }
-    
-      async loginWithGoogle(idToken: string) {
-        try {
-          const googleUser = await this.validateGoogleToken(idToken);
-    
-          let user = await this.userService.findUserEmail(googleUser.email);
-    
-          const payload = { 
-            id: user.id,
-            email: user.email, 
-            name: user.name,
-            rol: user.rol,
-            photo: user.photo
-          };
-          const accessToken = this.jwtService.sign(payload);
-    
-          return { 
-            message: "Ingreso exitoso",
-            id: user.id,
-            name: user.name,
-            token: accessToken,
-            rol: user.rol
-          };
-        } catch (error) {
-          if (error instanceof BadRequestException) {
-            throw error;
-          } else {
-            throw new InternalServerErrorException(`Error al iniciar sesión con Google: ${error}`);
-          }
-        }
-      }
-    }
+  }
+  
+}
