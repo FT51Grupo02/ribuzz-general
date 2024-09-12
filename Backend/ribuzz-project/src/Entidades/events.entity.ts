@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
-
-import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, ManyToOne, JoinColumn, OneToMany } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable, JoinColumn, OneToMany } from "typeorm";
 import { Details } from "./details.entity";
 import { Review } from "./reviews";
 //import { Details } from "./details.entity";
@@ -39,7 +38,7 @@ export class Events {
         type:Date,
         nullable: true
     })
-    publicationDate:Date;
+    publicateDate:Date;
 
     @Column({
         type:Date,

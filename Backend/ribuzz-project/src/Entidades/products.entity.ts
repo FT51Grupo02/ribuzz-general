@@ -49,7 +49,7 @@ export class Products {
         type:'varchar',
         nullable:true
     })
-    publicateDate:string | Date
+    publicateDate:string 
 
     @Column({
         type: 'int',

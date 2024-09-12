@@ -20,6 +20,10 @@ export class FilterDto{
 
     @IsOptional()
     @IsDate()
+    publicateDate?:Date
+
+    @IsOptional()
+    @IsDate()
     publicationDate?:Date
 
     @IsOptional()

@@ -4,18 +4,15 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Products } from "../Entidades/products.entity";
 import { Categories } from "src/Entidades/categories.entity";
+import { DateFormatService } from "src/DateFormat/dateformat.service";
 
 @Injectable()
 export class ProductsService {
     constructor(
         @InjectRepository(Products) private productRepository: Repository<Products>,
-        @InjectRepository(Categories) private categoryRepository: Repository<Categories>
+        @InjectRepository(Categories) private categoryRepository: Repository<Categories>,
+        private readonly dateFormatService:DateFormatService
     ) {}
-
-    private formatDate(date: Date): string {
-        const options = { year: 'numeric', month: '2-digit', day: '2-digit' } as const;
-        return new Intl.DateTimeFormat('es-LA', options).format(date).replace(/\//g, '/');
-    }
 
     async getProducts(page: number, limit: number): Promise<Products[]> {
         try {
@@ -54,47 +51,117 @@ export class ProductsService {
 
     async createProduct(categoryNames: string[], product: Partial<Products>): Promise<Products> {
 
-        try{
-            const categories =[]
-
-            if(!categoryNames || !Array.isArray(categoryNames) || categoryNames.length===0){
-                throw new BadRequestException("Por favor ingrese la categorias para este producto")
+        try {
+            if (!categoryNames || !Array.isArray(categoryNames) || categoryNames.length === 0) {
+                throw new BadRequestException("Por favor ingrese las categorías para este producto");
             }
-
-            for(const name of categoryNames){
-                const category = await this.categoryRepository.findOneBy({name})
-                if(!category){throw new BadRequestException("La(s) categoria(s) no se encuentra(n) registrada(s)")}
-                else{ categories.push(category)}
+    
+            const categories = [];
+    
+            // Validar y formatear la fecha de publicación
+            const publicateDate = new Date();
+            const formattedDate = this.dateFormatService.formatDate(publicateDate); // Formatea la fecha usando tu servicio
+    
+            // Buscar las categorías en la base de datos
+            for (const name of categoryNames) {
+                const category = await this.categoryRepository.findOneBy({ name });
+                if (!category) {
+                    throw new BadRequestException("La(s) categoría(s) no se encuentra(n) registrada(s)");
+                } else {
+                    categories.push(category);
+                }
             }
-
-            if(product.publicateDate){
-                product.publicateDate = this.formatDate(new Date(product.publicateDate))
-            }
-
-            const new_product = await this.productRepository.create({
+    
+            // Crear el nuevo producto con las categorías y la fecha formateada
+            const newProduct = this.productRepository.create({
                 ...product,
-                categories
-            })
+                publicateDate: formattedDate, // Utiliza la fecha formateada
+                categories,
+            });
+    
+            // Guardar el nuevo producto en la base de datos
+            return await this.productRepository.save(newProduct);
             
-            return await this.productRepository.save(new_product)
-        }
-        catch(error){
-            if( error instanceof BadRequestException ){
-                throw error
+        } catch (error) {
+            if (error instanceof BadRequestException) {
+                throw error;
+            } else {
+                throw new InternalServerErrorException('Error al crear el producto: ' + error);
             }
-            else {throw new InternalServerErrorException('Error al crear el producto: ' + error)}
         }
     }
-    async upDateProduct(id: string, prducts: Partial<Products>){
-        
-        const newprduct = await this.productRepository.findOneBy({id})
-        if(!newprduct){throw new BadRequestException("El producto no existe")}
-        
-       const upDateproduct  = {...newprduct,...prducts}
 
-       await this.productRepository.save(upDateproduct)
-       return upDateproduct 
-    }   
+    
+
+    async updateProduct(id: string, categories: string[], product: Partial<Products>): Promise<Products> {
+        try {
+            // Validar si categories es un array
+            if (!Array.isArray(categories)) {
+                throw new BadRequestException('El parámetro categories debe ser un array de nombres de categorías.');
+            }
+    
+            // Validar si el objeto product es válido
+            if (!product || !Object.keys(product).length) {
+                throw new BadRequestException('El objeto product no puede estar vacío');
+            }
+    
+            // Validar stock antes de intentar actualizar
+            if (product.stock !== undefined && product.stock <= 0) {
+                throw new BadRequestException('El stock no puede ser negativo');
+            }
+    
+            // Validar si categories no está vacío
+            if (categories.length === 0) {
+                throw new BadRequestException("Esta casilla no puede quedar vacía, por favor elijan categoría(s)");
+            }
+    
+            const categoryNames = [];
+            // Buscar y validar las categorías por nombre
+            for (const name of categories) {
+                const category = await this.categoryRepository.findOne({ where: { name } });
+                if (!category) {
+                    throw new BadRequestException("Por favor ingrese una categoría existente");
+                } else {
+                    categoryNames.push(category);
+                }
+            }
+    
+            const { orderDetails, ...otherProperties } = product;
+    
+            // Actualizar propiedades generales del producto
+            await this.productRepository.update(id, otherProperties);
+    
+            // Buscar el producto actualizado junto con sus relaciones
+            const updatedProduct = await this.productRepository.findOne({
+                where: { id },
+                relations: ['categories']
+            });
+    
+            if (!updatedProduct) {
+                throw new NotFoundException(`Producto con id ${id} no encontrado`);
+            }
+    
+            // Asignar las categorías al producto
+            updatedProduct.categories = categoryNames;
+    
+            // Asignar orderDetails si están presentes
+            if (orderDetails) {
+                updatedProduct.orderDetails = orderDetails;
+            }
+    
+            // Guardar el producto actualizado con las relaciones
+            await this.productRepository.save(updatedProduct);
+    
+            return updatedProduct;
+    
+        } catch (error) {
+            console.error('Error al actualizar el producto:', error);
+            if (error instanceof NotFoundException || error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new InternalServerErrorException('Error al actualizar el producto');
+        }
+    }
     
     async deleteProduct(id: string): Promise<void> {
         try {

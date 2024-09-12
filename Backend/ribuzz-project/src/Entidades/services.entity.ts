@@ -30,7 +30,7 @@ export class Services {
         type:Date,
         nullable: true
     })
-    publicationDate:Date;
+    publicateDate:Date;
 
     @Column("simple-array", { nullable: true })
     images: string[];

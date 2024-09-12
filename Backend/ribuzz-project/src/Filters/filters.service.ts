@@ -6,6 +6,7 @@ import { Products } from '../Entidades/products.entity'
 import {FilterDto} from './Dto/filters.dto' 
 import { Services } from 'src/Entidades/services.entity';
 import { Events } from 'src/Entidades/events.entity';
+import { DateFormatService } from 'src/DateFormat/dateformat.service';
 //import { query } from 'express';
 
 
@@ -17,9 +18,11 @@ export class FilterService {
     @InjectRepository(Services)
     private readonly serviceRepository: Repository<Services>,
     @InjectRepository(Events)
-    private readonly eventRepository: Repository<Events>
+    private readonly eventRepository: Repository<Events>,
+    private readonly dataFormatService : DateFormatService
   ) {}
   
+
 
   async searchProducts(dto:FilterDto):Promise<Products[]> {
       try{
@@ -29,6 +32,7 @@ export class FilterService {
         const textFilters = {
           ...(dto.name && { name: dto.name }),
           ...(dto.populate && { populate: dto.populate }),
+          ...(dto.publicateDate && {publicateDate:dto.publicateDate})
         };
     
         const numberFilters = {
@@ -46,6 +50,10 @@ export class FilterService {
           Object.entries(numberFilters).forEach(([key, value]) => {
             arrayProduct.andWhere(`product.${key} = :${key}`, { [`${key}`]: value });
           });
+        }
+
+        if (dto.publicateDate) {
+          arrayProduct.andWhere('product.publicateDate = :publicateDate', { publicateDate: dto.publicateDate });
         }
 
         if (dto.categories) {
@@ -78,7 +86,7 @@ export class FilterService {
         const textFilters ={
           ...(dto.name && { name: dto.name }),
           ...(dto.duration && {duration:dto.duration}),
-          ...(dto.publicationDate && { date: dto.publicationDate }),
+          ...(dto.publicationDate && { publicationDate: dto.publicationDate }),
           ...(dto.location && { location: dto.location })
       }
        
@@ -98,6 +106,9 @@ export class FilterService {
             arrayService.andWhere(`service.${key} = :${key}`, { [`${key}`]: value });
         })
 
+        if (dto.publicationDate) {
+          arrayService.andWhere('service.publicationDate = :publicationDate', { publicationDate: dto.publicationDate });
+        }  
       
         if (dto.categories) {
             const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
@@ -131,7 +142,7 @@ export class FilterService {
 
         const textFilters ={
           ...(dto.name && { name: dto.name }),
-          //...(dto.publicationDate && { publicationDate: dto.publicationDate }),
+          ...(dto.publicateDate && { publicationDate: dto.publicateDate }),
           ...(dto.location && { location: dto.location })
         }
 
@@ -149,6 +160,10 @@ export class FilterService {
           arrayEvent.andWhere(`event.${key} = :${key}`, { [`${key}`]: value });
       });
 
+      //filtro de fecha de publicación
+      if (dto.publicateDate) {
+        arrayEvent.andWhere('product.publicateDate = :publicateDate', { publicateDate: dto.publicateDate });
+      }
       
       if (dto.categories) {
           const categoriesArray = Array.isArray(dto.categories) ? dto.categories : [dto.categories];
