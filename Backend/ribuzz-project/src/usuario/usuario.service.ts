@@ -129,7 +129,7 @@ export class UsuarioService {
     }
     
 
-    async deleteUser(id: string) {
+    async deleteUser(id:string) {
         try {
             const result = await this.userRepository.delete(id);
             if (result.affected === 0) {

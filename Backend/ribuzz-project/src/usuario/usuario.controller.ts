@@ -40,7 +40,7 @@ export class UsuarioController {
     return this.usuarioService.update(id, updateUsuarioDto);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   //@UseGuards(AdminGuard)
   @ApiBearerAuth()
   deleteUser(@Param('id') id: string) {
