@@ -114,6 +114,9 @@ export class UsuarioService {
             if (updateUsuarioDto.photo) {
                 existingUser.photo = updateUsuarioDto.photo;
             }
+            if (updateUsuarioDto.questions) {
+                existingUser.questions = updateUsuarioDto.questions;
+            }
             await this.userRepository.save(existingUser);
     
             
