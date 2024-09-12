@@ -60,7 +60,7 @@ export class UsuarioService {
             const end = start + +limit;
             users = users.slice(start, end);
 
-            return users.map(({ password, rol, ...user }) => user);
+            return users.map(({ password, ...user }) => user);
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los usuarios');
         }
