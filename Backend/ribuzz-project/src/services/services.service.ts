@@ -4,6 +4,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Services } from "../Entidades/services.entity";
 import { Categories } from "src/Entidades/categories.entity";
+import { DateFormatService } from "src/DateFormat/dateformat.service";
 
 @Injectable()
 export class ServicesService {
@@ -12,6 +13,7 @@ export class ServicesService {
         private servicesRepository: Repository<Services>,
         @InjectRepository(Categories)
         private categoryRepository: Repository<Categories>,
+        private readonly dateFormatService:DateFormatService
     ) {}
 
     async getServices(page: number, limit: number): Promise<Services[]> {
@@ -60,9 +62,14 @@ export class ServicesService {
             }
             categories.push(category);
           }
+
+          // Validar y formatear la fecha de publicación
+          const publicateDate = new Date();
+          const formattedDate = this.dateFormatService.formatDate(publicateDate);
       
           const newService = this.servicesRepository.create({
             ...service,
+            publicateDate: formattedDate,
             categories // Asegúrate de que 'categories' se asigne correctamente.
           });
       

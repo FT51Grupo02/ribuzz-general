@@ -4,12 +4,13 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Events } from "src/Entidades/events.entity";
 import { UpdateEventDto } from "./dto/update-event.dto";
-
+import { DateFormatService } from "src/DateFormat/dateformat.service";
 
 @Injectable()
 export class EventService {
     constructor(
-        @InjectRepository(Events) private eventRepository: Repository<Events>
+        @InjectRepository(Events) private eventRepository: Repository<Events>,
+        private readonly dateFormatService:DateFormatService
        
     ) {}
 
@@ -47,6 +48,9 @@ export class EventService {
 
     async createEvent(event: Events): Promise<Events> {
         try {
+            const publicateDate = new Date();
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const formattedDate = this.dateFormatService.formatDate(publicateDate)
             const newProduct = this.eventRepository.create(event);
             return await this.eventRepository.save(newProduct);
         } catch (error) {

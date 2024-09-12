@@ -18,6 +18,7 @@ import { StripeModule } from './stripe/stripe.module';
 import { FilterModule } from './Filters/filters.module';
 import { authAdminModule } from './Asig_Admin/asigAdmin.module';
 import { ReviewsModule } from './reviews/reviews.module';
+import { DateFormatModule } from './DateFormat/dateformat.module';
 
 
 @Module({
@@ -48,7 +49,8 @@ import { ReviewsModule } from './reviews/reviews.module';
     StripeModule,
     FilterModule,
     authAdminModule,
-    ReviewsModule
+    ReviewsModule,
+    DateFormatModule
   ],
   controllers: [AppController],
   providers: [AppService],
