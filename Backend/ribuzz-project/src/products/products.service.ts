@@ -85,76 +85,16 @@ export class ProductsService {
             else {throw new InternalServerErrorException('Error al crear el producto: ' + error)}
         }
     }
+    async upDateEvent(id: string, prducts: Partial<Products>){
+        
+        const newprduct = await this.productRepository.findOneBy({id})
+        if(!newprduct){throw new BadRequestException("El producto no existe")}
+        
+       const upDateproduct  = {...newprduct,...prducts}
 
-    async updateProduct(id: string, categories: string[], product: Partial<Products>): Promise<Products> {
-        try {
-            // Validar si categories es un array
-            if (!Array.isArray(categories)) {
-                throw new BadRequestException('El parámetro categories debe ser un array de nombres de categorías.');
-            }
-    
-            // Validar si el objeto product es válido
-            if (!product || !Object.keys(product).length) {
-                throw new BadRequestException('El objeto product no puede estar vacío');
-            }
-    
-            // Validar stock antes de intentar actualizar
-            if (product.stock !== undefined && product.stock <= 0) {
-                throw new BadRequestException('El stock no puede ser negativo');
-            }
-    
-            // Validar si categories no está vacío
-            if (categories.length === 0) {
-                throw new BadRequestException("Esta casilla no puede quedar vacía, por favor elijan categoría(s)");
-            }
-    
-            const categoryNames = [];
-            // Buscar y validar las categorías por nombre
-            for (const name of categories) {
-                const category = await this.categoryRepository.findOne({ where: { name } });
-                if (!category) {
-                    throw new BadRequestException("Por favor ingrese una categoría existente");
-                } else {
-                    categoryNames.push(category);
-                }
-            }
-    
-            const { orderDetails, ...otherProperties } = product;
-    
-            // Actualizar propiedades generales del producto
-            await this.productRepository.update(id, otherProperties);
-    
-            // Buscar el producto actualizado junto con sus relaciones
-            const updatedProduct = await this.productRepository.findOne({
-                where: { id },
-                relations: ['categories']
-            });
-    
-            if (!updatedProduct) {
-                throw new NotFoundException(`Producto con id ${id} no encontrado`);
-            }
-    
-            // Asignar las categorías al producto
-            updatedProduct.categories = categoryNames;
-    
-            // Asignar orderDetails si están presentes
-            if (orderDetails) {
-                updatedProduct.orderDetails = orderDetails;
-            }
-    
-            // Guardar el producto actualizado con las relaciones
-            await this.productRepository.save(updatedProduct);
-    
-            return updatedProduct;
-    
-        } catch (error) {
-            console.error('Error al actualizar el producto:', error);
-            if (error instanceof NotFoundException || error instanceof BadRequestException) {
-                throw error;
-            }
-            throw new InternalServerErrorException('Error al actualizar el producto');
-        }
-    }
+       await this.productRepository.save(upDateproduct)
+       return upDateproduct 
+    }   
     
     async deleteProduct(id: string): Promise<void> {
         try {
