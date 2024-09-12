@@ -119,51 +119,53 @@ export class AuthService {
         }
     }
 
-    // AuthGoogle
-    // import { Injectable } from '@nestjs/common';
-    // import { JwtService } from '@nestjs/jwt';
-    // import { OAuth2Client } from 'google-auth-library';
+  
+    async validateGoogleToken(idToken: string): Promise<any> {
+        try {
+          const ticket = await this.client.verifyIdToken({
+            idToken,
+            audience: process.env.GOOGLE_CLIENT_ID,
+          });
+          const payload = ticket.getPayload();
     
-//     @Injectable()
-// export class AuthService {
-//   private client: OAuth2Client;
-
-//   constructor(private jwtService: JwtService) {
-//     this.client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-//   }
-     
-  async validateGoogleToken(idToken: string): Promise<any> {
-    try {
-      const ticket = await this.client.verifyIdToken({
-        idToken,
-        audience: process.env.GOOGLE_CLIENT_ID,
-      });
-      const payload = ticket.getPayload();
-
-      if (!payload || !payload.email || !payload.sub) {
-        throw new Error('La respuesta de Google no contiene la información esperada');
+          if (!payload || !payload.email || !payload.sub) {
+            throw new Error('La respuesta de Google no contiene la información esperada');
+          }
+    
+          return { email: payload.email, name: payload.name, sub: payload.sub, picture: payload.picture };
+        } catch (error) {
+          throw new Error(`Error al validar el token de Google: ${error}`);
+        }
       }
-
-      return { email: payload.email, name: payload.name, sub: payload.sub };
-    } catch (error) {
-      throw new Error(`Error al validar el token de Google: ${error}`);
-    }
-  }
-
-  async loginWithGoogle(user: any) {
-    // Busca o crea un usuario en la base de datos
     
-
-
-    const currentUser = await this.userService.findUserEmail(user.email);
-
-    if (!currentUser) {
-      throw new Error('El usuario no fue encontrado después de la creación');
+      async loginWithGoogle(idToken: string) {
+        try {
+          const googleUser = await this.validateGoogleToken(idToken);
+    
+          let user = await this.userService.findUserEmail(googleUser.email);
+    
+          const payload = { 
+            id: user.id,
+            email: user.email, 
+            name: user.name,
+            rol: user.rol,
+            photo: user.photo
+          };
+          const accessToken = this.jwtService.sign(payload);
+    
+          return { 
+            message: "Ingreso exitoso",
+            id: user.id,
+            name: user.name,
+            token: accessToken,
+            rol: user.rol
+          };
+        } catch (error) {
+          if (error instanceof BadRequestException) {
+            throw error;
+          } else {
+            throw new InternalServerErrorException(`Error al iniciar sesión con Google: ${error}`);
+          }
+        }
+      }
     }
-
-    const payload = { email: currentUser.email, role: currentUser.rol };
-    const accessToken = this.jwtService.sign(payload);
-
-    return { accessToken, role: currentUser.rol };
-  }
-}
