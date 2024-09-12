@@ -31,7 +31,7 @@ export class ServicesService {
         try {
             const service = await this.servicesRepository.findOne({
                 where: { id },
-                relations: ['provider', 'categories',"reviews"]
+                relations: ['provider',"reviews"]
             });
             if (!service) {
                 throw new NotFoundException(`Servicio con id ${id} no encontrado`);
