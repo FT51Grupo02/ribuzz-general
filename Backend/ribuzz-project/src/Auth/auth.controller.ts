@@ -6,6 +6,7 @@ import { AuthDto } from "./Dto/auth.dto";
 //import { GoogleAuthGuard } from "src/Guardianes/google-auth.guard";
 import { ConfigService } from "@nestjs/config";
 import { ApiTags } from "@nestjs/swagger";
+import { Response } from "express";
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -24,10 +25,18 @@ export class AuthController {
         return this.authService.signInEntrepreneur(email, password);
     }
 
+    // @Get('google/login')
+    // async googleLogin(@Res() res: Response) {
+    //   const redirectUri = https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_CALLBACK_URL}&response_type=code&scope=profile email;
+    //   res.redirect(redirectUri);
+    // }
     //@UseGuards(GoogleAuthGuard)
-    @Get('google/login')
-    googleLogin() {}
 
+    @Get('google/login')
+    async googleLogin(@Res() res: Response) {
+      const redirectUri = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.GOOGLE_CLIENT_ID}&redirect_uri=${process.env.GOOGLE_CALLBACK_URL}&response_type=code&scope=profile email`;
+     res.redirect(redirectUri);
+    }
    //@UseGuards(GoogleAuthGuard)
     @Get('google/callback')
     async googleCallback(@Req() req, @Res() res) {
