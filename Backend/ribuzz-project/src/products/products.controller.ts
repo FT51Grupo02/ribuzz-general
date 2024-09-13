@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { Controller, Get, Post, Put, Delete, Body, Param, Query } from "@nestjs/common";
 import { ProductsService } from "./products.service";
-import { Products } from "src/Entidades/products.entity";
+//import { Products } from "src/Entidades/products.entity";
 import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 //import { AdminGuard } from "src/Guardianes/admin.guard";
 //import { EntrepreneurGuard } from "src/Guardianes/entrepreneur.guard";
-import { CreateProductDto } from "./Dto/products.dto";
+import { CreateProductDto, upDateProduct } from "./Dto/products.dto";
+import { Products } from "src/Entidades/products.entity";
 
 
 @ApiTags('Products')
@@ -38,13 +39,13 @@ export class ProductsController {
     
     @Put('/:id')
     @ApiBearerAuth()
-        async updateProduct(
-        @Param('id') id: string,
-        @Body() updateProductDto: { product: Partial<Products> }) 
-        {
-            const { product } = updateProductDto;
-            return await this.productsService.upDateProduct(id, product);
-        }
+    @ApiBody({ type: upDateProduct })
+    async updateProduct(@Param('id') id: string, @Body() updateProductDto: any): Promise<Products> {
+        const { categories, ...productData } = updateProductDto; // Desestructuración correcta
+        return await this.productsService.updateProduct(id, categories, productData);
+}
+
+
 
 
     @Delete('/:id')

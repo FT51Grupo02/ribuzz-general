@@ -28,6 +28,7 @@ export class FilterService {
       try{
 
         const arrayProduct = await this.productRepository.createQueryBuilder('product')
+        
       
         const textFilters = {
           ...(dto.name && { name: dto.name }),
@@ -86,7 +87,6 @@ export class FilterService {
         const textFilters ={
           ...(dto.name && { name: dto.name }),
           ...(dto.duration && {duration:dto.duration}),
-          ...(dto.publicationDate && { publicationDate: dto.publicationDate }),
           ...(dto.location && { location: dto.location })
       }
        
@@ -106,8 +106,8 @@ export class FilterService {
             arrayService.andWhere(`service.${key} = :${key}`, { [`${key}`]: value });
         })
 
-        if (dto.publicationDate) {
-          arrayService.andWhere('service.publicationDate = :publicationDate', { publicationDate: dto.publicationDate });
+        if (dto.publicateDate) {
+          arrayService.andWhere('service.publicateDate = :publicateDate', { publicateDate: dto.publicateDate });
         }  
       
         if (dto.categories) {
@@ -138,11 +138,10 @@ export class FilterService {
 
   async searchEvents(dto: FilterDto): Promise<Events[]> {
     try {
-        const arrayEvent = this.eventRepository.createQueryBuilder('event');
+        const arrayEvent = this.eventRepository.createQueryBuilder('event')
 
         const textFilters ={
           ...(dto.name && { name: dto.name }),
-          ...(dto.publicateDate && { publicationDate: dto.publicateDate }),
           ...(dto.location && { location: dto.location })
         }
 
@@ -162,7 +161,7 @@ export class FilterService {
 
       //filtro de fecha de publicación
       if (dto.publicateDate) {
-        arrayEvent.andWhere('product.publicateDate = :publicateDate', { publicateDate: dto.publicateDate });
+        arrayEvent.andWhere('event.publicateDate = :publicateDate', { publicateDate: dto.publicateDate });
       }
       
       if (dto.categories) {

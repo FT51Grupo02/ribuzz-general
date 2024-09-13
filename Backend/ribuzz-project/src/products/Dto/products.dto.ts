@@ -63,8 +63,9 @@ export class CreateProductDto {
     description: 'Descripción del producto',
     example:'Es un producto extraordinario'
   })
+  @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
   @ApiProperty({
     description:'Introduzca un numero terminado con dos decimas despues del punto',
@@ -116,8 +117,20 @@ export class CreateProductDto {
   categories: CategoryDto[];
 }
 
-export class UpdateProductDto extends CreateProductDto {
-  @IsOptional()
-  @IsString()
-  id?: string;
+export class upDateProduct extends CreateProductDto{
+  
+    @IsString()
+    name:string
+
+    @IsNumber()
+    stock:number
+
+    @IsNumber()
+    price:number
+
+    @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CategoryDto)
+  categories: CategoryDto[];
+
 }

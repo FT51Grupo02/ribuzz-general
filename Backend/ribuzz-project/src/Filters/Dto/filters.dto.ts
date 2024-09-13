@@ -23,10 +23,6 @@ export class FilterDto{
     publicateDate?:Date
 
     @IsOptional()
-    @IsDate()
-    publicationDate?:Date
-
-    @IsOptional()
     populate?:string
 
     @IsOptional()
