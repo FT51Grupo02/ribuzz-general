@@ -93,9 +93,14 @@ export class ProductsService {
 
     
 
-    async updateProduct(id: string, categories: string[], product: Partial<Products>): Promise<Products> {
+    async updateProduct(id: string,categories:Categories, product: Partial<Products> ={}): Promise<Products> {
         try {
             // Validar si categories es un array
+
+            const findProduct = await this.productRepository.findOneBy({id})
+
+            if(!findProduct){throw new BadRequestException("Porducto no encontrado")}
+
             if (!Array.isArray(categories)) {
                 throw new BadRequestException('El parámetro categories debe ser un array de nombres de categorías.');
             }
