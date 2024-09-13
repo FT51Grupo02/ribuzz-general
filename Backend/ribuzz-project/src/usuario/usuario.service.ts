@@ -52,7 +52,7 @@ export class UsuarioService {
                 else{throw new InternalServerErrorException(`Error al crear el usuario: ${(error as Error).message}`)}
             }
         }
-
+//buscar todos los usuarios
     async findAll(page: number, limit: number) {
         try {
             let users = await this.userRepository.find();
@@ -64,7 +64,7 @@ export class UsuarioService {
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener los usuarios');
         }
-    }
+    }      
 
     async findOne(id: string) {
         try {
