@@ -75,7 +75,7 @@ export class UsuarioService {
             if (!usuario) {
                 throw new NotFoundException(`Usuario con ID ${id} no encontrado.`);
             }
-            const { password, rol, ...userPassword } = usuario;
+            const { password,  ...userPassword } = usuario;
             return userPassword;
         } catch (error) {
             throw new InternalServerErrorException('Error al obtener el usuario');
