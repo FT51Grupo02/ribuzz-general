@@ -1,40 +1,48 @@
 /* eslint-disable prettier/prettier */
-import { IsDate, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsDate, IsNumber, IsOptional, IsString, IsEnum } from "class-validator";
 
-export class FilterDto{
+export class FilterDto {
     @IsOptional()
     @IsString()
-    name?:string;
+    name?: string;
     
     @IsOptional()
     @IsString()
-    categories?:string;
+    categories?: string;
 
     @IsOptional()
     @IsNumber()
-    price?:number
+    price?: number;
 
     @IsOptional()
     @IsNumber()
-    rating?:number
+    rating?: number;
 
     @IsOptional()
     @IsDate()
-    publicateDate?:Date
-
-    @IsOptional()
-    populate?:string
-
-    @IsOptional()
-    location?:string
+    publicateDate?: Date;
 
     @IsOptional()
     @IsString()
-    duration?:string;
+    populate?: string;
 
     @IsOptional()
-    orderPrice?: "ASC"| "DESC" ;
+    @IsString()
+    location?: string;
 
     @IsOptional()
-    orderRating?: "ASC"| "DESC";
+    @IsString()
+    duration?: string;
+
+    @IsOptional()
+    @IsEnum(['ASC', 'DESC'])
+    orderPrice?: 'ASC' | 'DESC';
+
+    @IsOptional()
+    @IsEnum(['ASC', 'DESC'])
+    orderRating?: 'ASC' | 'DESC';
+
+    @IsOptional()
+    @IsEnum(['ASC', 'DESC'])
+    orderPopularity?: 'ASC' | 'DESC';
 }
