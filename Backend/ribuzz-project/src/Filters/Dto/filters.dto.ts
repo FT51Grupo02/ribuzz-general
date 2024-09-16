@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { IsDate, IsNumber, IsOptional, IsString, IsEnum } from "class-validator";
 
 export class FilterDto {
@@ -21,10 +20,6 @@ export class FilterDto {
     @IsOptional()
     @IsDate()
     publicateDate?: Date;
-
-    @IsOptional()
-    @IsString()
-    populate?: string;
 
     @IsOptional()
     @IsString()
